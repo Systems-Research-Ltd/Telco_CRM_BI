@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<style type="text/css">
+		table.permissions-table td{ line-height:30px; border-bottom:1px dotted #CCC; } 
+	</style>
+</h:head>
+
+<h:body>
+	<h:form id="privilegeform">
+		<p:messages id="messages" autoUpdate="true" closable="true" />
+		<h:inputHidden value="#{privilege.userPermissions}" />
+		<c:set var="verticalIndex" value="0" />
+		<h:dataTable id="mydata" value="#{privilege.featuresPermissionsList}"
+			var="opr" columnClasses="privilege-col1,privilege-col2"
+			style="width:100%" styleClass="oprtable, permissions-table" binding="#{table}">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText id="operations" value="Operations" />
+					<p:tooltip for="operations" value="List of all service Operations"
+						showEffect="fade" hideEffect="fade" />
+				</f:facet>
+				  
+				      <h:outputText id="parent" value="#{opr.permissionService.serviceTitle}" rendered="#{opr.permissionService.isParent}" style="color : green"/>
+				      <p:tooltip for="parent" value="#{opr.permissionService.serviceDescription}" showEffect="fade" hideEffect="fade"/>			   
+				      <h:outputText id="child" value="#{opr.permissionService.serviceTitle}" rendered="#{!opr.permissionService.isParent}"/>
+				      <p:tooltip for="child" value="#{opr.permissionService.serviceDescription}" showEffect="fade" hideEffect="fade"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:panelGrid columns="14" style="float:left">
+					<h:outputText value=""/>
+					    
+						<c:forEach
+							items="#{privilege.permission.operationList}"	var="item" varStatus="popup">
+							<c:set var="id" value="${popup.index}"/>
+							<h:outputText id="#{item}" value="#{item}" style="padding-left:40px"/>
+							
+							<p:tooltip for="#{item}" value="Create" showEffect="fade" hideEffect="fade" rendered="#{item == 'C'}"/>
+							<p:tooltip for="#{item}" value="Read" showEffect="fade" hideEffect="fade" rendered="#{item == 'R'}"/>
+							<p:tooltip for="#{item}" value="Update" showEffect="fade" hideEffect="fade" rendered="#{item == 'U'}"/>
+							<p:tooltip for="#{item}" value="Delete" showEffect="fade" hideEffect="fade" rendered="#{item == 'D'}"/>
+							<p:tooltip for="#{item}" value="Share" showEffect="fade" hideEffect="fade" rendered="#{item == 'S'}"/>
+							<p:tooltip for="#{item}" value="Assign" showEffect="fade" hideEffect="fade" rendered="#{item == 'A'}"/>
+						</c:forEach>
+						
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:panelGrid columns="6" id="checkBoxGrid">
+					<c:forEach	items="#{privilege.permission.getPermissionList(opr.permissionCode)}"
+						var="item" varStatus="horizontalIndex">
+						<c:set  var="horIndex" value="${horizontalIndex.index}" />
+						<c:set  var="count" value="${horizontalIndex.index}" />
+						
+						<p:selectBooleanCheckbox value="#{item}" >
+							<p:ajax  listener="${privilege.selectedCheckBox}">
+							</p:ajax>
+							   <f:param name="vertical" value="#{table.rowIndex}" />
+							   <f:param name="horizontal" value="#{((horIndex+privilege.permission.operationList.size()-1)-count*2)}" />
+							   <f:param name="item" value="#{item}" />
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</p:selectBooleanCheckbox>
+					</c:forEach>
+				</h:panelGrid>
+			</h:column>
+		</h:dataTable>
+		
+		  
+		
+		<h:commandButton value="Apply Changes" onclick="window.scrollTo(0, 50); return true;" style="float:right; margin-right:115px">
+			<f:ajax event="click" listener="#{privilege.applyChanges}" />
+		</h:commandButton>
+		
+	</h:form>
+</h:body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form" id="userProfileForm">
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							First Name
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+					<h:outputLabel value="#{userB.userFname}">
+							
+						</h:outputLabel>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Last Name 
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+					<h:outputLabel  value="#{userB.userLname}">
+						</h:outputLabel>
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							User Name <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+
+					<p:column>
+						<p:inputText value="#{userB.userName}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Email <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{userB.userEmail}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Address <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{userB.userAddress}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Country <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="country" value="#{userB.userCountry}"
+							label="Country" style="width:232px;">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="0" />
+							<f:selectItems value="#{addressBean.countryList}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.id}" />
+							<p:ajax update="state" event="change" partialSubmit="true"
+								process="country"
+								listener="#{addressBean.stateAL(userB.userCountry)}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							State 
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="state" value="#{userB.userState}"
+							label="State" style="width:232px;">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="0" />
+							<f:selectItems value="#{addressBean.stateList}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="city" event="change" partialSubmit="true"
+								process="state"
+								listener="#{addressBean.cityAL(userB.userState)}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							City <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="city" value="#{userB.userCity}" label="City"
+							style="width:232px;">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="0" />
+							<f:selectItems value="#{addressBean.cityList}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Zip Code
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{userB.userZipcode}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Phone <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{userB.userPhone}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Job Title <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{userB.userJobtitle}"
+							disabled="#{userController.viewAction}" />
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

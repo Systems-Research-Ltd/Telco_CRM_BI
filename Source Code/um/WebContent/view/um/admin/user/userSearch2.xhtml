@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+		<h:form id="userSearch">
+
+			<p:messages id="searchmsgs" autoUpdate="true" />
+			<h:panelGrid id="usersearchgrid" columns="2" styleClass="content-table">
+			<h:outputLabel value="Search: "/>
+			 <p:inputText id="keyword" value="#{createUserBean.keyword}" required="true" label="Keyword" />
+			  <p:watermark for="keyword" value="Search User" /> 
+			   <p:commandButton actionListener="#{userListings.search}" value="Search" ajax="false" /> 
+</h:panelGrid>
+</h:form>
+</ui:composition>
+   
+</html>

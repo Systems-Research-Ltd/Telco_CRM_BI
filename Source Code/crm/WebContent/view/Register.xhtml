@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.dashboard']}</ui:define>
+	<ui:define name="contents">
+	Currently inprogress files list
+	<br></br>
+	<div style="padding-left:5px;color:green;background:#000000;">
+	<pre>
+		1: view/Example.jsp [Abdul Kareem]
+		2: com.srpl.model.Example.java [Abdul Kareem]
+		3: view/public/ForgotPassword.jsf [Maryam Imtiaz]
+		4: com.lmkr.crm.web.model [Maryam Imtiaz]
+	</pre>
+   </div>
+	</ui:define>
+	
+</ui:composition>
+

@@ -1,0 +1,43 @@
+10
+
+dir
+3114
+svn://68.169.55.222/crm/srpl/src/crm/weblayer/com/srpl/crm/web/model/um
+svn://68.169.55.222/crm
+
+
+
+2013-09-10T12:16:20.420472Z
+2995
+rizwan
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+admin
+dir
+
+alertsandreminders
+dir
+
+company
+dir
+
+customer
+dir
+
+fileupload
+dir
+

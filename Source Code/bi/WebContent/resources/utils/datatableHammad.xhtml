@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="value" required="true"
+			shortDescription="List to be populated"></composite:attribute>
+		<composite:attribute name="columns" required="true"
+			shortDescription="List of ColumModel"></composite:attribute>
+		<composite:attribute name="rowid" required="true"></composite:attribute>
+		<composite:attribute name="heading" required="true"></composite:attribute>
+		<composite:attribute name="actionListener"
+			method-signature="void actionListener(javax.faces.event.ActionEvent)"
+			required="false"></composite:attribute>
+		<composite:attribute name="actionview" default="true"></composite:attribute>
+		<composite:attribute name="actionColumn" default="true"></composite:attribute>
+		<composite:attribute name="actionedit" default="true"></composite:attribute>
+		<composite:attribute name="actiondelete" default="false"></composite:attribute>
+		<composite:attribute name="actionparameter" default="false"></composite:attribute>
+		<composite:attribute name="actioncreate" default="true"></composite:attribute>
+		<composite:attribute name="actionfranchise" default="false"></composite:attribute>
+		<composite:attribute name="actionuser" default="false"></composite:attribute>
+		<composite:attribute name="transmitnow" default="false"></composite:attribute>
+		<composite:attribute name="iconalertsandreminders" default="false"></composite:attribute>
+
+	</composite:interface>
+
+	<composite:implementation>
+		<p:messages id="messages" />
+		<p:dataTable id="dataTable" var="row" value="#{cc.attrs.value}"
+			paginator="true" rows="10" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" tableStyleClass="content-table">
+			<f:facet name="header">
+				<strong class="flt-lft">#{cc.attrs.heading}</strong>
+				<c:if test="#{cc.attrs.actioncreate eq 'true'}">
+					<div class="new-task">
+						<span class="create-btn-lc"></span> <span class="create-btn-bg">
+							<p:commandLink value="Create New" ajax="false"
+								action="#{cc.attrs.actionListener}">
+								<f:param name="action" value="create"></f:param>
+								<f:setPropertyActionListener
+									target="#{actionListener.selectedAction}" value="create" />
+							</p:commandLink>
+						</span> <span class="create-btn-rc"></span>
+					</div>
+				</c:if>
+				<c:if test="#{cc.attrs.transmitnow eq 'true'}">
+					<!--<div class="new-task">
+						  <span class="create-btn-lc"></span> <span class="create-btn-bg">
+							<p:commandLink value="Transmit Now" ajax="false"
+								action="#{cc.attrs.actionListener}">
+								<f:param name="action" value="transmitnow"></f:param>
+								<f:setPropertyActionListener
+									target="#{actionListener.selectedAction}" value="transmitnow" />
+							</p:commandLink>
+						</span> <span class="create-btn-rc"></span> 
+					</div> -->
+				</c:if>
+			</f:facet>
+			<!-- <p:column selectionMode="multiple" style="width:18px" /> -->
+			<p:columns styleClass="colHeader" value="#{cc.attrs.columns}"
+				var="column" columnIndexVar="colIndex" sortBy="#{row[column.value]}"
+				filterBy="#{row[column.value]}">
+				<f:facet name="header">  
+                			#{column.headerText}  
+            			</f:facet>  
+            			#{row[column.value]}  
+        	</p:columns>
+			<c:if test="#{cc.attrs.iconalertsandreminders eq 'true'}">
+				<p:column>
+					<f:facet name="header">TYPE</f:facet>
+					<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="#{row.isAlert ? 'alert.png':'reminder.png'}"  />
+
+				</p:column>
+			</c:if>
+			<c:if test="#{cc.attrs.actionColumn eq 'true'}">
+				<p:column>
+					<f:facet name="header">ACTIONS</f:facet>
+					<div class="actions">
+						<ul>
+
+							<c:if test="#{cc.attrs.actionview eq 'true'}">
+								<li><h:commandLink action="#{cc.attrs.actionListener}">
+										<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="view.gif"   />
+										<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+										<f:param name="action" value="view"></f:param>
+										<f:setPropertyActionListener
+											target="#{actionListener.selectedAction}" value="view" />
+									</h:commandLink></li>
+
+							</c:if>
+							<c:if test="#{cc.attrs.actionedit eq 'true'}">
+								<li><p:commandLink action="#{cc.attrs.actionListener}">
+										<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="edit.png"  />
+										<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+										<f:param name="action" value="edit"></f:param>
+										<f:setPropertyActionListener
+											target="#{actionListener.selectedAction}" value="edit" />
+									</p:commandLink></li>
+							</c:if>
+							<c:if test="#{cc.attrs.actiondelete eq 'true'}">
+								<li><p:commandLink action="#{cc.attrs.actionListener}">
+										<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="delete.png"  />
+										<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+										<f:param name="action" value="delete"></f:param>
+										<f:setPropertyActionListener
+											target="#{actionListener.selectedAction}" value="delete" />
+									</p:commandLink></li>
+							</c:if>
+							<c:if test="#{cc.attrs.actionparameter eq 'true'}">
+								<li><p:commandLink action="#{cc.attrs.actionListener}">
+										<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="settings.png"  />
+										<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+										<f:param name="action" value="parameter"></f:param>
+										<f:setPropertyActionListener
+											target="#{actionListener.selectedSubMenu}" value="parameter" />
+									</p:commandLink></li>
+							</c:if>
+
+							<c:if test="#{cc.attrs.actionsettings eq 'true'}">
+								<li><p:commandLink action="#{cc.attrs.actionListener}">
+										<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="settings.png"  />
+										<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+										<f:param name="action" value="settings"></f:param>
+										<f:setPropertyActionListener
+											target="#{actionListener.selectedAction}" value="settings" />
+									</p:commandLink></li>
+							</c:if>
+						</ul>
+					</div>
+				</p:column>
+			</c:if>
+			<f:facet name="footer">
+			</f:facet>
+		</p:dataTable>
+
+	</composite:implementation>
+</h:body>
+</html>

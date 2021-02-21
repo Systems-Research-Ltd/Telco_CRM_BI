@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" id="campaignform" enctype="multipart/form-data">
+			<h:inputHidden value="#{campaignDetails.currentAction}"	validator="#{campaignDetails.actionValidator}" />
+			<p:messages id="msgs1" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="name">
+					${sid['label.campaign.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="name" value="#{campaignDetails.title}"
+							styleClass="hundred-percent"
+							maxlength="50"
+							disabled="#{campaignDetails.disabled}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="type">
+					${sid['label.campaign.type']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="type" value="#{campaignDetails.type}"
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:selectItem itemLabel="Email" itemValue="1" />
+							<f:selectItem itemLabel="Advertisement" itemValue="2" />
+							<f:selectItem itemLabel="Others" itemValue="3" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="currency">
+						${sid['label.currency.type']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="currency" value="#{campaignDetails.currency}"
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:selectItem itemLabel="Pak Rupees" itemValue="1" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="startDate">
+					${sid['label.start.date']}&nbsp; <span class="form-required">*</span>
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="startDate" value="#{campaignDetails.startDate}"
+							styleClass="hundred-percent"
+							navigator="true" yearRange="c-5:c+20" required="true"
+							label="Start Date is required." pattern="MMMM dd, yyyy"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="endDate">
+				${sid['label.end.date']}&nbsp; <span class="form-required">*</span> 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="endDate" value="#{campaignDetails.endDate}"
+							styleClass="hundred-percent"
+							navigator="true" yearRange="c-5:c+20" required="true"
+							label="End Date is required." pattern="MMMM dd, yyyy"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="budget">
+					${sid['label.budget']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="budget" value="#{campaignDetails.budget}"							
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertNumber />
+						</p:inputText>	
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="expected">
+					${sid['label.expected.cost']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="expected" value="#{campaignDetails.expectedCost}"
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertNumber />
+						</p:inputText>	
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="revenue">
+				${sid['label.expected.revenue']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="revenue" value="#{campaignDetails.expectedRevenue}"
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertNumber />
+						</p:inputText>	
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="actual">
+					${sid['label.actual.cost']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="actual" value="#{campaignDetails.actualCost}"
+							styleClass="hundred-percent"
+							disabled="#{campaignDetails.disabled}">
+							<f:convertNumber />
+						</p:inputText>	
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="objective">
+					${sid['label.objective']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="objective" value="#{campaignDetails.objective}"							
+							disabled="#{campaignDetails.disabled}" autoResize="true" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="description">
+					${sid['label.description']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="description" value="#{campaignDetails.description}"							
+							disabled="#{campaignDetails.disabled}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputLabel for="mktimg">${sid['label.campaign.image']}&nbsp; </h:outputLabel></p:column>
+					<p:column><p:fileUpload value="#{campaignDetails.file}" id="prdimg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" mode="simple"/><h:inputHidden value="#{campaignDetails.campaignImage}" /></p:column>
+				</p:row>
+				<p:row>					
+					<p:column><h:outputLabel for="imgwrap">${sid['label.uploaded.image']}&nbsp;</h:outputLabel></p:column>
+					<p:column><h:graphicImage id="imgwrap" value="/resources/images/#{campaignDetails.campaignImage}" width="200" height="200" /></p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+						<h:inputHidden value="#{campaignDetails.campaignId}" />
+						<p:commandButton ajax="false" value="#{sid['label.save']}"
+							rendered="#{campaignDetails.saveAction}"
+							actionListener="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.edit']}"
+							rendered="#{campaignDetails.editAction}"
+							action="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="campaign_id" value="#{campaignDetails.campaignId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.update']}"
+							rendered="#{campaignDetails.updateAction}"
+							action="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="update" />
+							<f:param name="campaign_id" value="#{campaignDetails.campaignId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false"
+							value="#{sid['label.delete']}"
+							rendered="#{campaignDetails.deleteAction}"
+							action="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="campaign_id" value="#{campaignDetails.campaignId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false"
+							value="#{sid['label.deleteConfirmed']}"
+							rendered="#{campaignDetails.deleteConfirmedAction}"
+							action="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.cancel']}"
+							immediate="true"							
+							rendered="#{campaignDetails.cancelAction}"
+							actionListener="#{campaignDetails.actionListener()}">
+							<f:param name="action" value="cancel" />
+							<f:param name="campaign_id" value="#{campaignDetails.campaignId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"							
+							rendered="#{campaignDetails.resetAction}"
+							type="reset">
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

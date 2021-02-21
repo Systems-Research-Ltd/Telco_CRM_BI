@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<ui:composition xmlns:sr="http://java.sun.com/jsf/composite/utils">
+		<h:form styleClass="ui-form" id="subscriptionForm">
+
+			<sr:datatableHammad
+				id="subscription"
+				value="#{customer360Subscribe.list}"
+				columns="#{customer360Subscribe.subscriptionColumns}"
+				rowid="id" heading="#{sid['label.subscription.list']}"
+				ajaxEnable="true"
+				actionTopEdit="true"
+				actiondelete="false"
+				actioncreate="false"
+				actionedit="false" actionview="true"
+				actionListener="#{customer360Subscribe.actionListener()}" />
+			<br />
+		</h:form>
+
+		<h:form styleClass="ui-form" id="subscriptionHistoryForm">
+
+			<sr:datatableHammad
+				id="subscriptionHistory"
+				value="#{customer360Subscribe.historyList}"
+				columns="#{customer360Subscribe.subscriptionHistoryColumns}"
+				rowid="id" heading="#{sid['label.subscription.history.list']}"
+				ajaxEnable="true"
+				actiondelete="false"
+				actioncreate="false"
+				actionedit="false" actionview="true"
+				actionListener="#{customer360Subscribe.actionListener()}" />
+			<br />
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

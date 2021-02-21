@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+	<ui:define name="title"> Bill Reimbursement</ui:define>
+	<ui:define name="contents">
+	
+		<h:form styleClass="ui-form" id="billreimbuserForm">
+			<p:messages id="msgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+			
+			 <p:row>
+              <p:column colspan="4">
+               <h:panelGroup layout="block" style="padding: 3px 0 3px 0; text-align: right;">  
+				        <h:graphicImage library="themes/#{themeBean.userTheme.title}/images" name="help_icon.png" id="help" width="20" height="20" />				        
+				        <pe:tooltip for="help" value="#{help.billReimbursement}" myPosition="top center" atPosition="bottom center" />  
+               </h:panelGroup> 
+              </p:column>
+             </p:row>
+             
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="orderAmount">
+							Order Amount
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputText id="orderAmount"
+							value="#{billBean.orderDetail.orderAmmount}" />
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="receivedAmount">
+							Receved Amount
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputText id="receivedAmount"
+							value="#{billBean.orderDetail.paidAmount}" />
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="customername">
+							Customer Name
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLabel id="customername"
+							value="#{billBean.order.customer.contactFname}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel for="daterecieved">
+							Date Recieved
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLabel id="daterecieved"
+							value="#{billBean.order.dateString}" />
+							
+					</p:column>
+					
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="receivedby">
+							Received By
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="receivedby"
+							value="#{billBean.bill.billReceivedBy}" label="Received By"
+							required="true" requiredMessage="Received By is required."
+							disabled="#{billBean.disabled}">
+							<f:selectItem itemLabel="Select User"/>
+							<f:selectItems value="#{billBean.listUsers()}" var="cu"
+								itemLabel="#{cu.userFname}" itemValue="#{cu.userId}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="amount">
+							Amount(Rs.)
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="amount" value="#{billBean.bill.reimburseAmount}"
+							required="true"
+							requiredMessage="Amount required for Reimbursement." disabled="#{billBean.disabled}"></p:inputText>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton value="#{sid['label.bill.reimburse']}"
+							action="#{billBean.actionListener}" ajax="false" rendered="#{billBean.createAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+							<f:param name="row_id" value="#{param['row_id']}" />
+						</p:commandButton>
+
+
+						<p:commandButton value="#{sid['label.cancel']}"
+							action="#{billBean.actionListener}" ajax="false" immediate="true">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+						</p:commandButton>
+					</p:column>
+				</p:row>
+
+
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

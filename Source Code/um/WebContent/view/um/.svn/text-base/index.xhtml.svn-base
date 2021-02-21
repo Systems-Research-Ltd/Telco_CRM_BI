@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.dashboard']}</ui:define>
+	<ui:define name="contents">
+		
+<h:messages errorClass="Error" styleClass="ErrorBox" />
+
+<h:outputFormat value="#{sid['messages.sampleMessage']}" >
+	<f:param value="#{actionListener.selectedTab}"/>
+	<f:param value="#{actionListener.selectedMenu}"/>
+	<f:param value="#{actionListener.selectedMenuItem}"/>
+</h:outputFormat>
+<br>
+</br>
+<!-- jsf table example -->
+<utils:SideMenu/>
+<h:form>
+<!-- <h:outputLink value="#{indexBackingBean.goAddOperations()}">addOperations</h:outputLink>  -->
+<!-- <h:outputLink value="#{indexBackingBean.goaddUsersHistory()}">addHistory</h:outputLink> -->
+
+<h:dataTable id="dt1" value="#{indexBackingBean.list}" var="item" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="50" width="50%" frame="hsides" rules="all" summary="This is a JSF code to create dataTable." >
+
+<f:facet name="header">
+  <h:outputText value="This is 'dataTable' demo" />
+</f:facet> 
+
+
+<h:column>
+  <f:facet name="header">
+  <h:outputText value="id"/>
+  </f:facet>
+   <h:outputText value="#{item}"/>
+</h:column>
+
+<h:column>
+  <f:facet name="header">
+  <h:outputText value="user"/>
+  </f:facet>
+   <h:inputText value="#{item}" />
+</h:column>
+
+<h:column>
+  <f:facet name="header">
+  <h:outputText value="user"/>
+  </f:facet>
+<h:commandLink value="#{item}" action="#{indexBackingBean.actionListener(item)}" />
+</h:column>
+
+<f:facet name="footer">
+  <h:outputText value="The End" />
+</f:facet> 
+
+</h:dataTable>
+<h:commandButton value="#{sid['labels.submit']}" action="#{indexBackingBean.actionListener}" />
+<br></br>
+<h:inputTextarea value="#{indexBackingBean.log}" style="background:#000000;color:green;" />
+<p></p>
+
+
+</h:form>
+<utils:List list="#{indexBackingBean.list}" />
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<f:view locale="#{facesContext.externalContext.requestLocale}">
+	<h:head>
+		<title>Customer Relationship Management ::: <ui:insert
+				name="title" />
+		</title>
+	</h:head>
+
+
+	<h:body>
+
+		<!-- header area -->
+		<div id="header">
+			<ui:insert name="header">
+				<ui:include src="/view/structure/HeaderArea.xhtml" />
+  	 			<h:outputStylesheet library="themes/#{themeBean.userTheme.title}" name="#{themeBean.userTheme.title}.css" target="head"  />
+			</ui:insert>
+		</div>
+
+
+		<div class="menu">
+			<utils:Tabs />
+		</div>
+		<!-- end menu -->
+
+		<div class="sub-menu">
+			<utils:TopMenu />
+		</div>
+		<!-- end sub menu -->
+
+		<!-- content area -->
+		<div id="content" class="content-area">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="blue-box-tlc"></td>
+					<td class="blue-box-tbg"><span class="bread-crumb">
+						#{actionListener.selectedTab}
+						#{actionListener.selectedMenu != "" ? (" &raquo; ".concat(actionListener.selectedMenu)) : ''}
+						#{actionListener.selectedSubMenu != "" ? (" &raquo; ".concat(actionListener.selectedSubMenu)) : ''}
+						#{actionListener.selectedAction != "" ? (" &raquo; ".concat(actionListener.selectedAction)) : ''}
+					</span></td>
+					<td class="blue-box-trc"></td>
+				</tr>
+				<tr>
+					<td class="blue-box-lc"></td>
+					<td bgcolor="#FFFFFF">&nbsp;</td>
+					<td class="blue-box-rc"></td>
+				</tr>
+				<tr>
+					<td class="blue-box-lc"></td>
+					<td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="left" valign="top" class="list-box-title"><ui:insert name="left-heading">
+    		Heading
+			</ui:insert></td>
+          </tr>
+          <tr>
+            <td><ui:insert name="left-contents">
+    		your left bar contents
+			</ui:insert></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        </table><br />
+        	<ui:insert name="create-button">
+        	<h:commandButton value="Create New" action="new" />
+        	</ui:insert>
+        
+</td>
+        <td width="80%" align="left" valign="top" style="height:650px;">
+         <!-- TABS HOLDER --><ui:insert name="contents">
+    		Content area.  See comments below this line in the source.
+			</ui:insert>
+			<!-- AJAX STATUS GIF -->
+			<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:50px;bottom:50px">
+				<f:facet name="start">
+					<p:graphicImage library="themes/#{themeBean.userTheme.title}/images" name="loading.gif" alt="Loading.."/>
+				</f:facet>	
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+       
+        </td>
+      </tr>
+    </table>
+						<div class="clear"></div></td>
+					<td class="blue-box-rc"></td>
+				</tr>
+				<tr>
+					<td class="blue-box-blc"></td>
+					<td class="blue-box-bbg"></td>
+					<td class="blue-box-brc"></td>
+				</tr>
+				<tr>
+					<td height="30"></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div class="clear"></div>
+
+		<!-- footer area -->
+		<div id="footer" class="footer">
+			<ui:insert name="footer">
+				<!-- Footer area.  See comments below this line in the source. -->
+				<!--  include your header file or uncomment the include below and create footer.xhtml in this directory -->
+				<ui:include src="/view/structure/FooterArea.xhtml" />
+			</ui:insert>
+		</div>
+
+	</h:body>
+</f:view>
+</html>

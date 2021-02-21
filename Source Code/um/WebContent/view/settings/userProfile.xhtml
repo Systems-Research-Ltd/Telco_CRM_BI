@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+
+		<h:form id="userProfileForm" styleClass="ui-form">
+
+			<h:inputHidden id="currentAction" value="#{profile.currentAction}"
+				validator="#{profile.actionValidator}" />
+			<h:inputHidden value="#{profile.userId}" />
+
+
+			<p:messages id="msgs" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="firstName">
+								${sid['label.first.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="firstName" value="#{profile.userFname}"
+							label="FirstName" required="#{profile.required}"
+							validator="#{profile.requiredValidator}"
+							validatorMessage="First Name is required"
+							disabled="#{profile.disabled}" maxlength="30" />
+					</p:column>
+					<p:column colspan="2" rowspan="5" styleClass="buttons-row">
+						<p:panel id="profilePicCon" styleClass="profile-pic-con">
+
+							<c:if test="${not empty profile.userPicture}">
+								<p:graphicImage id="profilePic"
+									value="/image/${profile.userPicture}?mod=upp" alt="#{sid['label.profile.pic']}"
+									width="200" height="200"></p:graphicImage>
+							</c:if>
+							<c:if test="${empty profile.userPicture}">
+								<p:graphicImage id="profilePic" name="images/defaultProfilePic.png"
+									alt="Profile Pic" width="200" height="200" />
+							</c:if>
+
+							<c:if test="#{profile.updateAction}">
+								<h:graphicImage library="themes/default/images/icons"
+									onclick="editppDlg.show()" id="changeLogo" name="edit.png" />
+							</c:if>
+						</p:panel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+							${sid['label.last.name']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="lastName" value="#{profile.userLname}"
+							required="#{profile.required}"
+							validator="#{profile.requiredValidator}"
+							validatorMessage="Last Name is required"
+							disabled="#{profile.disabled}" maxlength="30" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.email']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="email" value="#{profile.userEmail}"
+							disabled="#{profile.disabled}" required="#{profile.required}"
+							validator="#{profile.emailValidator}"
+							validatorMessage="Enter valid email [ xxx@xxx.xxx ]" maxlength="100">
+						</p:inputText>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+						${sid['label.phone']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputMask value="#{profile.userPhone}"
+							required="#{profile.required}"
+							validator="#{profile.phoneValidator}"
+							validatorMessage="Phone is required"
+							disabled="#{profile.disabled}" mask="#{profile.phoneMask}"  maxlength="20"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.job.title']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{profile.userJobtitle}"
+							required="#{profile.required}" disabled="#{profile.disabled}"
+							validator="#{profile.requiredValidator}"
+							validatorMessage="Job Title is required"  maxlength="50"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.reports.to']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="reportsTo" value="#{profile.userReportsto}"
+							style="width:232px;" disabled="#{profile.disabled}"
+							validator="#{profile.reportsToValidator}">
+							<f:selectItem itemLabel="Select User" itemValue="0" />
+							<f:selectItems value="#{profile.Reportsto()}" var="user"
+								itemLabel="#{user.key}" itemValue="#{user.value}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+							${sid['label.country']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:selectOneMenu id="country" value="#{profile.userCountry}"
+							label="Country" styleClass="hundred-percent"
+							disabled="#{profile.disabled}" required="#{profile.required}"
+							requiredMessage="Country is required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="" />
+							<f:selectItems value="#{addressBean.countryList}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.id}" />
+							<p:ajax update="state" event="change" partialSubmit="true"
+								process="@this, currentAction" async="true"
+								listener="#{addressBean.stateAL(profile.userCountry)}" />
+							<f:param name="action" value="locationChanged"></f:param>
+						</p:selectOneMenu>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+							${sid['label.state']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:selectOneMenu id="state" value="#{profile.userState}"
+							label="State" styleClass="hundred-percent"
+							disabled="#{profile.disabled}" required="#{profile.required}"
+							requiredMessage="State is required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="" />
+							<f:selectItems value="#{addressBean.stateList}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="city" event="change" partialSubmit="true"
+								process="@this, currentAction" async="true"
+								listener="#{addressBean.cityAL(profile.userState)}" />
+							<f:param name="action" value="locationChanged"></f:param>
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.city']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="city" value="#{profile.userCity}"
+							label="City" styleClass="hundred-percent"
+							disabled="#{profile.disabled}" required="#{profile.required}"
+							requiredMessage="City is required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="" />
+							<f:selectItems value="#{addressBean.cityList}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.zip.code']}&nbsp;
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{profile.userZipcode}"
+							disabled="#{profile.disabled}" maxlength="20" />
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							${sid['label.address']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{profile.userAddress}"
+							disabled="#{profile.disabled}" required="#{profile.required}"
+							validator="#{profile.requiredValidator}"
+							validatorMessage="Adderss is required" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton value="#{sid['label.edit']}"
+							action="#{profile.actionListener()}" ajax="true"
+							update="grid"
+							partialSubmit="true" process="@this, currentAction"
+							rendered="#{profile.editAction}">
+							<f:param name="action" value="edit" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.update']}"
+							rendered="#{profile.updateAction}"
+							action="#{profile.actionListener()}">
+							<f:param name="action" value="update" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							type="reset" rendered="#{profile.resetAction}">
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.cancel']}"
+							rendered="#{profile.cancelAction}"
+							action="#{profile.actionListener()}" immediate="true">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+		</h:form>
+		<p:dialog widgetVar="editppDlg" header="Change Prfile Pic"
+			 height="120" width="550">
+			<h:form id="changeProfilePicForm" enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{profile.changeProfilePic}"
+					mode="advanced" update=":userProfileForm:profilePicCon"
+					sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="editppDlg.hide()" showButtons="false"></p:fileUpload>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+<link href="%=request.getContextPath()%>/themes/${initParam.theme}/default1.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form id="ui-form">
+			<p:messages id="usermsgs" autoUpdate="true" globalOnly="false" closable="true" />
+			<h:panelGrid id="usergrid" columns="2" styleClass="content-table">
+                
+                
+                
+				<h:outputLabel value="#{sid['label.first.name']}" />
+				<h:outputLabel id="firstName" value="#{createUserBean.userFname}" />
+
+				<h:outputLabel value="#{sid['label.last.name']}" />
+				<h:outputLabel id="lastName" value="#{createUserBean.userLname}" />
+
+				<h:outputLabel value="#{sid['label.username']}" />
+				<h:outputLabel id="userName" value="#{createUserBean.userName}" />
+
+				<h:outputLabel value="#{sid['label.address']}" />
+				<h:outputLabel id="address" value="#{createUserBean.userAddress}" />
+
+				<h:outputLabel value="#{sid['label.country']}" />
+				<h:outputLabel id="country" value="#{createUserBean.selectedCountry}" />
+
+				<h:outputLabel value="#{sid['label.state']}" />
+				<h:outputLabel id="state" value="#{createUserBean.selectedState}" />
+
+				<h:outputLabel value="#{sid['label.city']}" />
+				<h:outputLabel id="city" value="#{createUserBean.selectedCity}" />
+
+				<h:outputLabel value="#{sid['label.zip.code']}"/>
+				<h:outputLabel id="zipcode" value="#{createUserBean.userZipcode}" />
+
+				<h:outputLabel value="#{sid['label.phone']}" />
+				<h:outputLabel id="phone" value="#{createUserBean.userPhone}" />
+
+				<h:outputLabel value="#{sid['label.email']}" />
+				<h:outputLabel id="email" value="#{createUserBean.userEmail}" />
+
+				<h:outputLabel value="#{sid['label.job.title']}" />
+				<h:outputLabel id="jobtitle" value="#{createUserBean.userJobtitle}" />
+				
+				<h:outputLabel value="#{sid['label.login.status']}" />
+				<h:graphicImage id="login" library="themes/original/images" name="in.png" rendered="#{createUserBean.isLoggedIn}" />
+				<p:tooltip for="login" value="Online" showEffect="fade" hideEffect="fade"/>  
+				<h:graphicImage id="logout" library="themes/original/images" name="out.png" rendered="#{!createUserBean.isLoggedIn}" />
+				<p:tooltip for="logout" value="Offline" showEffect="fade" hideEffect="fade"/>  
+				
+				<h:outputLabel value="#{sid['label.user.status']}" />
+				<h:outputLabel id="userStatus" value="#{createUserBean.userStatus}" />
+				
+				
+
+				<h:outputLabel value="#{sid['label.reports.to']}" />
+				<h:outputLabel id="reportsTo"
+					value="#{createUserBean.selecteduser}" />
+
+				
+
+			</h:panelGrid>
+			<p:commandButton ajax="true" value="Edit" update=":tabView, :lst:listBox" rendered="#{privilege.isUpdate(4)}"
+						action="#{userListings.editForm()}">
+						<f:param name="user_id" value="#{createUserBean.userId}" />
+			</p:commandButton>
+			<p:commandButton ajax="true" value="Delete" update=":tabView, :lst:listBox" rendered="#{privilege.isDelete(4)}"
+					action="#{userListings.deleteForm()}"
+					disabled="#{userListings.selected eq sessionDataBean.userId}">
+				<f:param name="user_id" value="#{createUserBean.userId}"/>
+				</p:commandButton>
+				
+			
+				
+		</h:form>
+		
+		
+		
+	</ui:composition>
+</h:body>
+</html>

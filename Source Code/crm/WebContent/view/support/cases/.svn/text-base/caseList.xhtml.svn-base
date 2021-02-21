@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:sr="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+
+	<ui:define name="title">Case List</ui:define>
+	<ui:define name="contents">
+		
+	<h:form id="tableform">
+	 <sr:datatableHammad rendered="#{facesContext.externalContext.isUserInRole('User')}"
+	                value="#{caseBean.list}"
+	 				columns="#{caseBean.columns}"
+	 				rowid="caseId"  heading="Manage Cases"
+	 				actionquerysettings="true"
+	 				actiondelete="true" actioncreate="#{privilege.isCreate(16)}" actionedit="true" 
+	 				actionListener="#{caseBean.actionListener()}"/>
+	 				
+	<sr:datatableHammad rendered="#{facesContext.externalContext.isUserInRole('Customer')}"
+	            value="#{caseBean.list}"
+				columns="#{caseBean.columns}"
+				rowid="caseId"  heading="Tickets" 
+				actiondelete="#{privilege.isDelete(16)}" actioncreate="true" actionedit="true"
+				actionListener="#{caseBean.actionListener()}"/>
+
+		<br />	
+ 
+	</h:form>
+
+	</ui:define>
+	
+</ui:composition>

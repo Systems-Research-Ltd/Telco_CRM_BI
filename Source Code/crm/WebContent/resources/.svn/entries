@@ -1,0 +1,46 @@
+10
+
+dir
+3114
+svn://68.169.55.222/crm/srpl/src/crm/WebContent/resources
+svn://68.169.55.222/crm
+
+
+
+2013-09-16T06:43:49.675997Z
+3072
+sadia
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+documents
+dir
+
+images
+dir
+
+themes
+dir
+
+uploaded logo
+dir
+
+uploadedlogo
+dir
+
+utils
+dir
+

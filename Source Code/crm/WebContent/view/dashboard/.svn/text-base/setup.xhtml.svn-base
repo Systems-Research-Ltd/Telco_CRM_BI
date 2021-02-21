@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+	<ui:define name="title"> Dashboard</ui:define>
+	<ui:define name="contents">
+
+			<p:dialog id="links" widgetVar="dlg" width="500" height="400"
+				header="Useful Links" visible="true">
+				<h:form>
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/um/import/import.jsf">
+								<h:outputText value="Import Data"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To import all users and customers revelant data from your previous crm to current one. Supported formats are CSV files, XLS files and directly connected to your DB to import the required records." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/admin/franchise/index.jsf">
+								<h:outputText value="Manage Company Franchises"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To record all your company outlets to narrow your business processes based on geography." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/um/admin/user/index.jsf">
+								<h:outputText value="Manage Company Employees/Users"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To manage all employees currently working in your organization and also to manage their reporting hierarchy alongwith their association with the working location/franchise." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/um/admin/groups/index.jsf">
+								<h:outputText value="Manage Users Groups"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To manage user groups to further categorize your company employees in order to restrict them in utilizing the system services." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/settings/index.jsf">
+								<h:outputText value="General Settings"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To perform general settings like theme settings, password settings and others" />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="float:right; font-weight:bold; margin-top:20px;">
+							<h:selectBooleanCheckbox id="chk"
+								value="#{dashReportBean.showpopupChkBox}">
+								<f:ajax listener="#{dashReportBean.changePreference}" />
+							</h:selectBooleanCheckbox>
+							<h:outputText value="Show popup on Startup" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+<ui:composition>
+<h:form styleClass="ui-form">
+<h:inputHidden  id="currentAction" value="#{serviceBackingBean.currentAction}" validator="#{serviceBackingBean.actionValidator}" />
+<p:messages id="msgs" autoUpdate="true" closable="true"/>
+			<p:panelGrid id="grid" styleClass="content-table">
+			<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="title">
+					${sid['label.title']} <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="title"
+								value="#{serviceBackingBean.title}"
+								disabled="#{serviceBackingBean.disabled}" required="true"
+								requiredMessage="Title is required" maxlength="50" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<h:outputLabel for="description">
+						${sid['label.description']}   <span class="form-required">*</span>
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea rows="6" cols="33" id="description"
+								value="#{serviceBackingBean.description}"
+								disabled="#{serviceBackingBean.disabled}" required="true"
+								requiredMessage="Description is required" maxlength="500" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+					<p:commandButton value="#{sid['label.save']}"  update=":tabView"
+							action="#{serviceBackingBean.actionListener()}" ajax="false"
+							rendered="#{serviceBackingBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+					
+						<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							update=":tabView" rendered="#{serviceBackingBean.editAction}"
+							actionListener="#{serviceBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="row_id" value="#{serviceBackingBean.serviceId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}" 	update=":tabView"
+							action="#{serviceBackingBean.actionListener()}" ajax="false"
+							rendered="#{serviceBackingBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{serviceBackingBean.deleteAction}"
+							actionListener="#{serviceBackingBean.actionListener()}"
+							immediate="true">
+							<f:param name="action" value="delete" />
+							<f:param name="row_id" value="#{serviceBackingBean.serviceId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{serviceBackingBean.deleteConfirmedAction}"
+							immediate="true"
+							actionListener="#{serviceBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+						<f:param name="row_id" value="#{serviceBackingBean.serviceId}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{serviceBackingBean.resetAction}"
+							type="reset">
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{serviceBackingBean.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{serviceBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+					</p:column>
+					</p:row>
+			</p:panelGrid>
+			
+
+</h:form>
+</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="rows" required="true"
+			shortDescription="Rows Data(list)"></composite:attribute>
+		<composite:attribute name="dndcolumns" required="true"
+			shortDescription="List of ColumModel"></composite:attribute>
+		<composite:attribute name="heading" required="false"></composite:attribute>
+
+	</composite:interface>
+
+	<composite:implementation>
+	<p:outputLabel>hello</p:outputLabel>
+	<p:dataTable id="rdata" var="rdata" value="#{cc.attrs.rows}"
+		widgetVar="dndTable"
+		paginator="true"
+		rows="6" tableStyleClass="dash-table" paginatorPosition="bottom">
+		<p:columns value="#{cc.attrs.dndcolumns}" var="column">
+			<f:facet name="header">
+				<c:choose>
+					<c:when test="${column.property eq 'serialNo'}">
+						<h:outputText value="#{column.header}" />
+					</c:when>
+					<c:otherwise>
+						<h:outputLink value="#"	onclick="currentcolumn([{name: 'column', value: '#{column.property}'}, {name: 'table', value: '#{column.table}'}]);">
+							<h:outputText value="#{column.header}" />
+						</h:outputLink>
+					</c:otherwise>
+				</c:choose>
+			</f:facet>
+			<h:outputText value="#{rdata[column.property]}" />
+		</p:columns>
+	</p:dataTable>
+	
+
+	</composite:implementation>
+</h:body>
+</html>

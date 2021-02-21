@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" id="userForm">
+			<h:inputHidden id="currentAction"
+				value="#{userDetails.currentAction}"
+				validator="#{userDetails.actionValidator}" />
+			<p:messages id="usermsgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="usergrid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="honorificTitle">
+				${sid['label.honorific.title']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="honorificTitle"
+							value="#{userDetails.honorificTitle}"
+							disabled="#{userDetails.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Honorific Title is Required"
+						>
+							<f:selectItem itemLabel="Select Honorific Title" itemValue="" />
+							<f:selectItem itemLabel="Mr." itemValue="Mr" />
+							<f:selectItem itemLabel="Mrs." itemValue="Mrs" />
+							<f:selectItem itemLabel="Ms." itemValue="Ms" />
+							<f:selectItem itemLabel="Miss." itemValue="Miss" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="firstName">
+				${sid['label.first.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="firstName" value="#{userDetails.userFname}"
+							maxlength="30" disabled="#{userDetails.disabled}"
+							label="Firstname" validator="#{userDetails.requiredValidator}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="lastName">
+				${sid['label.last.name']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="lastName" value="#{userDetails.userLname}"
+							maxlength="30" disabled="#{userDetails.disabled}"
+							label="Lastname" validator="#{userDetails.requiredValidator}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="gender">
+				${sid['label.gender']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="gender"
+							value="#{userDetails.gender}"
+							disabled="#{userDetails.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Gender is Required"
+						>
+							<f:selectItem itemLabel="Select Gender" itemValue="" />
+							<f:selectItem itemLabel="Male" itemValue="M" />
+							<f:selectItem itemLabel="Female" itemValue="F" />
+							<f:selectItem itemLabel="Unknown" itemValue="U" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="userName">
+				${sid['label.email']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="userName" value="#{userDetails.userEmail}"
+							maxlength="75" disabled="#{userDetails.disabled}"
+							label="Username" validator="#{userDetails.emailValidator}">
+					</p:inputText>
+					</p:column>
+				</p:row>
+
+
+				<c:if test="#{userDetails.enablePasswordField}">
+					<p:row>
+						<p:column>
+							<h:outputLabel for="password">
+				${sid['label.password']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column>
+							<p:password id="password" value="#{userDetails.userPassword}"
+								maxlength="30" disabled="#{userDetails.disabled}"
+								match="confirmpassword" label="Password"
+								validator="#{userDetails.requiredValidator}" validatorMessage="Passwords do not match."/>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputLabel for="confirmpassword">
+				 	${sid['label.confirm.password']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column>
+							<p:password id="confirmpassword" maxlength="30"
+								disabled="#{userDetails.disabled}"
+								value="#{userDetails.userConPassword}" label="Confirm Password"
+								validator="#{userDetails.requiredValidator}" />
+						</p:column>
+					</p:row>
+				</c:if>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="address">
+				${sid['label.address']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="address" rows="6" cols="33" maxlength="500"
+							disabled="#{userDetails.disabled}"
+							value="#{userDetails.userAddress}" label="Address"
+							 validator="#{userDetails.requiredValidator}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="country">
+				${sid['label.country']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="country" value="#{userDetails.userCountry}"
+							label="Country" disabled="#{userDetails.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Country is Required"
+							validator="#{addressBeanUpdated.validateCountry}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.countries}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+							<p:ajax update="@this, state" event="change" partialSubmit="true"
+								process="currentAction, country" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="state">
+				${sid['label.state']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="state" value="#{userDetails.userState}"
+							label="State" disabled="#{userDetails.disabled}" required="true"
+							requiredMessage="State is Required" styleClass="hundred-percent"
+							validator="#{addressBeanUpdated.validateState}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.states}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="@this, city" event="change" partialSubmit="true"
+								process="country, state, currentAction" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="city">
+				${sid['label.city']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="city" value="#{userDetails.userCity}"
+							label="City" disabled="#{userDetails.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="City is Required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.cities}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="zipcode">
+				${sid['label.zip.code']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="zipcode" value="#{userDetails.userZipcode}"
+							maxlength="20" disabled="#{userDetails.disabled}"
+							label="Zip Code" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="phone">
+				${sid['label.phone']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputMask id="phone" value="#{userDetails.userPhone}"
+							mask="#{userDetails.phoneMask}"
+							disabled="#{userDetails.disabled}" label="Phone Number"
+							validator="#{userDetails.phoneValidator}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="title">
+				 ${sid['label.job.title']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="title" value="#{userDetails.userJobtitle}"
+							maxlength="50" disabled="#{userDetails.disabled}"
+							label="Job Title" validator="#{userDetails.requiredValidator}" />
+					</p:column>
+				</p:row>
+
+				<c:if test="#{userDetails.disabled}">
+					<p:row>
+						<p:column>
+							<h:outputLabel>
+				 ${sid['label.login.status']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column>
+							<h:graphicImage id="login" library="themes/default/images"
+								name="in.png" rendered="#{userDetails.isOnline}" />
+							<p:tooltip for="login" value="Online" showEffect="fade"
+								hideEffect="fade" />
+							<h:graphicImage id="logout" library="themes/default/images"
+								name="out.png" rendered="#{!userDetails.isOnline}" />
+							<p:tooltip for="logout" value="Offline" showEffect="fade"
+								hideEffect="fade" />
+						</p:column>
+					</p:row>
+				</c:if>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="reportsTo">
+				 ${sid['label.reports.to']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="reportsTo" value="#{userDetails.userReportsto}"
+							disabled="#{userDetails.disabled}" label="Reports To"
+							styleClass="hundred-percent"
+							required="true" requiredMessage="Reports to is Required">
+							<f:selectItem itemLabel="Select User" itemValue="" />
+							<f:selectItems value="#{userDetails.userReportsToList }" var="cu"
+								itemLabel="#{cu.label}" itemValue="#{cu.id}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="status">
+				 ${sid['label.status']}&nbsp;
+				 </h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" value="#{userDetails.userStatus}"
+							disabled="#{userDetails.disabled}" styleClass="hundred-percent">
+							<f:selectItem itemValue="#{true}" itemLabel="Active" />
+							<f:selectItem itemValue="#{false}" itemLabel="In-Active" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+
+						<h:inputHidden value="#{userDetails.userId}" />
+						<h:inputHidden value="#{userDetails.userCompany}" />
+						<h:inputHidden value="#{userDetails.isFranchiseUser}" />
+						<h:inputHidden value="#{userDetails.userAddedon}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+						</h:inputHidden>
+
+						<p:commandButton ajax="true" value="#{sid['label.save']}"
+							update=":tabView,:lst" rendered="#{userDetails.saveAction}"
+							actionListener="#{userDetails.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							update=":tabView" rendered="#{userDetails.editAction}"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{userDetails.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="user_id" value="#{userDetails.userId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.update']}"
+							update=":tabView,:lst" rendered="#{userDetails.updateAction}"
+							action="#{userDetails.actionListener()}">
+							<f:param name="action" value="update" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{userDetails.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{userDetails.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="user_id" value="#{userDetails.userId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{userDetails.deleteConfirmedAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{userDetails.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+							<f:param name="user_id" value="#{userDetails.userId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{userDetails.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{userDetails.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{userDetails.resetAction}" type="reset">
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>

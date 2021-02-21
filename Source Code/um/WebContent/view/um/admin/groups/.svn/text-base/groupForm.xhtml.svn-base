@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form">
+			<h:inputHidden id="currentAction" value="#{groupDetails.currentAction}" validator="#{groupDetails.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="name">
+					${sid['label.group.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="name" value="#{groupDetails.group_title}"
+							maxlength="50"
+							disabled="#{groupDetails.disabled}" label="Group Name" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="description">
+					${sid['title.details']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="description"
+							maxlength="500"
+							value="#{groupDetails.group_details}"
+							disabled="#{groupDetails.disabled}" required="false" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="roles">
+				${sid['label.roles']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:selectManyListbox id="roles"
+							styleClass="hundred-percent"
+							required="true" requiredMessage="The Roles is Required."
+							value="#{groupDetails.role_ids}"
+							disabled="#{groupDetails.disabled}">
+							<f:selectItems value="#{groupDetails.userRoles}" var="f"
+								itemLabel="#{f.roleTitle}" itemValue="#{f.roleId}" />
+						</h:selectManyListbox>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="status">
+					${sid['label.status']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:selectOneMenu id="status" value="#{groupDetails.group_status}"
+							styleClass="hundred-percent"
+							disabled="#{groupDetails.disabled}">
+							<f:selectItem itemLabel="Active" itemValue="true" />
+							<f:selectItem itemLabel="In-active" itemValue="false" />
+						</h:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+
+						<p:commandButton ajax="false" value="#{sid['label.save']}"
+							update=":tabView" rendered="#{groupDetails.saveAction}"
+							actionListener="#{groupDetails.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							update=":tabView" rendered="#{groupDetails.editAction}"
+							actionListener="#{groupDetails.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="group_id" value="#{groupDetails.group_id}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.update']}"
+							update=":tabView" rendered="#{groupDetails.updateAction}"
+							actionListener="#{groupDetails.actionListener()}">
+							<f:param name="action" value="update" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{groupDetails.deleteAction}"
+							actionListener="#{groupDetails.actionListener()}"
+							immediate="true">
+							<f:param name="action" value="delete" />
+							<f:param name="group_id" value="#{groupDetails.group_id}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{groupDetails.deleteConfirmedAction}"
+							immediate="true"
+							actionListener="#{groupDetails.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+							<f:param name="group_id" value="#{groupDetails.group_id}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{groupDetails.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{groupDetails.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{groupDetails.resetAction}"
+							type="reset">
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

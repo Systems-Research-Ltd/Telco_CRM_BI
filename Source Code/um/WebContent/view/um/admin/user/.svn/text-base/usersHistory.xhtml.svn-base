@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form prependId="false">
+	<p:dataTable id="listOperations" var="h" value="#{userHistory.list}"
+	paginator="true" rows="10"  paginatorPosition="bottom"
+    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+    rowsPerPageTemplate="5,10,15"  >
+	
+        <p:column>  
+            <f:facet name="header">  
+                <h:outputText value="#{sid['label.username']}"/>  
+            </f:facet>  
+            <h:outputText value="#{h.user.userName}" />  
+        </p:column>
+        <p:column>  
+            <f:facet name="header">  
+                <h:outputText value="#{sid['label.login.time']}" />  
+            </f:facet>  
+            <h:outputText value="#{h.loginTime}" />  
+        </p:column>
+        <p:column>  
+            <f:facet name="header">  
+                <h:outputText value="#{sid['label.logout.time']}"/>  
+            </f:facet>  
+            <h:outputText value="#{h.logoutTime}" />  
+        </p:column>
+        
+        
+		
+		
+		
+	</p:dataTable>
+	</h:form>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+	
+		<h:form styleClass="ui-form" id="parameterForm">
+			<h:inputHidden value="#{parameterBackingBean.currentAction}"
+				validator="#{parameterBackingBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+							${sid['label.parameter.title']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="parameterTitle" maxlength="75"
+							value="#{parameterBackingBean.parameterTitle}"
+							disabled="#{parameterBackingBean.disabled}" />
+					</p:column>
+					</p:row>
+				<p:row>
+
+
+					<p:column>
+						<h:outputLabel>
+							${sid['label.value']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="parameterValue"
+							value="#{parameterBackingBean.parameterValue}"
+							disabled="#{parameterBackingBean.disabled}" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton value="#{sid['label.save']}"
+							action="#{parameterBackingBean.actionListener}" ajax="false"
+							rendered="#{parameterBackingBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							update=":tabView" immediate="true"
+							actionListener="#{parameterBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}" update=":tabView"
+							action="#{parameterBackingBean.actionListener}" ajax="true"
+							rendered="#{parameterBackingBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							<f:param name="row_id"
+								value="#{parameterBackingBean.parameterId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							update=":tabView"
+							action="#{parameterBackingBean.actionListener}" ajax="true"
+							rendered="#{parameterBackingBean.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							<f:param name="row_id"
+								value="#{parameterBackingBean.parameterId}" />
+						</p:commandButton>
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{parameterBackingBean.resetAction}" type="reset">
+						</p:commandButton>
+
+						<h:inputHidden value="#{parameterBackingBean.companyId}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+
+	</ui:composition>
+</h:body>
+</html>
+

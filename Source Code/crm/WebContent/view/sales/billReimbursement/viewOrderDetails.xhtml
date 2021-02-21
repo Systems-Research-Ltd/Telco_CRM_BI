@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+	<ui:define name="title"> ${sid['title.sales.orders.vieworder']}</ui:define>
+	<ui:define name="contents">
+		<h:panelGroup layout="block"
+			style="padding: 3px 0 3px 0; text-align: right;">
+			<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+				name="help_icon.png" id="help" width="20" height="20" />
+			<pe:tooltip for="help" value="#{help.order}"
+				myPosition="top center" atPosition="bottom center" />
+		</h:panelGroup>
+		<h:form styleClass="ui-form">
+			<p:messages id="msgs" autoUpdate="true" />
+
+			<h:panelGrid id="grid" columns="2" styleClass="form-table">
+
+				<h:outputLabel for="customer">
+					Customer <span class="form-required">*</span>
+				</h:outputLabel>
+				<h:outputText id="customer"
+					value="#{orderBean.customer.getContactFname()}" />
+
+
+				<h:outputLabel for="orderDate">
+					orderDate <span class="form-required">*</span>
+				</h:outputLabel>
+				<h:outputText id="orderDate" value="#{orderBean.orderDate}">
+
+
+				</h:outputText>
+
+				<h:outputLabel for="status">
+					Status <span class="form-required">*</span>
+				</h:outputLabel>
+				<h:outputText id="status" value="#{orderBean.status}" />
+
+				<h:outputLabel for="totalAmmount">
+					Total Amount <span class="form-required">*</span>
+				</h:outputLabel>
+				<h:outputText id="totalAmmount"
+					value="#{orderBean.totalOrderAmmount}" />
+
+				<h:outputLabel for="paidAmount">
+					Paid Amount <span class="form-required">*</span>
+				</h:outputLabel>
+				<h:outputText id="paidAmmount" value="#{orderBean.paidAmount}" />
+
+				<h:outputLabel for="reimburseAmount">
+					ReImburse Amount
+				</h:outputLabel>
+				<h:outputText
+					value="#{billReimbursementBackingBean.reimburseAmount}" />
+
+				<h:outputLabel for="recievedby">
+					Recieved By
+				</h:outputLabel>
+				<h:outputText value="#{billReimbursementBackingBean.user.userFname}" />
+
+
+			</h:panelGrid>
+			<br />
+
+
+
+			<c:forEach var="orderProduct" items="${orderBean.orderProductList}">
+				<hr width="100%"></hr>
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:outputLabel>
+					Product
+			 </h:outputLabel>
+		     ${orderProduct.getProduct().getProductTitle()}
+		     
+		     <h:outputLabel>
+			   Product Cost
+			 </h:outputLabel>
+		     ${orderProduct.getProduct().getProductCost()}
+		   
+		     <h:outputLabel>
+					Quantity
+			 </h:outputLabel>
+		     ${orderProduct.getQuantity()}
+		     
+		     <h:outputLabel>
+					Ammount
+			 </h:outputLabel>
+		     ${orderProduct.getOrderAmmount()}
+		 	 </h:panelGrid>
+
+
+
+
+			</c:forEach>
+			<p:column colspan="4">
+				<p:commandButton value="Back" action="reImburseList"
+					rendered="${param.page eq 'list'}">
+					<f:param name="page" value="${param.page}" />
+				</p:commandButton>
+
+			</p:column>
+
+
+			<br />
+			<br />
+
+
+
+
+
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

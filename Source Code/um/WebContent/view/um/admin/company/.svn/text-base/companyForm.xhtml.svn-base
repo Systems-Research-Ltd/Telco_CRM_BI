@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+<ui:composition>
+<h:form styleClass="ui-form" id="companyForm"
+			enctype="multipart/form-data">
+
+				<script type="text/javascript"
+					src="${request.contextPath}/js/companyForm.js"></script>
+<h:inputHidden  id="currentAction" value="#{companyBackingBean.currentAction}" validator="#{companyBackingBean.actionValidator}" />
+<p:messages id="msgs" autoUpdate="true" closable="true"/>
+<p:panelGrid id="grid_logo" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<!--  <c:if test="#{not empty companyBackingBean.companyLogo}">
+							<p:graphicImage id="logo"
+							value="/image/#{companyBackingBean.getUploadedLogo(companyBackingBean.companyId)}?mod=companyLogo"
+							alt="Company Logo" height="80"></p:graphicImage>
+						</c:if>
+
+						<c:if test="#{empty companyBackingBean.companyLogo}">
+							<p:graphicImage id="noLogo" name="resources/images/defaultCompanyLogo.png"
+								alt="No Logo" height="80" />
+						</c:if>-->
+					
+								<p:graphicImage id="logoPic"
+									value="/image/${companyBackingBean.companyLogo}?mod=companyLogo" alt="Logo"
+									width="100" height="100" rendered="#{not empty companyBackingBean.companyLogo}"></p:graphicImage>
+						
+								<p:graphicImage id="deafultlogoPic" name="images/defaultCompanyLogo.png"
+									alt="Logo" width="100" height="100" rendered="#{empty companyBackingBean.companyLogo}"/>
+								<h:graphicImage library="themes/default/images/icons"
+									onclick="editlogoDlg.show()" id="changeLogo" name="edit.png" rendered="#{companyBackingBean.updateAction or companyBackingBean.saveAction}"/>
+									
+						<!--  <c:if
+							test="#{companyBackingBean.saveAction || companyBackingBean.updateAction}">
+							<h:graphicImage library="themes/default/images/icons"
+								onclick="javascript:triggerUpload()" id="changeLogo"
+								name="edit.png" />
+						</c:if>-->
+						<!--  <p:fileUpload id="uploadLogo" value="#{companyBackingBean.file}"
+							mode="simple" rendered="#{companyBackingBean.saveAction || companyBackingBean.updateAction}"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload Logo">
+						</p:fileUpload>-->
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+<p:fieldset legend="${sid['label.company.details']}">
+<p:panelGrid id="grid" styleClass="content-table">
+<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.company.title']}&nbsp;  <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText value="#{companyBackingBean.companyName}"
+								maxlength="50"
+								validator="#{companyBackingBean.requiredValidator}"
+								disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>																					
+ 
+
+				
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.status']}&nbsp;  <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu value="#{companyBackingBean.companyStatus}"
+								styleClass="hundred-percent"
+								disabled="#{companyBackingBean.disabled}">
+								<f:selectItem itemLabel="Active" itemValue="true" />
+								<f:selectItem itemLabel="In-Active" itemValue="false" />
+							</p:selectOneMenu>
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.email']}&nbsp;  <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText id="companyEmailId" maxlength="75"
+								validator="#{companyBackingBean.emailValidator}"
+								value="#{companyBackingBean.companyEmail}"
+								disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>
+				
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.contact.number']}&nbsp;  <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputMask mask="#{companyBackingBean.phoneMask}"
+								value="#{companyBackingBean.companyPhone}"
+								disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>
+				<p:row>
+	
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.country']}&nbsp;<span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="country" value="#{companyBackingBean.companyCountry}"
+							label="Country" disabled="#{companyBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Country is Required"
+							validator="#{addressBeanUpdated.validateCountry}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.countries}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+							<p:ajax update="@this, state" event="change" partialSubmit="true"
+								process="currentAction, country" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+						</p:column>
+					
+				</p:row>
+					<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+								${sid['label.state']}&nbsp;
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="state" value="#{companyBackingBean.companyState}"
+							label="State" disabled="#{companyBackingBean.disabled}" required="true"
+							requiredMessage="State is Required" styleClass="hundred-percent"
+							validator="#{addressBeanUpdated.validateState}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.states}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="@this, city" event="change" partialSubmit="true"
+								process="country, state, currentAction" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+						</p:column>
+					
+				</p:row>
+				
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+								${sid['label.city']}&nbsp;<span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="city" value="#{companyBackingBean.companyCity}"
+							label="City" disabled="#{companyBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="City is Required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.cities}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+								${sid['label.zip.code']}&nbsp;
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText value="#{companyBackingBean.companyZipcode}"
+								maxlength="20" disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.company.address']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputTextarea value="#{companyBackingBean.company_address}"
+								validator="#{companyBackingBean.requiredValidator}"
+								maxlength="500" disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.company.details']}&nbsp;
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputTextarea value="#{companyBackingBean.companyDetails}"
+								maxlength="500" disabled="#{companyBackingBean.disabled}" />
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.url']}&nbsp;
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText id="url" value="#{companyBackingBean.url}"
+								maxlength="100" disabled="#{companyBackingBean.disabled}" />
+								<p:watermark value="http://www.google.com/" for="url"></p:watermark>
+						</p:column>
+					
+				</p:row>
+				
+</p:panelGrid>
+</p:fieldset>
+<p:fieldset legend="#{sid['label.account.manager']}" >
+<p:panelGrid id="grid_manager" styleClass="content-table">
+<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.contact.person']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText value="#{userB.userFname}" required="true"
+								maxlength="50"
+								requiredMessage="Contact Person Name is Required."
+								disabled="#{companyBackingBean.disabled or !companyBackingBean.saveAction}" />
+					</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.login.id']}&nbsp;<span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText value="#{userB.userEmail}" maxlength="75" 
+								disabled="#{companyBackingBean.disabled or !companyBackingBean.saveAction}" validator="#{companyBackingBean.emailValidator}">
+								
+							</p:inputText>
+					</p:column>
+					
+				</p:row>
+			
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.password']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:password id="password" value="#{userB.userPass}"
+								maxlength="30"
+								validator="#{companyBackingBean.requiredValidator}"
+								disabled="#{companyBackingBean.disabled or !companyBackingBean.saveAction}"
+								match="confirmpassword"   label="Password" />
+						</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+						${sid['label.confirm.password']}&nbsp;<span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:password value="#{userB.userPassword}" maxlength="30" id="confirmpassword"
+								disabled="#{companyBackingBean.disabled or !companyBackingBean.saveAction}" label="Confirm Password" />
+						</p:column>
+					
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+					<h:inputHidden value="#{companyBackingBean.companyId}" />
+					<p:commandButton ajax="false" value="#{sid['label.save']}"
+							update=":tabView,:lst" rendered="#{companyBackingBean.saveAction}"
+							actionListener="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+					
+					
+					<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							update=":tabView" rendered="#{companyBackingBean.editAction}"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="company_id" value="#{companyBackingBean.companyId}" />
+						</p:commandButton>
+					
+					<p:commandButton ajax="false" value="#{sid['label.update']}"
+							update=":tabView,:lst" rendered="#{companyBackingBean.updateAction}"
+							action="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="update" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{companyBackingBean.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="company_id" value="#{companyBackingBean.companyId}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{companyBackingBean.deleteConfirmedAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+								<f:param name="company_id" value="#{companyBackingBean.companyId}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{companyBackingBean.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{companyBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{companyBackingBean.resetAction}" type="reset">
+						</p:commandButton>
+					</p:column>
+					</p:row>
+</p:panelGrid>
+</p:fieldset>
+
+</h:form>
+<p:dialog widgetVar="editlogoDlg" header="Change Company Logo"
+			style="width:500px;height:250px">
+			<h:form id="changeLogoDlg" enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{companyBackingBean.changeLogoPic}"
+					mode="advanced" update=":tabView:companyForm:grid_logo"
+					sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="editlogoDlg.hide()"></p:fileUpload>
+			</h:form>
+	</p:dialog>
+</ui:composition>
+</h:body>
+</html>

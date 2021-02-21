@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>bi</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<session-config>
+  		<session-timeout>30</session-timeout>
+ 	</session-config>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>resources.application</param-value>
+	</context-param>
+	<context-param>
+		<param-name>template</param-name>
+		<param-value>/view/structure/templates/original.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>template2Col</param-name>
+		<param-value>/view/structure/templates/original-twoCol.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>templateLayout</param-name>
+		<param-value>/view/structure/templates/layout.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>theme</param-name>
+		<param-value>default</param-value>
+	</context-param>
+	<context-param>
+		<param-name>reportsLogoPath</param-name>
+		<param-value>/images/reportlogos/</param-value>
+	</context-param>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/view/structure/errors/AccessDenied.jsf</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/view/structure/errors/ResourceNotFound.jsf</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/view/structure/errors/Error.jsf</location>
+	</error-page>
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+		<!-- <init-param> <param-name>uploadDirectory</param-name> <param-value>/resources/images</param-value> 
+			</init-param> -->
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+	<listener>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+	</listener>
+	<security-constraint>
+		<display-name>Administrator</display-name>
+		<web-resource-collection>
+			<web-resource-name>admin_pages</web-resource-name>
+			<url-pattern>/view/um/admin/*</url-pattern>
+			<url-pattern>/index.jsp</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Administrator</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<security-constraint>
+		<display-name>AccountManager</display-name>
+		<web-resource-collection>
+			<web-resource-name>account_manager_pages</web-resource-name>
+			<url-pattern>/view/um/am/*</url-pattern>
+			<url-pattern>/view/dashboard/*</url-pattern>
+			<url-pattern>/index.jsp</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>AccountManager</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<security-constraint>
+		<display-name>User</display-name>
+		<web-resource-collection>
+			<web-resource-name>public_pages</web-resource-name>
+			<url-pattern>/view/um/user/*</url-pattern>
+			<url-pattern>/view/dashboard/*</url-pattern>
+			<url-pattern>/view/um/admin/user/*</url-pattern>
+			<url-pattern>/index.jsp</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>User</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>biDomain</realm-name>
+		<form-login-config>
+			<form-login-page>/view/public/SignInForm.jsp</form-login-page>
+			<form-error-page>/view/public/SignInForm.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+		<description>system admins</description>
+		<role-name>Administrator</role-name>
+	</security-role>
+	<security-role>
+		<description>account manager</description>
+		<role-name>AccountManager</role-name>
+	</security-role>
+	<security-role>
+		<description>other than Admin and Account Manager</description>
+		<role-name>User</role-name>
+	</security-role>
+	<mime-mapping>
+		<extension>jpeg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gif</extension>
+		<mime-type>image/gif</mime-type>
+	</mime-mapping>
+
+</web-app>

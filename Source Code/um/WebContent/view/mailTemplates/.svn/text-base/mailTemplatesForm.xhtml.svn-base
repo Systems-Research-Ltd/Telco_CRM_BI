@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" enctype="multipart/form-data">
+			<h:inputHidden id="currentAction"
+				value="#{mailTemplate.currentAction}"
+				validator="#{mailTemplate.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true"/>
+			<p:panel>
+				<p:panelGrid id="grid" styleClass="content-table">
+
+					<p:row>
+						<p:column styleClass="fifty-percent">
+							<h:outputLabel for="name">
+					${sid['label.title']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText id="name" value="#{mailTemplate.title}"
+								disabled="#{mailTemplate.disabled}" required="true"
+								label="Template Title" maxlength="50"
+								requiredMessage="Template Title is required." />
+
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="module">
+					${sid['label.section']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="section" value="#{mailTemplate.section}"
+								styleClass="hundred-percent"
+								disabled="#{!mailTemplate.saveAction}" label="Select Section">
+								<f:selectItem itemLabel="Select Section" itemValue="" />
+								<f:selectItem itemLabel="New User" itemValue="create_user" />
+								<f:selectItem itemLabel="Change Password" itemValue="change_password" />
+								<f:selectItem itemLabel="Forget Password" itemValue="forget_password" />
+								<f:selectItem itemLabel="Campign" itemValue="campaign" />
+								<f:selectItem itemLabel="New Case" itemValue="case_registration" />
+								<f:selectItem itemLabel="Loyalty" itemValue="loyalty" />
+								<f:selectItem itemLabel="Invoice" itemValue="invoice" />
+								<p:ajax partialSubmit="true" process="currentAction, section"
+									update="@this, fields, btnSave, btnUpdate" event="change" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:editor styleClass="hundred-percent" id="details"
+								value="#{mailTemplate.template}"
+								width="650"
+								disabled="#{mailTemplate.disabled}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="fields">
+					${sid['label.avaliable.palceholder']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="fields" styleClass="hundred-percent"
+								immediate="true" required="false"
+								disabled="#{mailTemplate.disabled}" label="Select Placeholder">
+								<f:selectItems value="#{mailTemplate.placeholders}" var="i"
+									itemLabel="#{i.name}" itemValue="#{i.name}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="2" styleClass="buttons-row">
+
+							<p:commandButton ajax="false" value="#{sid['label.save']}"
+								id="btnSave" update=":tabView, :lst"
+								rendered="#{mailTemplate.saveAction}"
+								actionListener="#{mailTemplate.actionListener}">
+								<f:param name="action" value="#{sid['action.save']}" />
+								<f:param name="section" value="#{mailTemplate.section}" />
+							</p:commandButton>
+
+							<p:commandButton ajax="true" value="#{sid['label.edit']}"
+								update=":tabView" rendered="#{mailTemplate.editAction}"
+								partialSubmit="true" process="@this" async="true"
+								actionListener="#{mailTemplate.actionListener()}">
+								<f:param name="action" value="edit" />
+							</p:commandButton>
+
+							<p:commandButton value="#{sid['label.update']}" id="btnUpdate"
+								actionListener="#{mailTemplate.actionListener}" ajax="true"
+								update=":tabView, :lst" rendered="#{mailTemplate.updateAction}">
+								<f:param name="action" value="#{sid['action.update']}" />
+								<f:param name="section" value="#{mailTemplate.section}" />
+							</p:commandButton>
+
+							<p:commandButton ajax="true" value="#{sid['label.delete']}"
+								update=":tabView" rendered="#{mailTemplate.deleteAction}"
+								partialSubmit="true" process="@this, currentAction" async="true"
+								action="#{mailTemplate.actionListener()}">
+								<f:param name="action" value="delete" />
+							</p:commandButton>
+
+							<p:commandButton value="#{sid['label.deleteConfirmed']}"
+								actionListener="#{mailTemplate.actionListener}"
+								update=":tabView, :lst" ajax="true" immediate="true"
+								rendered="#{mailTemplate.deleteConfirmedAction}">
+								<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							</p:commandButton>
+
+							<p:commandButton ajax="false" value="#{sid['label.reset']}"
+								rendered="#{mailTemplate.resetAction}" type="reset">
+							</p:commandButton>
+
+							<p:commandButton immediate="true" value="#{sid['label.cancel']}"
+								action="#{mailTemplate.actionListener}" ajax="true"
+								partialSubmit="true" process="@this"
+								update=":tabView" rendered="#{mailTemplate.cancelAction}">
+								<f:param name="action" value="#{sid['action.cancel']}" />
+							</p:commandButton>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:panel>
+
+
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>

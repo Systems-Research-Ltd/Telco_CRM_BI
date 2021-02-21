@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:sr="http://java.sun.com/jsf/composite/utils"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui">
+
+		
+		
+	<h:form id="tableform" rendered="#{!campaignLeads.renderLeadForm}">
+	        <p:dataTable id="campaignLeads"
+	                     value="#{campaignLeads.listCampaignLeads()}"
+	                     var="lead"
+	                     paginator="true">
+	        
+	        <p:column headerText="#{sid['label.name']}"   >  
+               <h:outputText value="#{lead.leadName}" />  
+            </p:column>  
+	        
+	        <p:column headerText="#{sid['label.email']}">  
+               <h:outputText value="#{lead.leadEmail}" />  
+            </p:column>
+            
+            <p:column headerText="#{sid['label.phone']}">  
+               <h:outputText value="#{lead.leadPhone}" />  
+            </p:column>
+            
+            <p:column headerText="#{sid['label.status']}">  
+               <h:outputText value="#{lead.leadStatus}" />  
+            </p:column>
+            
+           
+           <!-- <p:column headerText="#{sid['label.actions']}"">  
+               <h:commandLink value="View">
+                <f:param name="action" value="view"></f:param>
+                <f:param name="row_id" value="#{lead.leadId}"></f:param>
+                 <p:ajax update=":tabView" listener="#{campaignLeads.actionListener()}"></p:ajax>
+               </h:commandLink>  
+            </p:column> -->
+            
+          
+	        </p:dataTable>
+	</h:form>
+ 
+    
+
+
+	<h:form id="campaignLeadForm" rendered="#{campaignLeads.renderLeadForm}" styleClass="ui-form">
+
+			<h:inputHidden value="#{Leads.currentAction}"
+				validator="#{Leads.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="name">
+					${sid['label.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="name" value="#{campaignLeads.leadName}"
+							disabled="#{campaignLeads.disabled}" required="true" label="Lead Name"
+							requiredMessage="Lead Name is required." maxlength="30"
+							validatorMessage="Name should not contain numeric values">
+							<f:validateRegex pattern="\D*"></f:validateRegex>
+
+						</p:inputText>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+
+						<h:outputLabel for="email">
+					${sid['label.email']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="email" value="#{campaignLeads.leadEmail}"
+							disabled="#{campaignLeads.disabled}" label="Email" maxlength="75"
+							validatorMessage="Invalid Email address">
+							<f:validateRegex
+								pattern="(^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$)?"></f:validateRegex>
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+
+						<h:outputLabel for="phone">
+				${sid['label.phone']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputMask mask="#{campaignLeads.phoneMask}" id="phone" value="#{campaignLeads.leadPhone}"
+							disabled="#{campaignLeads.disabled}" label="Phone" required="true"
+							requiredMessage="Phone No. is required."
+							validatorMessage="Invalid Phone Number" />
+					</p:column>
+					<p:column>
+
+						<h:outputLabel for="status">
+					${sid['label.status']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" styleClass="hundred-percent"
+							value="#{campaignLeads.leadStatus}" disabled="#{campaignLeads.disabled}"
+							label="Status">
+							<f:selectItem itemLabel="Open" itemValue="open" />
+							<f:selectItem itemLabel="Hot" itemValue="hot" />
+							<f:selectItem itemLabel="Interested" itemValue="won" />
+							<f:selectItem itemLabel="Not Interested" itemValue="lost" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="address">
+    		 		${sid['label.address']}&nbsp;
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="address" value="#{campaignLeads.leadAddress}"
+							maxlength="500" disabled="#{campaignLeads.disabled}" label="Address" />
+					</p:column>
+					<p:column>
+
+						<h:outputLabel for="assign">
+					${sid['label.assigned.to']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="assign" styleClass="hundred-percent"
+							value="#{campaignLeads.leadAssigned}" disabled="#{campaignLeads.disabled}"
+							label="leadSource">
+							<f:selectItem itemLabel="Select User" />
+							<f:selectItems value="#{campaignLeads.listUsers()}" var="a"
+								itemLabel="#{a.userName}" itemValue="#{a.userId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="source">
+					${sid['label.lead.source']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="source" value="#{campaignLeads.leadSource}"
+							styleClass="hundred-percent"
+							disabled="#{campaignLeads.disabled}" label="leadSource">
+							<f:selectItem itemLabel="Select Source" />
+							<f:selectItems value="#{campaignLeads.listSources()}" var="a"
+								itemLabel="#{a.title}" itemValue="#{a.id}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton immediate="true"
+						    value="#{(campaignLeads.disabled) ? sid['label.back'] : sid['label.cancel']}"
+							action="#{campaignLeads.actionListener}" ajax="false"
+							rendered="#{campaignLeads.cancelAction}">
+
+							<f:param name="action" value="#{sid['action.cancel']}" />
+
+						</p:commandButton>
+
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+	</h:form>
+	
+	
+
+	
+</ui:composition>
+

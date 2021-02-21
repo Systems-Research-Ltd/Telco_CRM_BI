@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:rich="http://richfaces.org/rich"
+xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition template="${initParam.template}">
+	<ui:define name="title"> ${siderrorTitle}</ui:define>
+	<ui:define name="contents">
+
+		
+			 <table class="ErrorBox LargeBox" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="TitleBar" >
+						<h:outputLabel value="#{siderrorTitle}" />
+					</td>
+				</tr>
+				<tr>
+					<td >&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="Error">
+						<span class="Heading">Message</span>
+					<ul>
+						<li>${message.resourceNotFound}</li>
+					</ul>
+					<h:messages errorClass="Error" styleClass="ErrorBox" />
+					</td>
+				</tr>
+				<tr>
+					<td >&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="ButtonsBar" >
+						<input type="button" value="#{sidback}" onclick="window.location='${request.contextPath}'"/>
+					</td>
+				</tr>
+			</table>
+	</ui:define>
+</ui:composition>
+
+</html>

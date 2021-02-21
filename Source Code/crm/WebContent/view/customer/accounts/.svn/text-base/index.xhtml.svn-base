@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="${initParam.template2Col}">
+	<ui:define name="title">${sid['title.accounts']}</ui:define>
+	<ui:define name="left-heading">
+		<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+			name="groups_image.png" />
+		<h:outputText value="#{sid['topMenu.customer.accounts']}" />
+	</ui:define>
+	<ui:define name="left-contents">
+		<ui:include src="accountSearch.xhtml" />
+		<h:form styleClass="listHeight" id="lst">
+			<fieldset>
+				<legend>
+					<h:outputText value="#{sid['topMenu.customer.accounts']}" />
+				</legend>
+				<h:panelGrid columns="3" style="float:right;">
+					<h:panelGroup style="padding: 3px 0 3px 0; margin-right:3px;">
+						<p:commandLink actionListener="#{accountBackingBean.clearFilter}"
+							update="listBox,:searchform">
+							<h:graphicImage library="themes/default/images"
+								name="recycle.jpg" width="25" />
+						</p:commandLink>
+						<h:graphicImage
+							library="themes/#{themeBean.userTheme.title}/images"
+							name="help_icon.png" id="help" width="25" />
+						<p:tooltip for="help" value="#{help.account}" showEffect="fade"
+							hideEffect="fade" />
+					</h:panelGroup>
+					<p:commandLink id="createNewIcon" update=":tabView"
+						action="#{accountBackingBean.actionListener()}">
+						<h:graphicImage
+							library="themes/#{themeBean.userTheme.title}/images/icons"
+							name="plus-icon.png" width="20" />
+						<f:param name="action" value="create" />
+					</p:commandLink>
+					<p:tooltip for="createNewIcon" value="  Add new account "
+						showEffect="fade" hideEffect="fade" />
+
+				</h:panelGrid>
+				<h:outputText value="" />
+				<br />
+				<br />
+				<p:selectOneListbox styleClass="select-list" id="listBox"
+					value="#{sessionDataBean.customerModule_selectedAccount}">
+					<f:selectItems value="#{accountBackingBean.list}" var="data"
+						itemLabel="#{data.label}" itemValue="#{data.id}" />
+					<f:param name="action" value="view" />
+					<f:param name="fromListing" value="fromListing" />
+					<p:ajax update=":tabView" event="change"
+						listener="#{accountBackingBean.actionListener()}" />
+				</p:selectOneListbox>
+
+			</fieldset>
+		</h:form>
+	</ui:define>
+	<ui:define name="create-button">
+	</ui:define>
+	<ui:define name="contents">
+		<p:tabView id="tabView" dynamic="true"
+			activeIndex="#{sessionDataBean.customerModule_accountTabIndex}">
+			<p:tab title="#{sessionDataBean.accountTabs.get(0).title}">
+				<div id="${sessionDataBean.accountTabs.get(0).container}">
+					<ui:include src="${sessionDataBean.accountTabs.get(0).path}" />
+				</div>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+</ui:composition>

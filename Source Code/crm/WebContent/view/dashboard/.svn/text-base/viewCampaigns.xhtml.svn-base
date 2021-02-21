@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="viewCampaignForm" prependId="false" rendered="#{sessionDataBean.companyId ne '1' and indexBackingBean.launchedCampaignsCounter ne '0'}">
+	<c:set var="campaignCounter"  value="#{indexBackingBean.launchedCampaignsCounter}"/>
+		<script type="text/javascript"
+			src="${request.contextPath}/js/dashboard.js"></script>
+		<style type="text/css">
+			#campaignDetails {
+				width: 870px;
+				margin: 0px auto;
+				padding-bottom: 20px;
+			}
+			table#campaignDetailsGrid, table#campaignDetailsGrid tr{
+				border: none !important;
+			} 
+			table#campaignDetailsGrid tr td {
+				padding: 0px !important;
+				border: none !important;
+			}
+			table#campaignDetailsGrid tr td span.campaign-details-title {
+				font-size: 18px;
+				font-weight: bold;
+				padding-bottom: 10px;
+			}
+			
+			table#campaignDetailsGrid tr td.campaign-details-desc {
+				padding-top: 20px !important;
+			}
+			#carousel_ul_content{
+				border: none !important;
+			}
+			#mainContainer{
+				margin-left: auto;
+				margin-right: auto;
+				width:998px;
+			}
+		</style>
+		
+		<div id="mainContainer">
+			<div id="campaignDetails" style="display: none;">
+				<p:panelGrid id="campaignDetailsGrid">
+					<p:row rendered="#{not empty campaignDetails.campaignImage}">
+						<p:column>
+							<h:graphicImage library="images"
+								name="#{campaignDetails.campaignImage}" width="870" height="200"></h:graphicImage>
+						</p:column>
+					</p:row>
+					<p:row rendered="#{empty campaignDetails.campaignImage}">
+						<p:column>
+							<h:outputText value="#{campaignDetails.title}"
+								styleClass="campaign-details-title" />
+						</p:column>
+					</p:row>
+					<p:row rendered="#{empty campaignDetails.campaignImage}">
+						<p:column>
+							<span class="campaign-date">( <h:outputText
+									value="#{campaignDetails.startDate}">
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+								</h:outputText> <b> to </b> <h:outputText value="#{campaignDetails.endDate}">
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+								</h:outputText>)
+							</span>
+						</p:column>
+					</p:row>
+					<p:row rendered="#{empty campaignDetails.campaignImage}">
+						<p:column styleClass="campaign-details-desc">
+							<h:outputText value="#{campaignDetails.description}" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</div>
+			<div id="carousel_container">
+				<div id="left_scroll">
+					<p:commandLink onclick='slide("left");return false;' disabled="#{campaignCounter eq '1' or campaignCounter eq '2' or campaignCounter eq '3'}"><h:graphicImage
+							library="themes/#{themeBean.userTheme.title}/images"
+							name="left.png" width="30" height="49"></h:graphicImage></p:commandLink>
+				</div>
+				<div id="carousel_inner">
+				<p:dataList value="#{campaignDetails.launchedCampaigns}"
+							var="c" style="left: 20px;" id="carousel_ul" varStatus="count" itemType="none">
+							<div id="#{count.index}" style="cursor:pointer"
+								onclick="showCampaign('#{count.index}','#{c.id}')"
+								title="Click to View Details">
+						<div class="campaign-container">
+									<div class="campaign-thumb">
+										<h:graphicImage library="images" name="#{c.campaignImage}"
+											width="30" height="30"
+											rendered="#{not empty c.campaignImage}"></h:graphicImage>&nbsp;
+									</div>
+									<div class="campaign-txt">
+										<div class="campaign-title">
+											<h:outputText value="#{c.title}" />
+											<br /> <span class="campaign-date">( <h:outputText
+													value="#{c.startDate}">
+													<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+												</h:outputText> <b> to </b> <h:outputText value="#{c.endDate}">
+													<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+												</h:outputText>)
+											</span>
+										</div>
+										<div class="campaign-desc">
+											<h:outputText value="#{c.descExcerpt}" />
+										</div>
+										<div class="campaign_ordNow_btn">
+											<p:commandButton 
+												actionListener="#{dashReportBean.actionListener}"
+												value="Order Now" ajax="true" process="@this">
+												<f:attribute name="campaignId" value="#{c.id}"></f:attribute>
+												<f:attribute name="reportno" value="13"></f:attribute>
+											</p:commandButton>
+										</div>
+									</div>
+								</div>
+							</div>
+				</p:dataList>
+				</div>
+				
+				<div id="right_scroll">
+					<p:commandLink onclick='slide("right");return false;' disabled="#{campaignCounter eq '1' or campaignCounter eq '2' or campaignCounter eq '3'}"><h:graphicImage
+							library="themes/#{themeBean.userTheme.title}/images"
+							name="right.png" width="30" height="49"></h:graphicImage></p:commandLink>
+				</div>
+				<h:inputHidden id="hidden_auto_slide_seconds" value="5000" />
+				<h:inputHidden id="campaignId" name="campaign_id"
+					value="#{campaignDetails.campaignId}" />
+				<h:inputHidden value="#{campaignCounter}" id="lanunchedCampaignsCounter" />
+				
+			</div>
+			<p:commandLink update="campaignDetailsGrid" ajax="true"
+				partialSubmit="true" id="cDetail" process="@this campaignId"
+				actionListener="#{campaignDetails.campaignDetailsDashboard()}"
+				oncomplete="$('#campaignDetails').show();">
+				<f:param name="action" value="cDetailDashbord"></f:param>
+			</p:commandLink>
+			<p:commandLink update="viewCampaignForm" ajax="true"
+				partialSubmit="true" id="refreshForm">
+			</p:commandLink>
+		</div>
+		<div style="clear: both">&nbsp;</div>	
+	</h:form>
+</ui:composition>

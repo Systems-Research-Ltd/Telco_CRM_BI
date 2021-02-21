@@ -1,0 +1,74 @@
+10
+
+dir
+3114
+svn://68.169.55.222/crm/srpl/src/crm/WebContent/view/marketing
+svn://68.169.55.222/crm
+
+
+
+2013-09-18T11:15:28.325401Z
+3098
+rizwan
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+campaign
+dir
+
+index.xhtml
+file
+
+
+
+
+2013-09-17T06:37:19.166000Z
+1e2c32742d7094e4db3f02a29294f6a6
+2013-09-18T11:15:13.918253Z
+3096
+rizwan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3800
+
+leads
+dir
+
+products
+dir
+
+settings
+dir
+

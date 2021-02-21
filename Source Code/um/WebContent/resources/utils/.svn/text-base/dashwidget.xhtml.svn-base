@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"	>
+	
+	<composite:interface>
+		<composite:attribute name="report" required="true"
+			shortDescription="Report id to be displayed in widget"></composite:attribute>
+	</composite:interface>
+
+	<composite:implementation xmlns:utils="http://java.sun.com/jsf/composite/utils">
+		<c:choose>
+		    <c:when test="#{cc.attrs.report eq '1'}">
+				  <utils:datatableDash value="#{dashReportBean.datalist}"
+					columns="#{dashReportBean.columns}" rowid="orderId" heading="Orders" />	
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '2'}">
+				<p:meterGaugeChart id="salesmeter"
+					value="#{dashReportBean.orderMeter}"
+					style="width:360px;height:250px" title="Current Week Performance"
+					label="Orders/Sales" intervalOuterRadius="75"
+					seriesColors="cc6666,E7E658,93b75f,66cc66" rendered="#{cc.attrs.report ne '0'}"/>
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '3'}">
+				<p:barChart id="basic" value="#{dashReportBean.salesGraph}"
+					legendPosition="ne" title="Sales Performance" min="0" max="200"
+					style="height:250px" animate="true" rendered="#{cc.attrs.report ne '0'}"/>
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '4'}">
+				<p:pieChart id="report2" value="#{dashReportBean.pieModel}"
+					legendPosition="w" title="Revenue" style="width:400px;height:250px" rendered="#{cc.attrs.report ne '0'}"/>
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '5'}">
+				  <utils:datatableDash value="#{dashReportBean.report5List}"
+					columns="#{dashReportBean.report5Columns}" rowid="companyId" heading="Companies" />	
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '6'}">
+				  <utils:datatableDash value="#{dashReportBean.report6List}"
+					columns="#{dashReportBean.report6Columns}" rowid="id" heading="Alerts" />	
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '7'}">
+				  <utils:datatableDash value="#{dashReportBean.report7List}"
+					columns="#{dashReportBean.report7Columns}" rowid="franchiseId" heading="Franchises" />	
+			</c:when>
+			<c:when test="#{cc.attrs.report eq '8'}">
+				  <utils:datatableDash value="#{dashReportBean.report8List}"
+					columns="#{dashReportBean.report8Columns}" rowid="userId" heading="User List" />	
+			</c:when>
+			
+		</c:choose>
+	</composite:implementation>
+
+</html>

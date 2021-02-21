@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+	
+	  <h:form id="noCaseSelectionForm" rendered="#{empty sessionDataBean.supportModule_selectedCase}">
+	  
+	    <p:messages id="msgs" autoUpdate="true" />
+			<h:panelGrid id="grid" columns="2" styleClass="content-table">
+				<h:column>
+					<h:outputText value="No Ticket Selected" />
+				</h:column>
+				
+		    </h:panelGrid>
+	    
+	  </h:form>
+	  
+      <h:form styleClass="ui-form" id="caseForm" rendered="#{!empty sessionDataBean.supportModule_selectedCase}">
+
+			<h:inputHidden id="currentAction" value="#{caseBean.currentAction}"
+				validator="#{caseBean.actionValidator}" />
+<h:inputHidden value="#{caseBean.id}" validator="#{caseBean.idValidator}"  id="id"/>
+<h:inputHidden value="#{caseBean.caseId}" id="caseId" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+				 
+				 <c:if test="${!facesContext.externalContext.isUserInRole('Customer')}">
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="customer">
+					 ${sid['label.customer']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+					<p:autoComplete id="customer"
+					                disabled="#{caseBean.disabled}"
+					                value="#{caseBean.customer}"
+					                completeMethod="#{caseBean.listAutoCustomers}"
+					                var="c"
+					                itemLabel="#{c.contactFname}"
+					                itemValue="#{c.contactId}"
+					                converter="#{autoCompleteCustomerConverter}">
+					                <p:ajax update="mobile" event="itemSelect" listener="#{caseBean.customerMobileNumber()}">
+					                </p:ajax>					
+					</p:autoComplete>
+						
+					</p:column>
+					</c:if>
+					
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="product">
+					 ${sid['label.product']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:selectOneMenu id="product" value="#{caseBean.productId}"
+							styleClass="hundred-percent" disabled="#{caseBean.disabled}"
+							label="Product" required="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.product.required')}">
+							<f:selectItem itemLabel="Select product" />
+							<f:selectItems value="#{caseBean.listProducts()}" var="p"
+								itemLabel="#{p.productTitle}" itemValue="#{p.productId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="type">
+					 ${sid['label.case.type']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="type" value="#{caseBean.caseType}"
+							styleClass="hundred-percent"
+							disabled="#{caseBean.disabled}" label="Status" required="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.caseType.required')}">
+							<f:selectItem itemLabel="Select case"/>
+							<f:selectItem itemLabel="Query" itemValue="Query" />
+							<f:selectItem itemLabel="Complane" itemValue="Complane" />
+						</p:selectOneMenu>
+					</p:column>
+                <c:choose>
+                  <c:when test="${facesContext.externalContext.isUserInRole('Customer')}">					
+					<p:column>
+						<h:outputLabel for="queryType">
+					 ${sid['label.query.type']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="queryType" value="#{caseBean.queryTypeId}"
+							styleClass="hundred-percent"
+							label="Query Type" disabled="#{caseBean.disabled}"
+							required="true" requiredMessage="#{caseBean.getProperty('message.validate.support.queryType.required')}">
+							<f:selectItem itemLabel="Query Type" />
+							<f:selectItems value="#{caseBean.listQueryTypes()}"
+								var="queryTypes" itemLabel="#{queryTypes.queryTypeTitle}"
+								itemValue="#{queryTypes.queryTypeId}" />
+								<p:ajax process="@this , caseId"  update="save, update" event="change"/>
+						</p:selectOneMenu>
+					</p:column>
+					</c:when>
+					<c:otherwise>
+					  <p:column>
+						<h:outputLabel for="queryType">
+					 ${sid['label.query.type']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="queryType" value="#{caseBean.queryTypeId}"
+							styleClass="hundred-percent"
+							label="Query Type" disabled="#{caseBean.disabled}"
+							required="true" requiredMessage="#{caseBean.getProperty('message.validate.support.queryType.required')}">
+							<f:selectItem itemLabel="Query Type" />
+							<f:selectItems value="#{caseBean.listQueryTypes()}"
+								var="queryTypes" itemLabel="#{queryTypes.queryTypeTitle}"
+								itemValue="#{queryTypes.queryTypeId}" />
+							<p:ajax process="@this , caseId"  update="assignedTo, save, update" event="change"/>
+						</p:selectOneMenu>
+					</p:column>
+					</c:otherwise>
+				</c:choose>	
+					
+				</p:row>
+
+				<p:row>
+				<c:if test="${!facesContext.externalContext.isUserInRole('Customer')}">
+					<p:column>
+						<h:outputLabel for="assignedTo">
+				 ${sid['label.assigned.to']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+					    <p:selectOneMenu id="assignedTo" styleClass="hundred-percent"
+							disabled="#{caseBean.disabled}" value="#{caseBean.userId}"
+							label="Assigned To" required="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.assignedTo.required')}">
+							<f:selectItem itemLabel="Select user" />
+							<f:selectItems value="#{caseBean.listUsersByGroup()}" var="u"
+								itemLabel="#{u.userName}" itemValue="#{u.userId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</c:if>	
+					
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="mobile">
+					 ${sid['label.mobile.number']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputMask mask="#{caseBean.phoneMask}" id="mobile" value="#{caseBean.mobileNumber}"
+							disabled="#{caseBean.disabled}" required="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.mobileNo.required')}"
+							label="Mobile Number"
+							validatorMessage="#{caseBean.getProperty('message.validate.support.mobileNo.invalid')}" />
+					</p:column>
+					</p:row>
+					<p:row>
+					<p:column>
+						<h:outputLabel for="query">
+					${sid['label.subscriber.query']}&nbsp;   
+				</h:outputLabel>
+					</p:column>
+					<p:column colspan="3">
+						<p:inputTextarea id="query" value="#{caseBean.customerQuery}"
+							maxlength="500" rows="4" cols="300"
+							disabled="#{caseBean.disabled}" required="false"
+							label="Subscriber Query" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column >
+						<h:outputLabel for="comments"  rendered="#{caseBean.updateAction || caseBean.deleteAction}"> 
+					${sid['label.comments']}&nbsp;  
+				</h:outputLabel>
+					</p:column>
+					<p:column colspan="3">
+						<p:inputTextarea id="comments" value="#{caseBean.comments}"
+							maxlength="500" rows="4" cols="300"
+							disabled="#{caseBean.disabled}" required="false" label="Comments" rendered="#{caseBean.updateAction || caseBean.deleteAction}"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+                      
+                      <c:if test="${facesContext.externalContext.isUserInRole('Customer')}">
+                        <p:commandButton value="Feed Back"
+                                         immediate="true" 
+                                         onclick="feedBackForm:feedBackDialog.show();" rendered="#{caseBean.updateAction || caseBean.deleteAction}">
+                                         
+                        </p:commandButton>
+                       </c:if> 
+                        
+                        <p:commandButton id="save" value="#{sid['label.save']}"
+							action="#{caseBean.actionListener}" ajax="false"
+							rendered="#{caseBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+							<f:param id="p_queryTypeId" name="p_queryType" value="#{caseBean.queryTypeId}" />
+						</p:commandButton>
+
+						<p:commandButton id = "deleteConfirm" value="#{sid['label.deleteConfirmed']}"
+							immediate="true" action="#{caseBean.actionListener}" ajax="false"
+							update = ":tabView, :ticketForm:ticketsListBox"
+							rendered="#{caseBean.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							
+						</p:commandButton>
+ 
+                        <p:commandButton id="deleteButton" ajax="false"
+                            immediate="true"
+							value="#{sid['label.delete']}"
+							update=":tabView"
+							rendered="#{caseBean.deleteAction}"
+							action="#{caseBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							
+						</p:commandButton>
+						
+
+						<p:commandButton id="update" value="#{sid['label.update']}"
+							action="#{caseBean.actionListener}" ajax="false"
+							rendered="#{caseBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							
+							<f:param id="p_queryTypeId1" name="p_queryType" value="#{caseBean.queryTypeId}" />
+						</p:commandButton>
+
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{caseBean.resetAction}" type="reset">
+						</p:commandButton>
+						<p:commandButton immediate="true"
+							value="#{sid['label.cancel']}"
+							action="#{caseBean.actionListener}" ajax="false"
+							rendered="#{caseBean.cancelAction}">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+						</p:commandButton>
+						
+						<p:commandButton id = "edit" value="#{sid['label.edit']}"
+							immediate="true" action="#{caseBean.actionListener}" ajax="false"
+							update = ":tabView, :ticketForm:ticketsListBox"
+							rendered="#{caseBean.editAction}">
+							<f:param name="action" value="#{sid['action.edit']}" />
+						</p:commandButton>
+						
+						<p:commandButton id = "markResolved" value="Mark Resolved"
+							immediate="true" action="#{caseBean.actionListener}" ajax="false"
+							update = ":tabView, :ticketForm:ticketsListBox"
+							rendered="#{caseBean.disabled}">
+							<f:param name="action" value="closeTicket" />
+							<f:param name="ticketId" value="#{caseBean.caseId}"></f:param>
+						</p:commandButton>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			
+			
+			
+      	</h:form>
+      	   
+      	<h:form id="feedBackForm" rendered="#{caseBean.renderCommentsForm}">
+      	  <p:dialog id="customerFeedBack" 
+			          widgetVar="feedBackDialog" style="width:600px; hiegth:600px;">
+			
+			     <p:panelGrid columns="2" style="width:100%;">
+			     <p:column>
+				 <h:outputLabel for="rating">
+					Service Rating <span class="form-required">*</span>
+						</h:outputLabel>
+						
+				 </p:column>
+				 <p:column>		
+						<p:selectOneMenu id="rating" value="#{caseBean.serviceRating}"
+							styleClass="hundred-percent"
+							label="rating" required="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.rating.required')}">
+							<f:selectItem itemLabel="Select status"/>
+							<f:selectItem itemLabel="Terrible" itemValue="Terrible" />
+							<f:selectItem itemLabel="Bad" itemValue="Bad" />
+							<f:selectItem itemLabel="Average" itemValue="Average" />
+							<f:selectItem itemLabel="Good" itemValue="Good" />
+							<f:selectItem itemLabel="Excellent" itemValue="Excellent" />
+						</p:selectOneMenu>
+				</p:column>
+				
+				<p:column>	
+					<h:outputLabel for="feedBack">
+					${sid['label.feedBack']}&nbsp;  
+						</h:outputLabel>
+				</p:column>		
+				<p:column>		
+				<h:inputTextarea id="feedBack" value="#{caseBean.feedBackComments}" style="width:100%;">
+				</h:inputTextarea>
+				</p:column>
+				<p:column>
+				<p:commandButton value="Submit Review"
+							action="#{caseBean.actionListener}"
+							update="caseFeedBack">
+							<f:param name="action" value="submitReview" />
+							<f:param name="ticketId" value="#{caseBean.caseId}" />
+				</p:commandButton>
+				</p:column>
+				<p:commandButton immediate="true"
+							value="close"
+							action="#{caseBean.actionListener}" ajax="false">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+				</p:commandButton>
+				
+			    </p:panelGrid>
+			  
+			</p:dialog>
+			
+		    <p:fieldset id="caseFeedBack" style="left-padding:0px"
+				legend="Customer FeedBack" toggleable="true" toggleSpeed="300"
+				collapsed="true">
+				
+		        <p:panelGrid columns="2" style="width:100%;">
+			     <p:column>
+				 <h:outputLabel for="customerRating">
+					${sid['label.service.rating']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+				 </p:column>
+				 <p:column>		
+						<p:selectOneMenu id="customerRating" value="#{caseBean.serviceRating}"
+							styleClass="hundred-percent"
+							label="rating" required="true"
+							disabled="true"
+							requiredMessage="#{caseBean.getProperty('message.validate.support.rating.required')}">
+							<f:selectItem itemLabel="Select status"/>
+							<f:selectItem itemLabel="Terrible" itemValue="Terrible" />
+							<f:selectItem itemLabel="Bad" itemValue="Bad" />
+							<f:selectItem itemLabel="Average" itemValue="Average" />
+							<f:selectItem itemLabel="Good" itemValue="Good" />
+							<f:selectItem itemLabel="Excellent" itemValue="Excellent" />
+						</p:selectOneMenu>
+				</p:column>
+				
+				<p:column>	
+					<h:outputLabel for="feedBackComments">
+					${sid['label.feedBack']}&nbsp;  
+						</h:outputLabel>
+				</p:column>		
+				<p:column>		
+				<h:inputTextarea id="feedBackComments"
+				                 value="#{caseBean.feedBackComments}"
+				                 disabled="true"
+				                 style="width:100%;">
+				</h:inputTextarea>
+				</p:column>		
+				
+		    	
+		   </p:panelGrid>
+		   
+		   </p:fieldset>
+      	
+      	</h:form>
+      	
+      	<h:form id="commentsForm" rendered="#{caseBean.renderCommentsForm}">
+      	      <p:fieldset id="commentsFieldset" style="left-padding:0px"
+				legend="Ticket History" toggleable="true" toggleSpeed="300"
+				collapsed="true">
+
+                <h:outputLabel for="usercomments">
+					<b>${sid['label.reply.content']}&nbsp;  </b>
+				</h:outputLabel>
+				<h:inputTextarea id="usercomments" value="#{caseBean.userComments}" style="width:100%;">
+				</h:inputTextarea>
+				<br />
+				<h:commandLink value="" ajax="false" style="float:right;"
+				    action="#{caseBean.actionListener()}">
+				    <h:graphicImage name="themes/default/images/post.png"></h:graphicImage>
+					<f:param name="ticketId" value="#{caseBean.caseId}"></f:param>
+					<f:param name="action" value="postComments" />
+				</h:commandLink>
+				<br />
+				<br />
+				<hr />
+				
+			  <table id="commentsTable" style="width:100%">
+			    <ui:repeat var="caseHistory" value="#{caseBean.caseHistoryList}">
+					<tr style="width:100%">
+						 <th style="width:30%">
+						   <h:outputLabel value="Assigned To"></h:outputLabel>
+			             </th>
+						 <th style="width:70%">
+						   <h:outputLabel value="#{caseHistory.getUser().getUserName()}" />     
+			             </th>
+		            </tr>
+		            <tr style="width:100%">
+		             <td style="width:30%" >
+		               <h:outputLabel value="Date" style="color:#8f8f8f"></h:outputLabel>
+                     </td>
+                     <td style="width:70%; border-radius: 20px;">
+		               <h:outputLabel value="#{caseHistory.getCaseAssignedToDate()}" style="color:#8f8f8f">
+		                 <f:convertDateTime pattern="d-M-yyyy hh:mm:ss"/>
+		               </h:outputLabel>
+                     </td>
+                    </tr>
+                    
+		            <tr>
+		              <td>
+		               <hr>
+		               </hr>
+		              </td>
+		              <td>
+		               <hr>
+		               </hr>
+		              </td>
+		            </tr>
+		            
+					  <ui:repeat var="caseComments" value="#{caseHistory.caseCommentsList}" varStatus="status">
+						<tr bgcolor="#{caseComments.getUser().getIsUserCustomer() == true ? '#c5c5c5' : '#F7DA81'}" style="width:100%; border-radius: 20px;">
+						 <td style="width:30%;">
+						  <h:outputLabel value="#{caseComments.getUser().getUserName()}" style="font-weight: bold"></h:outputLabel><br></br>
+						  
+						  <h:outputLabel value="#{caseComments.getCaseCommentsDate()}">
+						   <f:convertDateTime timeZone="Asia/Karachi" type="both" pattern="d-M-yyyy hh:mm:ss a"/>
+						  </h:outputLabel>
+						  
+		                 </td>
+		                 
+		                 <td style="width:70%">
+		                  &nbsp;&nbsp;&nbsp;
+		                  
+		                  <h:outputLabel value="#{caseComments.getCaseComments()}"></h:outputLabel>
+		                 </td>
+                        </tr>
+                        <tr>
+		                 <td>
+		                  &nbsp;
+		                 </td>
+		                 <td>
+		                  &nbsp;
+		                 </td>
+		                </tr>
+                      </ui:repeat>
+		          
+		            <tr>
+		             <td>
+		              <hr></hr>
+		             </td>
+		             <td>
+		              <hr></hr>
+		             </td>
+		            </tr>			
+				</ui:repeat>
+			  </table>	
+			</p:fieldset>
+	  </h:form>
+	</ui:composition>
+</h:body>
+
+</html>

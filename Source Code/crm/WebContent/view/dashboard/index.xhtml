@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+	<ui:define name="title"> ${sid['tab.dashboard']}&nbsp;</ui:define>
+	<ui:define name="contents">
+			<ui:include src="viewCampaigns.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core"></ui:include>
+			<div style="clear: both; height: 0px;"></div>
+		<h:form id="form" prependId="false">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			<p:dashboard id="board" model="#{dashBean.model}" disabled="true">
+				<p:panel id="sales" header="#{dashBean.reportLabels[dashBean.reports[0]]}" style="height:290px">
+					<sr:dashwidget id="myWidget" report="#{dashBean.reports[0]}" />
+					<f:facet name="actions">
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							onclick="reportdlg.show()"
+							actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="1" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="1" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="profits" header="#{dashBean.reportLabels[dashBean.reports[2]]}" style="height:290px">
+					<sr:dashwidget report="#{dashBean.reports[2]}" />
+					<f:facet name="actions">
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							onclick="reportdlg.show()"
+							actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="3" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="3" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="revenue" header="#{dashBean.reportLabels[dashBean.reports[1]]}" style="height:290px">
+					<sr:dashwidget report="#{dashBean.reports[1]}" />
+					<f:facet name="actions">
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							onclick="reportdlg.show()"
+							actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="2" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="2" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="trend" header="#{dashBean.reportLabels[dashBean.reports[3]]}" style="height:290px">
+					<sr:dashwidget report="#{dashBean.reports[3]}" />
+					<f:facet name="actions">
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							onclick="reportdlg.show()"
+							actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="4" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="4" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+
+			</p:dashboard>
+			<p:dialog header="#{sid['label.select.report']}" widgetVar="reportdlg"   
+				resizable="false" modal="true" showEffect="fade" hideEffect="fade">
+				<h:form id="dlgform">
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5"
+						columnClasses="label, column">
+						<h:outputText value="Basic Usage: " />
+						<p:selectOneListbox id="reportDropdown" style="width:200px"
+							value="#{dashBean.reportDropdown}">
+							<f:selectItem itemLabel="No Report" itemValue="0" />
+							<f:selectItems value="#{dashBean.reportMenu}" var="menu"
+								itemLabel="#{menu.reportLabel}" itemValue="#{menu.reportValue}" />
+						</p:selectOneListbox>
+					</h:panelGrid>
+					<p:commandButton id="submitButton" value="Submit"
+						actionListener="#{dashBean.addReport}"
+						oncomplete="reportdlg.hide();" update=":form:board" />
+					<p:commandButton id="cancelButton" value="Cancel"
+						onclick="reportdlg.hide();" />
+				</h:form>
+			</p:dialog>
+
+
+			<p:dialog id="invdlg" header="#{sid['label.customer.invoice']}"
+				widgetVar="invoicedlg" modal="false" resizable="true"
+				showEffect="fade" hideEffect="fade" closable="true" width="750" height="500" dynamic="true">
+				<h:outputText value="#{dashReportBean.invoiceHtml}" escape="false" />
+			</p:dialog>
+		</h:form>
+		<c:if
+			test="#{facesContext.externalContext.isUserInRole('AccountManager')}">
+			<p:dialog id="links" widgetVar="dlg" width="500" height="400"
+				header="Useful Links" visible="#{dashReportBean.showpopup}">
+				<h:form>
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/crm/view/admin/import/import.jsf">
+								<h:outputText value="Import Data"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To import all users and customers revelant data from your previous crm to current one. Supported formats are CSV files, XLS files and directly connected to your DB to import the required records." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/um/view/um/admin/franchise/index.jsf">
+								<h:outputText value="Manage Company Franchises"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To record all your company outlets to narrow your business processes based on geography." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/um/view/um/admin/user/index.jsf">
+								<h:outputText value="Manage Company Employees/Users"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To manage all employees currently working in your organization and also to manage their reporting hierarchy alongwith their association with the working location/franchise." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/um/view/um/admin/groups/index.jsf">
+								<h:outputText value="Manage Users Groups"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To manage user groups to further categorize your company employees in order to restrict them in utilizing the system services." />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="text-align:justify; font-weight:bold; padding-bottom:5px;">
+							<h:outputLink value="/um/view/settings/index.jsf">
+								<h:outputText value="General Settings"
+									style="font-style:italic; color:maroon;" />
+							</h:outputLink>
+							<br />
+							<h:outputText
+								value="To perform general settings like theme settings, password settings and others" />
+						</h:panelGroup>
+						<br />
+						<h:panelGroup
+							style="float:right; font-weight:bold; margin-top:20px;">
+							<h:selectBooleanCheckbox id="chk"
+								value="#{dashReportBean.showpopupChkBox}">
+								<f:ajax listener="#{dashReportBean.changePreference}" />
+							</h:selectBooleanCheckbox>
+							<h:outputText value="Show popup on Startup" />
+						</h:panelGroup>
+					</h:panelGrid>
+
+				</h:form>
+			</p:dialog>
+		</c:if>
+
+
+	</ui:define>
+
+</ui:composition>
+

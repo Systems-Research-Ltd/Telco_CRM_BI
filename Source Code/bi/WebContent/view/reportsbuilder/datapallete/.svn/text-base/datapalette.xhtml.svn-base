@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<h:panelGrid width="100%" columns="4" bgcolor="#dfdfdf"
+		style="height:25px; margin-bottom:5px; padding:2px;">
+		<h:form id="dsform">
+			<h:selectOneMenu id="savedSources" style="width:150px;"
+				value="#{dataSourceBean.savedDataSource}"
+				onclick="return saveReport()">
+				<f:selectItem itemLabel="Select Data Source" itemValue="0" />
+				<f:selectItems value="#{dataSourceBean.savedDataSources()}" var="cf"
+					itemLabel="#{cf.value}" itemValue="#{cf.key}" />
+				<p:ajax event="change"
+					update=":palette,dsform,:reportDesignerForm:reportDataGrid,:reportDesignerForm:graphCon,:sql"
+					listener="#{reportBuilderBean.changeDataSource}"
+					oncomplete="initDND();showHideGraph()" />
+			</h:selectOneMenu>
+			<p:commandLink id="deletesource" process="@this"
+				disabled="${dataSourceBean.savedDataSource eq 0}"
+				title="#{sid['label.delete']}" onclick="return delSource();">
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="minus.jpg" width="20" height="20" />
+			</p:commandLink>
+			&nbsp;
+				<p:commandLink id="addsource" process="@this"
+				title="#{sid['label.add']}" onclick="return addSource();">
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="plus.jpg" width="20" height="20" />
+			</p:commandLink>
+			&nbsp;
+				<p:commandLink id="updatesource"
+				actionListener="#{dataSourceBean.applySourceValues}" process="@this"
+				disabled="${dataSourceBean.savedDataSource eq 0}"
+				title="#{sid['label.update']}" update=":dataSourceDialog"
+				oncomplete="dlg2.show()">
+				<!--  onstart="return saveReport();" -->
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="edit.jpg" width="20" height="20" />
+			</p:commandLink>
+
+		</h:form>
+	</h:panelGrid>
+	<p:accordionPanel id="palette" style="width:97%; margin:4px">
+		<p:tab title="Selected [Data]">
+			<h:outputText value="Select Data Source from above List"
+				rendered="${dataSourceBean.savedDataSource eq 0}" />
+			<p:tree value="#{reportBuilderBean.availableTables}" var="node"
+				rendered="${dataSourceBean.savedDataSource ne 0}" id="tabletree">
+				<p:treeNode>
+					<h:outputText value="#{node}" />
+				</p:treeNode>
+				<p:treeNode type="column" icon="ui-icon-arrow-4">
+					<h:outputText value="#{node.property}" />
+				</p:treeNode>
+			</p:tree>
+		</p:tab>
+		<p:tab id="addfilterCon" title="Data [Filters]"
+			rendered="${reportDesignerBean.selectedReport ne '0'}">
+			<h:panelGrid width="100%" columns="1" bgcolor="#dfdfdf"
+				style="height:25px; margin-bottom:5px; padding:2px;">
+				<p:commandLink id="addfilter" title="Add Filter"
+					value="#{sid['label.add.filter']}" oncomplete="dlg1.show()"
+					actionListener="#{filterBean.actionListener()}"
+					update=":dataFilterForm:grid" async="true">
+					<f:param name="action" value="create"></f:param>
+				</p:commandLink>
+				<p:fieldset style="width:208px;height:52px;">
+					<p:selectManyMenu id="savedFilter" style="width:205px;height:52px;"
+						value="#{filterBean.currentFilter}">
+						<f:selectItems value="#{filterBean.dbFilterList()}" var="cf"
+							itemLabel="#{cf.key}" itemValue="#{cf.value}" />
+					</p:selectManyMenu>
+				</p:fieldset>
+			</h:panelGrid>
+		</p:tab>
+		<p:tab title="Group By"
+			rendered="${reportDesignerBean.selectedReport ne '0'}">
+			<p:dataList value="#{reportBuilderBean.groupBy}" var="grp"
+				itemType="disc" id="groupby">  
+			    #{grp.value}  
+			</p:dataList>
+		</p:tab>
+		<p:tab title="Order By"
+			rendered="${reportDesignerBean.selectedReport ne '0'}">
+			<h:panelGrid width="100%" columns="1" bgcolor="#dfdfdf"
+				style="height:25px; margin-bottom:5px; padding:5px;">
+			<p:commandLink title="Order By" oncomplete="obDlg.show()"
+				actionListener="#{orderByBean.actionListener()}"
+				update=":orderByForm :orderByForm:orderByGrid"  value="#{sid['label.add.orderBy']}" async="true">
+				<f:param name="action" value="create"></f:param>
+			</p:commandLink>
+			<p:dataList value="#{reportBuilderBean.orderBy}" var="ord"
+				itemType="disc" id="orderby" style="padding:2px">  
+			    #{ord.value}  
+			</p:dataList>
+			</h:panelGrid>
+		</p:tab>
+		<p:tab title="Applied Formulas"
+			rendered="${reportDesignerBean.selectedReport ne '0'}">
+			<p:dataList value="#{reportBuilderBean.appFormula}" var="frm"
+				itemType="disc" id="appformula">
+			    #{frm.value}  
+			</p:dataList>
+		</p:tab>
+	</p:accordionPanel>
+</ui:composition>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<style type="text/css">
+		.ui-inputtextarea {
+			width: 300px !important;
+			height: 50px !important;
+			lenght: 400px !important;
+		}
+	</style>
+	<p:dialog header="Database Connection" widgetVar="conndlg" id="dbconndlg" resizable="false" dynamic="true">
+		<p:ajax event="close" update="dbconndlg" listener="#{dbConnBean.handleClose}"/>
+		<h:form id="connform">
+			<fieldset style="height:60px; padding-top:20px;">
+				<legend style="font-weight:bold; font-size:14px;">&nbsp;Connection Identification&nbsp;</legend>
+				<h:panelGrid columns="3" columnClasses="connleft,connright">
+					<h:panelGroup><h:outputLabel value="#{sid['label.connection.name']}" for="dbconnection" />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold; padding-right:50px;" /></h:panelGroup>
+					<p:inputText id="dbconnection" value="#{dbConnBean.connection}" size="80" required="true" requiredMessage="Required" />
+					<p:message for="dbconnection" />
+				</h:panelGrid>
+			</fieldset>
+			<fieldset style="padding-top:20px; margin-top:10px; height:390px;">
+				<legend style="font-weight:bold; font-size:14px;">&nbsp;Connection Parameters&nbsp;</legend>
+				<h:panelGrid columns="2">
+					<h:panelGroup layout="block" style="width:250px;">
+						<h:panelGroup style="float:left;"><h:outputLabel value="#{sid['label.database.manager']}" for="dbmanager" style="font-weight:bold; font-size:13px;"  />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold;" /></h:panelGroup>
+						<h:panelGroup style="float:right;"><p:message for="dbmanager" /></h:panelGroup>
+						<h:selectOneListbox id="dbmanager" value="#{dbConnBean.dataSource}" size="20" style="width:250px; font-size:14px; font-family:sans-serif;" required="true" requiredMessage="Required">
+							<f:selectItems value="#{dbConnBean.availableDataSources()}" var="conn" itemLabel="#{conn.value}" itemValue="#{conn.key}"  />
+							<p:ajax event="change" listener="#{dbConnBean.updateDriver}" update="connpanel" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+					<h:panelGroup id="connpanel" layout="block" style="width:580px; height:360px; margin-left:30px;">
+						<h:panelGrid columns="3" style="padding-left:30px; padding-top:15px;" columnClasses="connleft,connright" footerClass="fclass">
+							<h:panelGroup><h:outputLabel value="#{sid['label.jdbc.driver']}:" for="dbdriver" />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold;" /></h:panelGroup>
+							<h:panelGroup>
+								<p:selectOneMenu id="dbdriver" style="width:280px; font-size:12px;" value="#{dbConnBean.driver}" required="true" requiredMessage="Required">
+									<f:selectItems value="#{dbConnBean.availableDrivers()}" var="drv" itemLabel="#{drv.key}" itemValue="#{drv.key}"  />
+								</p:selectOneMenu>
+							</h:panelGroup>
+							<p:message for="dbdriver"/>
+							<h:panelGroup><h:outputLabel value="#{sid['label.database']}:" for="dbdb" rendered="#{dbConnBean.showLabel()}" /><h:outputLabel value="#{sid['label.databaseurl']}:" for="dbdb" rendered="#{dbConnBean.dataSource eq 4}" /><h:outputLabel value="#{sid['label.file']}:" for="dbdb" rendered="#{dbConnBean.dataSource eq 6}" />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold;" /></h:panelGroup>
+							<p:inputText id="dbdb" value="#{dbConnBean.database}" size="45" required="true" requiredMessage="Required">
+								<p:ajax event="keyup" process="@this" listener="#{dbConnBean.updateURL}" update="dburl" />
+							</p:inputText>
+							<p:message for="dbdb"/>							
+							<c:if test="#{dbConnBean.showLabel()}">
+							<h:panelGroup><h:outputLabel value="#{sid['label.host']}:" for="dbhost" />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold;" /></h:panelGroup>
+							<p:inputText id="dbhost" value="#{dbConnBean.host}" size="45" required="true" requiredMessage="Required">
+								<p:ajax event="keyup" process="@this" listener="#{dbConnBean.updateURL}" update="dburl" />
+							</p:inputText>
+							<p:message for="dbhost"/>
+							<h:outputLabel value="#{sid['label.port']}:" for="dbport" />
+							<p:inputText id="dbport" value="#{dbConnBean.port}" size="45">
+								<p:ajax event="keyup" process="@this" listener="#{dbConnBean.updateURL}" update="dburl" />
+							</p:inputText>
+							<h:panelGroup/>
+							</c:if>							
+							<h:outputLabel value="#{sid['label.user.name']}:" for="dbuname" />
+							<p:inputText id="dbuname" value="#{dbConnBean.username}" size="45" />
+							<p:message for="dbuname"/>
+							<h:outputLabel value="#{sid['label.password']}:" for="dbpass" />
+							<p:inputText id="dbpass" value="#{dbConnBean.password}" size="45" />
+							<p:message for="dbpass"/>
+							<h:panelGroup>
+								<p:selectBooleanCheckbox id="dbsavepass" value="#{dbConnBean.savepass}" />
+								<h:outputLabel value="#{sid['label.save.password']}" for="dbsavepass" />
+							</h:panelGroup>
+							<h:panelGroup/>
+							<h:panelGroup/>
+							<h:outputLabel value="#{sid['label.default.schema']}:" for="dbschema" />
+							<p:inputText id="dbschema" value="#{dbConnBean.schema}" size="45" />
+							<h:panelGroup/>
+							<h:outputLabel value="#{sid['label.connection.url']}:" for="dburl" />
+							<p:inputTextarea id="dburl" style="background-color: rgb(234,234,234);" value="#{dbConnBean.url}" disabled="true" />
+							<h:panelGroup/>
+							<h:panelGroup/>
+							<h:panelGroup style="float:right; margin-top:5px;">
+							<p:commandButton value="#{sid['label.test.connection']}" style="margin-top:5px; float:right;" actionListener="#{dbConnBean.testConnection}" update="@form" oncomplete="if(!args.validationFailed) testdlg.show();" />
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGroup>
+					</h:panelGrid>
+				</fieldset>
+				<h:panelGroup style="float:right; margin-top:7px; margin-right:5px; font-size: 14px; font-family: Helvetica;">
+					<p:commandButton value="#{sid['label.cancel']}" style="margin-top:5px; float:right;" onclick="conndlg.hide()" />
+					<p:commandButton value="#{sid['label.save.connection']}" style="margin-top:5px; float:right;" actionListener="#{dbConnBean.createConnection}" update="@form,:addtable:tabView" oncomplete="if(!args.validationFailed) {  conndlg.hide(); alert('Connection Created Successfully!'); }" rendered="#{dbConnBean.currAction eq 'create'}" />
+					<p:commandButton value="#{sid['label.edit.connection']}" style="margin-top:5px; float:right;" actionListener="#{dbConnBean.updateConnection}" update="@form,:addtable:tabView" oncomplete="if(!args.validationFailed) {  conndlg.hide(); alert('Connection Updated Successfully!'); }" rendered="#{dbConnBean.currAction eq 'edit'}" />			
+				</h:panelGroup>
+				<p:dialog id="testDialog" header="Test Connection" widgetVar="testdlg">			  
+			    	<h:outputText value="#{dbConnBean.connStatus}" style="font-size:13px;" />  
+				</p:dialog>	
+			</h:form>
+		</p:dialog>
+</ui:composition>

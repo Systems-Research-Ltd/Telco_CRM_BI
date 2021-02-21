@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+<ui:composition>
+
+	
+		<h:form styleClass="ui-form" id="franchiseForm">
+			<h:inputHidden  id="currentAction"  value="#{franchiseBackingBean.currentAction}"
+				validator="#{franchiseBackingBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true"/>
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['label.title']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+
+						<p:inputText id="title"
+							maxlength="50"
+							value="#{franchiseBackingBean.franchiseTitle}"
+							disabled="#{franchiseBackingBean.disabled}" />
+
+					</p:column>
+</p:row>
+<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['label.status']}&nbsp; 
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu value="#{franchiseBackingBean.franchiseStatus}"
+							styleClass="hundred-percent" disabled="#{franchiseBackingBean.disabled}">
+							<f:selectItem itemLabel="Active" itemValue="true" />
+							<f:selectItem itemLabel="In-Active" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+						${sid['label.country']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="country" value="#{franchiseBackingBean.franchiseCountry}"
+							label="Country" disabled="#{franchiseBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Country is Required"
+							validator="#{addressBeanUpdated.validateCountry}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.countries}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+							<p:ajax update="@this, state" event="change" partialSubmit="true"
+								process="currentAction, country" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+</p:row><p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['label.state']}&nbsp; 
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="state" value="#{franchiseBackingBean.franchiseState}"
+							label="State" disabled="#{franchiseBackingBean.disabled}" required="true"
+							requiredMessage="State is Required" styleClass="hundred-percent"
+							validator="#{addressBeanUpdated.validateState}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.states}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="@this, city" event="change" partialSubmit="true"
+								process="country, state, currentAction" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['label.city']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="city" value="#{franchiseBackingBean.franchiseCity}"
+							label="City" disabled="#{franchiseBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="City is Required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.cities}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column></p:row>
+					
+<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['label.outlet']}&nbsp; 
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu value="#{franchiseBackingBean.isLocation}"
+							styleClass="hundred-percent" disabled="#{franchiseBackingBean.disabled}">
+							<f:selectItem itemLabel="Outlet" itemValue="true" />
+							<f:selectItem itemLabel="Franchise" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+						${sid['label.address']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputTextarea value="#{franchiseBackingBean.franchiseAddress}"
+							maxlength="500"
+							disabled="#{franchiseBackingBean.disabled}" />
+					</p:column>
+</p:row>
+<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['title.details']}&nbsp; 
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputTextarea value="#{franchiseBackingBean.franchiseDetails}"
+							maxlength="500"
+							disabled="#{franchiseBackingBean.disabled}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+<h:inputHidden value="#{franchiseBackingBean.franchiseId}" />
+					<p:commandButton value="#{sid['label.save']}" 	update=":tabView,:lst"
+							actionListener="#{franchiseBackingBean.actionListener()}" ajax="true"
+							rendered="#{franchiseBackingBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+					<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							partialSubmit="true" process="@this" async="true"
+							update=":tabView" rendered="#{franchiseBackingBean.editAction}"
+							actionListener="#{franchiseBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="franchise_id" value="#{franchiseBackingBean.franchiseId}" />
+						</p:commandButton>
+					<p:commandButton value="#{sid['label.update']}" 	update=":tabView,:lst" 
+							action="#{franchiseBackingBean.actionListener()}" ajax="false"
+							rendered="#{franchiseBackingBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{franchiseBackingBean.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{franchiseBackingBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="franchise_id" value="#{franchiseBackingBean.franchiseId}" />
+						</p:commandButton>
+					<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{franchiseBackingBean.deleteConfirmedAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{franchiseBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+					<f:param name="franchise_id" value="#{franchiseBackingBean.franchiseId}" />
+						</p:commandButton>
+					
+					
+					
+					<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{franchiseBackingBean.resetAction}"
+							type="reset">
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{franchiseBackingBean.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{franchiseBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+						
+						</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	
+	</ui:composition>
+</h:body>
+</html>
+

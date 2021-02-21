@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<ui:composition>
+
+
+		<h:form styleClass="ui-form" id="loyaltyForm">
+			<h:inputHidden id="currentAction"
+				value="#{loyaltyBackingBean.currentAction}"
+				validator="#{loyaltyBackingBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true"/>
+
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="title">
+					  ${sid['label.title']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="title" value="#{loyaltyBackingBean.loyaltyTitle}"
+							label="Loyalty Title"
+							validator="#{loyaltyBackingBean.requiredValidator}"
+							disabled="#{loyaltyBackingBean.disabled}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="details">
+				${sid['title.details']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputTextarea id="details"
+							value="#{loyaltyBackingBean.loyaltyDetails}"
+							label="Loyalty Details"
+							validator="#{loyaltyBackingBean.requiredValidator}"
+							disabled="#{loyaltyBackingBean.disabled}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="launch">
+				 ${sid['action.launch']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="launch" styleClass="hundred-percent"
+							value="#{loyaltyBackingBean.loyaltyLaunch}"
+							disabled="#{loyaltyBackingBean.disabled}">
+							<f:selectItem itemValue="manual" itemLabel="Manual" />
+							<f:selectItem itemValue="automatic" itemLabel="Automatic" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="launchdatetime">
+				${sid['label.launch.time.date']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:calendar id="launchdatetime"
+							value="#{loyaltyBackingBean.launchDateTime}" navigator="true"
+							yearRange="c-5:c+20" required="true" mindate="#{loyaltyBackingBean.currentDate}"
+							requiredMessage="Launch Date and Time is required"
+							label="Launch Date and Time" pattern="MMMM dd, yyyy"
+							disabled="#{loyaltyBackingBean.disabled}">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="status">
+				${sid['label.status']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="status" styleClass="hundred-percent"
+							value="#{loyaltyBackingBean.loyaltyStatus}"
+							disabled="#{loyaltyBackingBean.disabled}">
+							<f:selectItem itemLabel="Active" itemValue="true" />
+							<f:selectItem itemLabel="In-Active" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="loyaltyDiscount">
+					${sid['label.discount.percent']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="loyaltyDiscount"
+							value="#{loyaltyBackingBean.loyaltyDiscount}"
+							disabled="#{loyaltyBackingBean.disabled}"></p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="4">
+						<p:panelGrid id="rules" style="width:100%">
+							<c:forEach var="lr"
+								items="#{loyaltyBackingBean.session.loyaltyModule_loyaltyRules}">
+								<p:row id="#{'rules'.concat(lr.tempRuleId)}">
+									<p:column styleClass="fifty-percent">
+										<h:outputLabel for="#{'aruletype'.concat(lr.tempRuleId)}">
+					${sid['label.rule']}&nbsp;<span class="form-required">*</span>
+										</h:outputLabel>
+									</p:column>
+									<p:column styleClass="fifty-percent">
+										<p:selectOneMenu id="#{'aruletype'.concat(lr.tempRuleId)}"
+											value="#{lr.loyaltyaRule}" styleClass="hundred-percent"
+											disabled="#{loyaltyBackingBean.disabled}">
+											<f:selectItem itemLabel="Select Rule" itemValue="" />
+											<f:selectItems value="#{loyaltyBackingBean.Subscriber()}"
+												var="c" />
+											<p:ajax update="@this,#{'condition'.concat(lr.tempRuleId)}"
+												event="change" partialSubmit="true"
+												process="currentAction,#{'aruletype'.concat(lr.tempRuleId)}">
+											</p:ajax>
+											<f:param name="rule" value="rule" />
+											<f:param name="action" value="actionAjax" />
+
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="fifty-percent">
+										<h:outputLabel for="#{'rulecondition'.concat(lr.tempRuleId)}">
+								${sid['label.condition.operator']}&nbsp;
+						</h:outputLabel>
+									</p:column>
+									<p:column styleClass="fifty-percent">
+										<p:selectOneMenu id="#{'rulecondition'.concat(lr.tempRuleId)}"
+											value="#{lr.loyaltyRuleCondition}" required="true"
+											styleClass="hundred-percent"
+											requiredMessage="Loyalty Condition value is required."
+											disabled="#{loyaltyBackingBean.disabled}">
+											<f:selectItems value="#{loyaltyBackingBean.ConditionList()}"
+												var="c" />
+
+										</p:selectOneMenu>
+									</p:column>
+
+								</p:row>
+
+								<p:row id="#{'rules2'.concat(lr.tempRuleId)}">
+									<p:column styleClass="fifty-percent">
+										<h:outputLabel for="#{'condition'.concat(lr.tempRuleId)}">
+					${sid['label.condition']}&nbsp; <span class="form-required">*</span>
+										</h:outputLabel>
+									</p:column>
+
+									<p:column styleClass="fifty-percent">
+										<p:selectOneMenu id="#{'condition'.concat(lr.tempRuleId)}"
+											value="#{lr.loyaltyRuleValue}" styleClass="hundred-percent"
+											disabled="#{loyaltyBackingBean.disabled}">
+											<f:selectItem itemLabel="Select value" itemValue="" />
+											<f:selectItems
+												value="#{loyaltyBackingBean.ContactColumns(lr.loyaltyaRule)}"
+												var="c" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+
+							</c:forEach>
+						</p:panelGrid>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+						<p:commandButton value="#{sid['label.save']}"
+							update=":tabView,:lst"
+							actionListener="#{loyaltyBackingBean.actionListener()}"
+							ajax="true" rendered="#{loyaltyBackingBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+						<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							partialSubmit="true" process="@this" async="true"
+							update=":tabView" rendered="#{loyaltyBackingBean.editAction}"
+							actionListener="#{loyaltyBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+						</p:commandButton>
+						<p:commandButton value="#{sid['label.update']}"
+							update=":tabView,:lst"
+							action="#{loyaltyBackingBean.actionListener()}" ajax="false"
+							rendered="#{loyaltyBackingBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{loyaltyBackingBean.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{loyaltyBackingBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="row_id" value="#{loyaltyBackingBean.loyaltyId}" />
+							
+						</p:commandButton>
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{loyaltyBackingBean.deleteConfirmedAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{loyaltyBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+							<f:param name="row_id" value="#{loyaltyBackingBean.loyaltyId}" />
+						</p:commandButton>
+
+
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{loyaltyBackingBean.resetAction}" type="reset">
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{loyaltyBackingBean.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{loyaltyBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+						<p:commandButton id="addAnother" process="@this,currentAction"
+							partialSubmit="true" value="Add Rule"
+							action="#{loyaltyBackingBean.addRule()}" update="rules"
+							async="true">
+							<f:param name="action" value="create" />
+						</p:commandButton>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</ui:composition>
+</h:body>
+</html>
+

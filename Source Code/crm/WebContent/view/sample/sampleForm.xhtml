@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head><title>#{sampleBackingBean.pageTitle}</title>
+</h:head>
+<h:body>
+
+<div align="center">
+<h1 class="ui-widget-header ui-corner-all" align="center"><h:outputLabel id="pageTitle" value="#{sampleBackingBean.pageTitle}"/> Title</h1>
+<br/>
+
+<br/>
+<p:fieldset legend="Simple Server Behavior">  
+<h:form id="sampleForm">
+<h:inputHidden value="#{sampleBackingBean.currentAction}" validator="#{sampleBackingBean.actionValidator}" />
+<h:inputHidden value="#{sampleBackingBean.id}" validator="#{sampleBackingBean.idValidator}"  id="id"/>
+
+<h:messages id="msgs"/>
+ <p:panel id="panel" header="New Title" style="margin-bottom:10px;"> 
+   <h:outputLabel value="#{sid['label.name']}" />
+   <p:inputText id="nameField"  value="#{sampleBackingBean.name}"    validator="#{sampleBackingBean.requiredValidator}" disabled="#{sampleBackingBean.disabled}"/><br/>
+
+   <h:outputLabel value="#{sid['label.email']}" />
+   <p:inputText  value="#{sampleBackingBean.email}"  validator="#{sampleBackingBean.emailValidator}"  disabled="#{sampleBackingBean.disabled}"/><br/>
+
+   <h:outputLabel value="#{sid['label.phone']}" />
+   <p:inputMask  value="#{sampleBackingBean.phone}" mask="#{sampleBackingBean.phoneMask}"  validator="#{sampleBackingBean.phoneValidator}"  disabled="#{sampleBackingBean.disabled}"/><br/>
+
+   <h:outputLabel value="#{sid['label.date']}" />
+   <p:inputMask  value="#{sampleBackingBean.date}"  mask="#{sampleBackingBean.dateMask}"  disabled="#{sampleBackingBean.disabled}"/><br/>
+
+   <h:outputLabel value="#{sid['label.amount']}" />
+   <p:inputText  value="#{sampleBackingBean.amount}"  validator="#{sampleBackingBean.numberValidator}"  disabled="#{sampleBackingBean.disabled}"/><br/>
+
+   <h:outputLabel value="#{sid['label.cnic']}" />
+   <p:inputMask  value="#{sampleBackingBean.cnic}" mask="#{sampleBackingBean.cnicMask}" validator="#{sampleBackingBean.cnicValidator}" disabled="#{sampleBackingBean.disabled}"/><br/>
+	
+	Provinces:
+	<p:selectOneMenu disabled="#{sampleBackingBean.disabled}" value="#{sampleBackingBean.id}" >
+		<f:selectItems value="#{sampleBackingBean.list}" var="item" itemLabel="#{item.parameterTitle}" itemValue="#{item.parameterId}" />
+		<f:ajax event="valueChange" render="provincesDropDown id" execute="@this" />
+	</p:selectOneMenu>
+	<br></br>
+	Cities:
+	<p:selectOneMenu id="provincesDropDown" disabled="#{sampleBackingBean.disabled}" value="#{sampleBackingBean.name}" >
+		<f:selectItems value="#{sampleBackingBean.provincesList}" var="item" itemLabel="#{item.parameterTitle}" itemValue="#{item.parameterId}" />
+	</p:selectOneMenu>
+<br></br>
+</p:panel>
+   <p:commandButton value="#{sid['label.save']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.saveAction}">
+   		<f:param name="action" value="#{sid['action.save']}" />
+   </p:commandButton>
+   <p:commandButton value="#{sid['label.delete']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.deleteAction}">
+   	<f:param name="action" value="#{sid['action.delete']}" />
+   </p:commandButton>
+   <p:commandButton value="#{sid['label.edit']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.editAction}">
+   	<f:param name="action" value="#{sid['action.edit']}" />
+   </p:commandButton>
+   
+   <p:commandButton value="#{sid['label.deleteConfirmed']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.deleteConfirmedAction}">
+   	<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+   </p:commandButton>
+
+   <p:commandButton value="#{sid['label.update']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.updateAction}">
+   	<f:param name="action" value="#{sid['action.update']}" />
+   </p:commandButton>
+   
+   <p:commandButton value="#{sid['label.reset']}"  update="panel" process="@this" rendered="#{sampleBackingBean.resetAction}">
+   	<p:resetInput target="panel"/>
+   </p:commandButton>
+   
+   <p:commandButton value="#{sid['label.cancel']}" action="#{sampleBackingBean.actionListener}" immediate="true" ajax="false" rendered="#{sampleBackingBean.cancelAction}">
+   	<f:param name="action" value="#{sid['action.cancel']}" />
+   </p:commandButton>
+
+   <p:commandButton value="#{sid['label.send']}" action="#{sampleBackingBean.actionListener}" ajax="false" rendered="#{sampleBackingBean.sendAction}">
+   	<f:param name="action" value="#{sid['action.send']}" />
+   </p:commandButton>
+
+</h:form> 
+</p:fieldset>
+<br/>
+
+</div>
+<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">  
+    <f:facet name="start">  
+        <p:graphicImage value="/themes/default/images/loading.gif" />  
+    </f:facet>  
+  
+    <f:facet name="complete">  
+        <h:outputText value="" />  
+    </f:facet>  
+</p:ajaxStatus>
+
+</h:body></html>

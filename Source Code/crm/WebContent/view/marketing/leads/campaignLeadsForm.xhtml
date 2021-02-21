@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contents">
+		<h:form styleClass="ui-form">
+			<h:inputHidden value="#{Leads.currentAction}"
+				validator="#{Leads.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="name">
+						${sid['label.name']}&nbsp;	 <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="name" value="#{Leads.leadName}"
+							disabled="#{Leads.disabled}" required="true" label="Lead Name"
+							requiredMessage="Lead Name is required." maxlength="30"
+							validatorMessage="Name should not contain numeric values">
+							<f:validateRegex pattern="\D*"></f:validateRegex>
+
+						</p:inputText>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+
+						<h:outputLabel for="email">
+					${sid['label.email']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="email" value="#{Leads.leadEmail}"
+							disabled="#{Leads.disabled}" label="Email" maxlength="75"
+							validatorMessage="Invalid Email address">
+							<f:validateRegex
+								pattern="(^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$)?"></f:validateRegex>
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+
+						<h:outputLabel for="phone">
+					${sid['label.phone']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputMask mask="#{Leads.phoneMask}" id="phone" value="#{Leads.leadPhone}"
+							disabled="#{Leads.disabled}" label="Phone" required="true"
+							requiredMessage="Phone No. is required."
+							validatorMessage="Invalid Phone Number" />
+					</p:column>
+					<p:column>
+
+						<h:outputLabel for="status">
+					${sid['label.status']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" styleClass="hundred-percent"
+							value="#{Leads.leadStatus}" disabled="#{Leads.disabled}"
+							label="Status">
+							<f:selectItem itemLabel="Open" itemValue="open" />
+							<f:selectItem itemLabel="Hot" itemValue="hot" />
+							<f:selectItem itemLabel="Interested" itemValue="won" />
+							<f:selectItem itemLabel="Not Interested" itemValue="lost" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="address">
+    		 		${sid['label.address']}&nbsp;
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="address" value="#{Leads.leadAddress}"
+							maxlength="500" disabled="#{Leads.disabled}" label="Address" />
+					</p:column>
+					<p:column>
+
+						<h:outputLabel for="assign">
+					${sid['label.assigned.to']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="assign" styleClass="hundred-percent"
+							value="#{Leads.leadAssigned}" disabled="#{Leads.disabled}"
+							label="leadSource">
+							<f:selectItem itemLabel="Select User" />
+							<f:selectItems value="#{Leads.listUsers()}" var="a"
+								itemLabel="#{a.userName}" itemValue="#{a.userId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="source">
+					${sid['label.lead.source']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="source" value="#{Leads.leadSource}"
+							styleClass="hundred-percent"
+							disabled="#{Leads.disabled}" label="leadSource">
+							<f:selectItem itemLabel="Select Source" />
+							<f:selectItems value="#{Leads.listSources()}" var="a"
+								itemLabel="#{a.title}" itemValue="#{a.id}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+
+						<p:commandButton value="#{sid['label.save']}"
+							action="#{Leads.actionListener}" ajax="false"
+							rendered="#{Leads.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							action="#{Leads.actionListener}" immediate="true" ajax="false"
+							rendered="#{Leads.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							<f:param name="row_id" value="#{Leads.leadId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}"
+							action="#{Leads.actionListener}" ajax="false"
+							rendered="#{Leads.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							<f:param name="row_id" value="#{Leads.leadId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{Leads.resetAction}" type="reset">
+						</p:commandButton>
+
+
+						<p:commandButton immediate="true"
+						    value="#{(Leads.disabled) ? sid['label.back'] : sid['label.cancel']}"
+							action="#{Leads.actionListener}" ajax="false"
+							rendered="#{Leads.cancelAction}">
+
+							<f:param name="action" value="#{sid['action.cancel']}" />
+
+						</p:commandButton>
+
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

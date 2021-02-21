@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<!-- Message Resource Boundle -->
+	<application>
+		<resource-bundle>
+			<base-name>resources.sid</base-name>
+			<var>sid</var>
+		</resource-bundle>
+	</application>
+
+	<converter>
+		<converter-id>mailTemplateModuleConverter</converter-id>
+		<converter-class>com.srpl.crm.web.common.MailTemplateModuleConverter</converter-class>
+	</converter>
+	
+	<!-- NAVIGATION START -->
+	<!-- TAB -->
+
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.tabListener}</from-action>
+		<navigation-case>
+			<from-outcome>themesSettings</from-outcome>
+			<to-view-id>/view/settings/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>documents</from-outcome>
+			<to-view-id>/view/documents/documentList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/view/dashboard/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>um</from-outcome>
+			<to-view-id>/view/um/user/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>import</from-outcome>
+			<to-view-id>/view/um/import/import.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Administrator')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('AccountManager')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>/view/um/admin/franchise/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	<!--  	<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>../crm/view/alertsandreminders/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>-->
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>marketing</from-outcome>
+			<to-view-id>../crm/view/marketing/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>accountsettings</from-outcome>
+			<to-view-id>/view/settings/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageServices</from-outcome>
+			<to-view-id>/view/um/admin/manageServices/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- MENU -->
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.menuListener}</from-action>
+
+		<navigation-case>
+			<from-outcome>companies</from-outcome>
+			<to-view-id>/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>users</from-outcome>
+			<to-view-id>/view/um/admin/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>groups</from-outcome>
+			<to-view-id>/view/um/admin/groups/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>franchises</from-outcome>
+			<to-view-id>/view/um/admin/franchise/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>mailTemplates</from-outcome>
+			<to-view-id>/view/mailTemplates/index.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>uploadLogo</from-outcome>
+			<to-view-id>/view/um/admin/company/uploadLogo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>import</from-outcome>
+			<to-view-id>/view/um/import/import.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>importUsers</from-outcome>
+			<to-view-id>/view/um/import/importUsers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Settings Menu Starts -->
+		
+		<navigation-case>
+			<from-outcome>changePassword</from-outcome>
+			<to-view-id>/view/um/admin/user/changepassword.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>profile</from-outcome>
+			<to-view-id>/view/settings/userProfile.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<!-- Settings Menu Ends -->
+
+		<navigation-case>
+			<from-action>#{userBackingBean.signOut}</from-action>
+			<from-outcome>signout</from-outcome>
+			<to-view-id>/view/public/SignOutForm.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+	</navigation-rule>
+	<!-- MENU ENDS HERE -->
+
+	
+
+<!-- company hammad -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/company/*</from-view-id>
+		<from-action>#{companyBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/um/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/um/admin/company/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>parameter</from-outcome>
+			<to-view-id>/view/um/admin/company/parameter/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- Franchise Hammad -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/um/admin/franchise/franchiseForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/um/admin/franchise/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- hammad parameters -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/company/parameter/*</from-view-id>
+		<from-action>#{parameterBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/um/admin/company/parameter/parameterForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/um/admin/company/parameter/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- Operations/Services Listing -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/groups/groupsOperations/*</from-view-id>
+		<from-action>#{groupOperationBackingBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/um/admin/groups/groupsOperations/groupOperationForm.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/um/admin/groups/groupsOperations/groupOperationList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Operations/Services Listing -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/manageServices/*</from-view-id>
+		<from-action>#{serviceBackingBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/um/admin/manageServices/serviceForm.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/um/admin/manageServices/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Documents -->
+	<navigation-rule>
+		<from-view-id>/view/documents/*</from-view-id>
+		<from-action>#{Documents.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/documents/documentForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/documents/documentList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	
+	<!-- User Profile -->
+	<navigation-rule>
+		<from-view-id>/view/settings/userProfile.xhtml</from-view-id>
+		<from-action>#{profile.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/settings/userProfile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- User Profile -->
+</faces-config>

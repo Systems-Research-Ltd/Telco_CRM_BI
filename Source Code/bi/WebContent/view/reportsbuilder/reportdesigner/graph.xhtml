@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:graphs="http://java.sun.com/jsf/composite/dash">
+		<h:outputText value="Graphical Data Presentation" rendered="#{empty reportBuilderBean.dndColumns}" style="font-size:24px;" />
+		<!--  <p:barChart id="basic" value="#{reportBuilderBean.categoryModel}" legendPosition="ne" rendered="#{not empty reportBuilderBean.dndColumns}" 
+            title="Graphical Data Presentation" min="0" max="200" style="height:300px"/>-->
+        <graphs:graphtag rendered="#{reportDesignerBean.graph.chartvalid}" report="#{reportDesignerBean.selectedGraph}" value="#{reportDesignerBean.graph.chart}" min="#{reportDesignerBean.graph.minY}" max="#{reportDesignerBean.graph.maxY}"></graphs:graphtag>
+
+</ui:composition>

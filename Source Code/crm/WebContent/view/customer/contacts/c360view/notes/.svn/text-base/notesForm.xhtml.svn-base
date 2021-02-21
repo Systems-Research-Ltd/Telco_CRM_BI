@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" id="noteForm">
+			<h:inputHidden value="#{customer360Notes.currentAction}"
+				validator="#{customer360Notes.actionValidator}" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="description">
+					${sid['label.description']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="description" value="#{customer360Notes.note}"
+							maxlength="500" disabled="#{!customer360Notes.saveAction}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+
+						<p:commandButton ajax="true" value="#{sid['label.save']}"
+							update=":tabView" rendered="#{customer360Notes.saveAction}"
+							actionListener="#{customer360Notes.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							update=":tabView" immediate="true"
+							action="#{customer360Notes.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

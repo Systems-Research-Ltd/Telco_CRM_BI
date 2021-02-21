@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+<ui:composition>
+<h:form  id="leadForm"  styleClass="ui-form">
+				<h:inputHidden value="#{leadBackingBean.currentAction}" validator="#{leadBackingBean.actionValidator}" />
+				<p:messages id="msgs" autoUpdate="true" />
+				<p:panelGrid id="grid" styleClass="content-table">
+			
+					<p:row>
+						<p:column styleClass="fifty-percent">
+							<h:outputLabel for="name">
+					${sid['label.name']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText id="name" value="#{leadBackingBean.leadName}"
+								disabled="#{leadBackingBean.disabled}" required="true" label="Lead Name"
+								requiredMessage="Lead Name is required." maxlength="30"
+								validatorMessage="Name should not contain numeric values">
+								<f:validateRegex pattern="\D*"></f:validateRegex>
+
+							</p:inputText>
+						</p:column>
+					</p:row>
+						<p:row>
+						<p:column styleClass="fifty-percent">
+
+							<h:outputLabel for="email">
+					${sid['label.email']}&nbsp; 
+				</h:outputLabel>
+						</p:column>
+					<p:column styleClass="fifty-percent">
+							<p:inputText id="email" value="#{leadBackingBean.leadEmail}"
+								disabled="#{leadBackingBean.disabled}" label="Email" maxlength="75"
+								validatorMessage="Invalid Email address">
+								<f:validateRegex
+									pattern="(^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$)?"></f:validateRegex>
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="fifty-percent">
+
+
+							<h:outputLabel for="phone">
+					${sid['label.phone']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+						</p:column>
+					<p:column styleClass="fifty-percent">
+							<p:inputMask mask="#{leadBackingBean.phoneMask}" id="phone"
+								value="#{leadBackingBean.leadPhone}" disabled="#{leadBackingBean.disabled}"
+								label="Phone" required="true"
+								requiredMessage="Phone No. is required."
+								validatorMessage="Invalid Phone Number" />
+						</p:column>
+						</p:row>
+						<p:row>
+						<p:column styleClass="fifty-percent">
+
+							<h:outputLabel for="status">
+					${sid['label.status']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="status" styleClass="hundred-percent" 
+								value="#{leadBackingBean.leadStatus}" disabled="#{leadBackingBean.disabled || leadBackingBean.permission.create || (leadBackingBean.leadStatus eq 'successful')}"
+								label="Status">
+								<f:selectItem itemLabel="Open" itemValue="open" />
+								<f:selectItem itemLabel="Hot" itemValue="hot" />
+								<f:selectItem itemLabel="Interested" itemValue="won" />
+								<f:selectItem itemLabel="Not Interested" itemValue="lost" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="fifty-percent">
+
+							<h:outputLabel for="address">
+    		 		${sid['label.address']}&nbsp;
+    		 	</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputTextarea id="address" value="#{leadBackingBean.leadAddress}"
+								maxlength="500" disabled="#{leadBackingBean.disabled}" label="Address" />
+						</p:column>
+				</p:row>
+					<p:row>
+						<p:column styleClass="fifty-percent">
+
+							<h:outputLabel for="assign">
+					${sid['label.assigned.to']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="assign" styleClass="hundred-percent"
+								value="#{leadBackingBean.leadAssigned}" disabled="#{leadBackingBean.disabled}"
+								label="leadSource">
+								<f:selectItem itemLabel="Select User" itemValue="" />
+								<f:selectItems value="#{leadBackingBean.listUsers()}" var="a"
+									itemLabel="#{a.userName}" itemValue="#{a.userId}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+					<p:column styleClass="fifty-percent">
+
+							<h:outputLabel for="source">
+					${sid['label.campaigns']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="source" value="#{leadBackingBean.leadSource}"
+								styleClass="hundred-percent" disabled="#{leadBackingBean.disabled}"
+								label="leadSource">
+								<f:selectItem itemLabel="Select Campaign" itemValue="" />
+								<f:selectItems value="#{leadBackingBean.listSources()}" var="a"
+									itemLabel="#{a.title}" itemValue="#{a.id}" />
+							</p:selectOneMenu>
+						</p:column></p:row>
+						
+<p:row>
+						<p:column styleClass="fifty-percent">
+							<h:outputLabel for="comments">
+				${sid['label.comments']}&nbsp;
+				</h:outputLabel>
+						</p:column>
+					<p:column styleClass="fifty-percent">
+							<p:inputTextarea disabled="#{leadBackingBean.disabled}"></p:inputTextarea>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+				${sid['label.lead.source']}&nbsp; <span class="form-required">*</span>
+							</h:outputLabel>
+
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:selectOneMenu id="leadSource" disabled="#{leadBackingBean.disabled}"
+								value="#{leadBackingBean.campaignSource}" style="width:232px;">
+								<f:selectItems value="#{leadBackingBean.campaignSourceList()}" var="c" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="2" styleClass="buttons-row">
+						<h:inputHidden value="#{leadBackingBean.leadId}" />
+						<p:commandButton value="#{sid['label.save']}"
+							actionListener="#{leadBackingBean.actionListener()}" ajax="false"
+							rendered="#{leadBackingBean.saveAction}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+						<p:commandButton ajax="false" value="#{sid['label.edit']}"
+							rendered="#{leadBackingBean.editAction}"
+							action="#{leadBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="lead_id" value="#{leadBackingBean.leadId}" />
+						</p:commandButton>
+						<p:commandButton value="#{sid['label.update']}"
+							action="#{leadBackingBean.actionListener()}" ajax="false"
+							rendered="#{leadBackingBean.updateAction}">
+							<f:param name="action" value="update" />
+							<f:param name="lead_id" value="#{leadBackingBean.leadId}" />							
+						</p:commandButton>
+						<p:commandButton ajax="false" value="#{sid['label.delete']}"
+							rendered="#{leadBackingBean.deleteAction}"
+							action="#{leadBackingBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="lead_id" value="#{leadBackingBean.leadId}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="false"
+							value="#{sid['label.deleteConfirmed']}"
+							rendered="#{leadBackingBean.deleteConfirmedAction}"
+							action="#{leadBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+						</p:commandButton>
+						
+						
+						
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{leadBackingBean.resetAction}"
+							type="reset">
+						</p:commandButton>
+
+					<p:commandButton ajax="false" value="#{sid['label.cancel']}" immediate="true"
+							rendered="#{leadBackingBean.cancelAction}"
+							actionListener="#{leadBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+							<f:param name="lead_id" value="#{leadBackingBean.leadId}" />
+						</p:commandButton>	
+							
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				</h:form>
+				<br></br>
+				<br></br>
+			<h:form id="commentsForm" rendered="#{leadBackingBean.renderCommentsForm}">
+      	      <p:fieldset id="commentsFieldset" style="left-padding:0px"
+				legend="Lead History" toggleable="true" toggleSpeed="300"
+				collapsed="true">
+
+                <h:outputLabel for="usercomments">
+					<b>${sid['label.reply.content']}&nbsp;  </b>
+				</h:outputLabel>
+				<h:inputTextarea id="usercomments" value="#{leadBackingBean.userComments}" style="width:100%;">
+				</h:inputTextarea>
+				<br />
+				<h:commandLink value="" ajax="false" style="float:right;"
+				    action="#{leadBackingBean.actionListener()}">
+				    <h:graphicImage name="themes/default/images/post.png"></h:graphicImage>
+					<f:param name="lead_id" value="#{leadBackingBean.leadId}" />
+					<f:param name="action" value="postComments" />
+				</h:commandLink>
+				<br />
+				<br />
+				<hr />
+				
+			  <table id="commentsTable" style="width:100%">
+			    <ui:repeat var="leadHistory" value="#{leadBackingBean.leadHistoryList}">
+					<tr style="width:100%">
+						 <th style="width:30%">
+						 <h:outputLabel>
+				${sid['label.assigned.to']}&nbsp;	
+		      </h:outputLabel>
+						 
+			             </th>
+						 <th style="width:70%">
+						   <h:outputLabel value="#{leadBackingBean.getUserName(leadHistory.getLeadAssigned())}" />     
+			             </th>
+		            </tr>
+		            <tr style="width:100%">
+		             <td style="width:30%" >
+		             <h:outputLabel>
+					  ${sid['label.date']}&nbsp;
+		            </h:outputLabel>
+		              
+                     </td>
+                     <td style="width:70%; border-radius: 20px;">
+		               <h:outputLabel value="#{leadHistory.getLeadAssignedToDate()}" style="color:#8f8f8f">
+		                 <f:convertDateTime pattern="d-M-yyyy hh:mm:ss"/>
+		               </h:outputLabel>
+                     </td>
+                    </tr>
+                    
+		            <tr>
+		              <td>
+		               <hr>
+		               </hr>
+		              </td>
+		              <td>
+		               <hr>
+		               </hr>
+		              </td>
+		            </tr>
+		            
+					  <ui:repeat var="leadComments" value="#{leadHistory.leadCommentsList}" varStatus="status">
+						<tr bgcolor="#{leadComments.getUser().getIsUserCustomer() == true ? '#c5c5c5' : '#F7DA81'}" style="width:100%; border-radius: 20px;">
+						 <td style="width:30%;">
+						  <h:outputLabel value="#{leadComments.user.userName}" style="font-weight: bold"></h:outputLabel><br></br>
+						  
+						  <h:outputLabel value="#{leadComments.getLeadCommentsDate()}">
+						   <f:convertDateTime timeZone="Asia/Karachi" type="both" pattern="d-M-yyyy hh:mm:ss a"/>
+						  </h:outputLabel>
+						  
+		                 </td>
+		                 
+		                 <td style="width:70%">
+		                  &nbsp;&nbsp;&nbsp;
+		                  
+		                  <h:outputLabel value="#{leadComments.getLeadComments()}"></h:outputLabel>
+		                 </td>
+                        </tr>
+                        <tr>
+		                 <td>
+		                  &nbsp;
+		                 </td>
+		                 <td>
+		                  &nbsp;
+		                 </td>
+		                </tr>
+                      </ui:repeat>
+		          
+		            <tr>
+		             <td>
+		              <hr></hr>
+		             </td>
+		             <td>
+		              <hr></hr>
+		             </td>
+		            </tr>			
+				</ui:repeat>
+			  </table>	
+			</p:fieldset>
+	  </h:form>
+
+</ui:composition>
+</h:body>
+</html>
+	
+
+				

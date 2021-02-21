@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Login</title>
+<link href="%=request.getContextPath()%>/themes/${initParam.theme}/default.css" rel="stylesheet" type="text/css" /></head>
+   <h:body>
+   
+   <form  class="login"   action="j_security_check?loginerror=true" method="post">
+   <h:message errorStyle="color:red" />
+   <h:panelGrid columns="2">
+   <h:outputLabel value="Login Name" />
+   <input type="text" name="j_username" id="j_username" />
+   <h:outputLabel value="Password" />
+   <input type="password" name="j_password" id="j_password" />
+   <h:outputText value='' />
+   <h:panelGrid columns="1">
+   <input name="button" type="submit" class="login-btn" id="button" value="" />
+   </h:panelGrid>
+   </h:panelGrid>
+   </form>
+   </h:body>
+   </html>

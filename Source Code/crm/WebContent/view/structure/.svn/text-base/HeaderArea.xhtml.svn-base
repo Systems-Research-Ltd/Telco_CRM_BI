@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+						<p:graphicImage id="logo" value="/image/#{indexBackingBean.companyLogo}?mod=companyLogo" alt="Company Logo" height="80"></p:graphicImage>
+		
+		
+		<div class="login-welcome">
+			<h:form>
+				<h:outputText value="Welcome " />
+				<h:outputLink id="company" value="/um/view/dashboard/index.jsf">#{indexBackingBean.name}</h:outputLink>
+				<p:tooltip for="company" value="#{indexBackingBean.userRole} #{indexBackingBean.companyName}" showEffect="fade" hideEffect="fade"/>
+				
+				<br />
+				<ul>
+					<li>
+					<h:outputText value="#{myDate.myDate}">
+						<f:convertDateTime pattern="EEEE MMMM dd, yyyy" type="date"/>
+					</h:outputText>
+					</li>
+					<li class="sep"> | </li>
+					<li><h:commandLink value="Logout" action="#{indexBackingBean.logOut()}"></h:commandLink></li>
+				</ul>
+				<h:graphicImage id="crm" name="themes/#{themeBean.userTheme.title}/images/crm_logo.png" alt="CRM" />
+				<p:tooltip for="crm" value="Customer Relationship Managment" showEffect="fade" hideEffect="fade"/>
+			</h:form>	
+		</div>
+	</ui:composition>
+</body>
+</html>

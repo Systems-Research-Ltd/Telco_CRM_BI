@@ -1,0 +1,115 @@
+package com.srpl.um.ejb.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import com.srpl.um.ejb.request.UmPersistence;
+
+/**
+ * The persistent class for the assigned_tasks database table.
+ * 
+ */
+@Entity
+@Table(name="themes", schema=UmPersistence.schema)
+public class ThemesORM implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@SequenceGenerator(name="THEMES_ID_GENERATOR", sequenceName="THEMES_ID_SEQ", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="THEMES_ID_GENERATOR")
+	private Long id;
+
+	@Column(name="title")
+	private String title;
+	
+	@Column(name="image")
+	private String image;
+	
+	@Column(name="is_default")
+	private Boolean isDefault; 
+	
+	@Column(name="css_path")
+	private String cssPath; 
+	
+	@Column(name="css")
+	private String css; 
+	
+	@Column(name="tooltip_text")
+	private String tooltipText;
+
+    public ThemesORM() {
+    }
+    
+    public ThemesORM(Long id, String title, String image, Boolean isDefault, String tooltipText) {
+    	this.id = id;
+    	this.title = title;
+    	this.image = image;
+    	this.isDefault = isDefault;
+    	this.tooltipText = tooltipText;
+    }
+    
+    public ThemesORM(String title, String image, Boolean isDefault, String tooltipText) {
+    
+    	this.title = title;
+    	this.image = image;
+    	this.isDefault = isDefault;
+    	this.tooltipText = tooltipText;
+    }
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	public String getCssPath() {
+		return cssPath;
+	}
+
+	public void setCssPath(String cssPath) {
+		this.cssPath = cssPath;
+	}
+
+	public String getCss() {
+		return css;
+	}
+
+	public void setCss(String css) {
+		this.css = css;
+	}
+	
+	public String getTooltipText() {
+		return tooltipText;
+	}
+
+	public void setTooltipText(String tooltipText) {
+		this.tooltipText = tooltipText;
+	}
+	
+}

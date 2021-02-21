@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition xmlns:sr="http://java.sun.com/jsf/composite/utils">
+		<h:form styleClass="ui-form" id="invoiceListing">
+			<sr:datatableHammad
+				id="invoices"
+				value="#{customer360Invoice.list}"
+				columns="#{customer360Invoice.invoiceColumns}"
+				rowid="id" heading="#{sid['label.invoice.list']}"
+				ajaxEnable="true"
+				ajaxUpdateView=":tabView"
+				actiondelete="false"
+				actioncreate="false"
+				actionedit="false"
+				actionview="true"
+				actionListener="#{customer360Invoice.actionListener()}" />
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

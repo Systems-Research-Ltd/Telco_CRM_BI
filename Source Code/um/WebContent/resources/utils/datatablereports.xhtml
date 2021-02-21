@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="value" required="true" shortDescription="List to be populated"></composite:attribute>
+		<composite:attribute name="columns" required="true" shortDescription="List of ColumModel"></composite:attribute>
+	  	<composite:attribute name="rowid" required="true"></composite:attribute>
+		<composite:attribute name="heading" required="true"></composite:attribute>
+		<composite:attribute name="delrowlistener" method-signature="void actionListener(javax.faces.event.ActionEvent)"></composite:attribute>
+		<!--  <composite:attribute name="actionview" default="true"></composite:attribute>
+	 	<composite:attribute name="actionedit" default="true"></composite:attribute>
+		<composite:attribute name="actiondelete" default="false"></composite:attribute>
+		<composite:attribute name="actionparameter" default="false"></composite:attribute>
+		<composite:attribute name="actioncreate" default="true"></composite:attribute>-->
+		
+	</composite:interface>
+
+	<composite:implementation>
+
+		<p:dataTable id="dataTable" var="row" value="#{cc.attrs.value}"
+			paginator="true" rows="20" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+ 		<f:facet name="header">
+				<strong class="flt-lft">#{cc.attrs.heading}</strong>
+				<c:if test="#{cc.attrs.actioncreate eq 'true'}">
+		  			<p:button value="Create New" outcome="create" styleClass="flt-ryt"></p:button>
+		  		</c:if>
+			</f:facet>
+			<!-- <p:column selectionMode="multiple" style="width:18px" /> -->
+			<p:columns value="#{cc.attrs.columns}" var="column"
+				columnIndexVar="colIndex" sortBy="#{row[column.value]}">
+				<f:facet name="header">  
+                			#{column.headerText}  
+            			</f:facet>  
+            			#{row[column.value]}  
+        	</p:columns>
+  			<!-- <p:column>
+				<f:facet name="header">ACTIONS</f:facet>
+				<div class="actions">
+					<ul>
+						<c:if test="#{cc.attrs.actionview eq 'true'}">
+							<li><p:commandLink action="view">
+									<h:graphicImage library="themes/original/icons" name="view.gif" />
+									<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+								</p:commandLink></li>
+						</c:if>
+						<c:if test="#{cc.attrs.actionedit eq 'true'}">
+							<li><p:commandLink action="edit">
+									<h:graphicImage library="themes/original/icons" name="edit.png" />
+									<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+								</p:commandLink></li>
+						</c:if>
+						<c:if test="#{cc.attrs.actiondelete eq 'true'}">
+							<li><p:commandLink
+									actionListener="#{cc.attrs.delrowlistener}" update="dataTable"
+									ajax="false">
+									<h:graphicImage library="themes/original/icons"
+										name="delete.png" />
+									<f:attribute name="del_id" value="#{row[cc.attrs.rowid]}" />
+								</p:commandLink></li>
+						</c:if>
+						<c:if test="#{cc.attrs.actionparameter eq 'true'}">
+							<li><p:commandLink action="parameter">
+									<h:graphicImage library="themes/original/icons" name="settings.png" />
+									<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+								</p:commandLink></li>
+						</c:if>
+					</ul>
+				</div> 
+			</p:column>-->
+			<f:facet name="footer">
+			</f:facet>
+		</p:dataTable>
+
+	</composite:implementation>
+</h:body>
+</html>

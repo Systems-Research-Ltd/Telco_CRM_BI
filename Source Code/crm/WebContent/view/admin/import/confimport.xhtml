@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+	<ui:define name="title">${sid['title.import.data']}</ui:define>
+	<ui:define name="contents">
+		<h:form>
+			<p:messages globalOnly="true" id="globalmsg" />
+			<p:panel header="Import Statistics" style="margin-bottom:10px;" rendered="${import.currPage == 'tempdata'}">
+				<p:panelGrid columns="4" cellpadding="5" style="width:100%;" columnClasses="alter1,alter2,alter1,alter2">
+					<h:outputText value="Import Type" />
+					<h:outputText value="#{import.fileFormat}" />
+					<h:outputText value="Rows Found" />
+					<h:outputText value="#{import.totalRows}" />
+					<h:outputText value="Input Source" />
+					<h:outputText value="#{import.fileSource}" />
+					<h:panelGroup><h:outputText value="Correct Entries" />(<h:graphicImage library="themes/default/images/icons" name="tick.jpg" height="15" width="15" />)</h:panelGroup>
+					<h:outputText value="#{import.correctRows}" />
+					<h:outputText value="Mapping" />
+					<h:outputText value="#{import.colMap}" />
+					<h:panelGroup><h:outputText value="InCorrect Entries" />(<h:graphicImage library="themes/default/images/icons" name="cross.jpg" height="15" width="15" />)</h:panelGroup>
+					<h:outputText value="#{import.affectedRows}" />
+				</p:panelGrid>
+			</p:panel>
+			<h:outputText value="Note: Only Correct Entries will be imported." style="font-style:italic; font-weight:bold; padding-bottom:5px;" rendered="${import.currPage == 'tempdata'}" />
+			<p:dataTable value="#{import.listUsers}" var="data" rowIndexVar="ind" scrollable="true" scrollWidth="980" resizableColumns="true" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" rendered="${import.mappingTable == 'USER'}">
+				<f:facet name="header"><h:outputText value="Imported Users List" /></f:facet>
+				<p:column headerText="S.No." width="50">
+					<h:outputText value="${ind+1}" />
+				</p:column>
+				<p:column headerText="Health" width="50" rendered="${import.currPage == 'tempdata'}">
+					<h:graphicImage library="themes/default/images/icons" name="#{data.isCorrect}" height="15" width="15" />
+				</p:column>
+				<p:column headerText="First Name" sortBy="#{data.userFname}" filterBy="#{data.userFname}" width="120">
+					<h:outputText value="#{data.userFname}" />
+				</p:column>
+				<p:column headerText="Last Name" sortBy="#{data.userLname}" filterBy="#{data.userLname}" width="120">
+					<h:outputText value="#{data.userLname}" />
+				</p:column>
+				<p:column headerText="User Name" sortBy="#{data.userName}" filterBy="#{data.userName}" width="120">
+					<h:outputText value="#{data.userName}" />
+				</p:column>
+				<p:column headerText="Address" sortBy="#{data.userAddress}" filterBy="#{data.userAddress}" width="250">
+					<h:outputText value="#{data.userAddress}" />
+				</p:column>
+				<p:column headerText="Phone" sortBy="#{data.userPhone}" filterBy="#{data.userPhone}" width="120">
+					<h:outputText value="#{data.userPhone}" />
+				</p:column>
+				<p:column headerText="Email" sortBy="#{data.userEmail}" filterBy="#{data.userEmail}" width="250">
+					<h:outputText value="#{data.userEmail}" />
+				</p:column>
+				<p:column headerText="Job Title" sortBy="#{data.userJobtitle}" filterBy="#{data.userJobtitle}" width="120">
+					<h:outputText value="#{data.userJobtitle}" />
+				</p:column>
+			</p:dataTable>
+			<p:dataTable value="#{import.listAccounts}" var="data" rowIndexVar="ind" scrollable="true" scrollWidth="980" resizableColumns="true" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" rendered="${import.mappingTable == 'ACCOUNT'}">
+				<f:facet name="header"><h:outputText value="Imported Accounts List" /></f:facet>
+				<p:column headerText="S.No." width="50">
+					<h:outputText value="${ind+1}" />
+				</p:column>
+				<p:column headerText="Health" width="50" rendered="${import.currPage == 'tempdata'}">
+					<h:graphicImage library="themes/default/images/icons" name="#{data.isCorrect}" height="15" width="15" />
+				</p:column>				
+				<p:column headerText="Account Title" sortBy="#{data.accountTitle}" filterBy="#{data.accountTitle}" width="250">
+					<h:outputText value="#{data.accountTitle}" />
+				</p:column>
+				<p:column headerText="Address" sortBy="#{data.accountAddress}" filterBy="#{data.accountAddress}" width="250">
+					<h:outputText value="#{data.accountAddress}" />
+				</p:column>
+				<p:column headerText="Email" sortBy="#{data.accountEmail}" filterBy="#{data.accountEmail}" width="250">
+					<h:outputText value="#{data.accountEmail}" />
+				</p:column>
+				<p:column headerText="Phone" sortBy="#{data.accountPhone}" filterBy="#{data.accountPhone}" width="200">
+					<h:outputText value="#{data.accountPhone}" />
+				</p:column>
+			</p:dataTable>
+			<p:dataTable value="#{import.listContacts}" var="data" rowIndexVar="ind" scrollable="true" scrollWidth="980" resizableColumns="true" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" rendered="${import.mappingTable == 'CONTACT'}">
+				<f:facet name="header"><h:outputText value="Imported Contacts List" /></f:facet>
+				<p:column headerText="S.No." width="50">
+					<h:outputText value="${ind+1}" />
+				</p:column>
+				<p:column headerText="Health" width="50" rendered="${import.currPage == 'tempdata'}">
+					<h:graphicImage library="themes/default/images/icons" name="#{data.isCorrect}" height="15" width="15" />
+				</p:column>
+				<p:column headerText="First Name" sortBy="#{data.contactFname}" filterBy="#{data.contactFname}" width="120">
+					<h:outputText value="#{data.contactFname}" />
+				</p:column>
+				<p:column headerText="Last Name" sortBy="#{data.contactLname}" filterBy="#{data.contactLname}" width="120">
+					<h:outputText value="#{data.contactLname}" />
+				</p:column>				
+				<p:column headerText="Father Name" sortBy="#{data.contactFatherName}" filterBy="#{data.contactFatherName}" width="200">
+					<h:outputText value="#{data.contactFatherName}" />
+				</p:column>
+				<p:column headerText="Address" sortBy="#{data.contactAddress}" filterBy="#{data.contactAddress}" width="250">
+					<h:outputText value="#{data.contactAddress}" />
+				</p:column>
+				<p:column headerText="Email" sortBy="#{data.contactEmail}" filterBy="#{data.contactEmail}" width="250">
+					<h:outputText value="#{data.contactEmail}" />
+				</p:column>
+				<p:column headerText="Phone" sortBy="#{data.contactPhone}" filterBy="#{data.contactPhone}" width="120">
+					<h:outputText value="#{data.contactPhone}" />
+				</p:column>
+				<p:column headerText="Date of Birth" sortBy="#{data.contactDob}" filterBy="#{data.contactDob}" width="120">
+					<h:outputText value="#{data.contactDob}" />
+				</p:column>				
+				<p:column headerText="CNIC" sortBy="#{data.contactCnic}" filterBy="#{data.contactCnic}" width="120">
+					<h:outputText value="#{data.contactCnic}" />
+				</p:column>				
+				<p:column headerText="Account ID" sortBy="#{data.csAccount.accountId}" filterBy="#{data.csAccount.accountId}" width="120">
+					<h:outputText value="#{data.csAccount.accountId}" />
+				</p:column>
+			</p:dataTable>
+			<p:dataTable value="#{import.listPayments}" var="data" rowIndexVar="ind" scrollable="true" scrollWidth="980" resizableColumns="true" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" rendered="${import.mappingTable == 'PAYMENT'}">
+				<f:facet name="header"><h:outputText value="Imported Payments List" /></f:facet>
+				<p:column headerText="S.No." width="50">
+					<h:outputText value="${ind+1}" />
+				</p:column>
+				<p:column headerText="Health" width="50" rendered="${import.currPage == 'tempdata'}">
+					<h:graphicImage library="themes/default/images/icons" name="#{data.isCorrect}" height="15" width="15" />
+				</p:column>				
+				<p:column headerText="Order ID" sortBy="#{data.orderId}" filterBy="#{data.orderId}" width="250">
+					<h:outputText value="#{data.orderId}" />
+				</p:column>
+				<p:column headerText="Invoice ID" sortBy="#{data.invoiceId}" filterBy="#{data.invoiceId}" width="250">
+					<h:outputText value="#{data.invoiceId}" />
+				</p:column>
+				<p:column headerText="Total Amount" sortBy="#{data.totalAmount}" filterBy="#{data.totalAmount}" width="250">
+					<h:outputText value="#{data.totalAmount}" />
+				</p:column>
+				<p:column headerText="Paid Amount" sortBy="#{data.paidAmount}" filterBy="#{data.paidAmount}" width="200">
+					<h:outputText value="#{data.paidAmount}" />
+				</p:column>
+			</p:dataTable>		
+			<p:dataTable value="#{import.listProducts}" var="data" rowIndexVar="ind" scrollable="true" scrollWidth="980" resizableColumns="true" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" rendered="${import.mappingTable == 'PRODUCT'}">
+				<f:facet name="header"><h:outputText value="Imported Products List" /></f:facet>
+				<p:column headerText="S.No." width="50">
+					<h:outputText value="${ind+1}" />
+				</p:column>
+				<p:column headerText="Health" width="50" rendered="${import.currPage == 'tempdata'}">
+					<h:graphicImage library="themes/default/images/icons" name="#{data.isCorrect}" height="15" width="15" />
+				</p:column>				
+				<p:column headerText="Product Title" sortBy="#{data.productTitle}" filterBy="#{data.productTitle}" width="250">
+					<h:outputText value="#{data.productTitle}" />
+				</p:column>
+				<p:column headerText="Product Cost" sortBy="#{data.productCost}" filterBy="#{data.productCost}" width="150">
+					<h:outputText value="#{data.productCost}" />
+				</p:column>
+				<p:column headerText="Product Description" sortBy="#{data.productDescription}" filterBy="#{data.productDescription}" width="350">
+					<h:outputText value="#{data.productDescription}" />
+				</p:column>
+				<p:column headerText="Product Type" sortBy="#{data.productType}" filterBy="#{data.productType}" width="200">
+					<h:outputText value="#{data.productType}" />
+				</p:column>
+			</p:dataTable>	
+			<p:commandButton value="Import Data" action="#{import.saveCSVData}" ajax="false" rendered="${import.currPage == 'tempdata'}" />
+			<p:commandButton value="Back" ajax="false" process="@this" action="import" rendered="${import.currPage == 'tempdata'}" />
+			<p:commandButton value="Cancel" process="@this" actionListener="#{import.resetBeanData}" action="import" />
+		</h:form>
+	</ui:define>
+</ui:composition>

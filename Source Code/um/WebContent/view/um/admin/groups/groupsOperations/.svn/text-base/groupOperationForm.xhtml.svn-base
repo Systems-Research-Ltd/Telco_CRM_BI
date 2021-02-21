@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" id="operationForm">
+			<p:messages id="opermsgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="grid" styleClass="content-table" >
+			
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Title 
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLabel>
+							<p:inputText id="title" value="#{groupOperationBackingBean.title}"
+						disabled="#{groupOperationBackingBean.disabled}"  />
+	 					</h:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Description 
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLabel>
+						<p:inputTextarea  rows="6" cols="33" id="description" value="#{groupOperationBackingBean.description}" 
+						disabled="#{groupOperationBackingBean.disabled}"   />
+	   					</h:outputLabel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			<p:panel>
+			<p:row>
+				<p:column colspan="4">
+				
+			
+   			<p:commandButton value="#{sid['label.save']}" action="#{groupOperationBackingBean.actionListener}" ajax="false" 
+   			rendered="#{groupOperationBackingBean.saveAction}">
+   			<f:param name="action" value="#{sid['action.save']}" />
+  			 </p:commandButton>
+   				
+   				<p:commandButton value="#{sid['label.update']}" action="#{groupOperationBackingBean.actionListener}" ajax="false" 
+   				rendered="#{groupOperationBackingBean.updateAction}">
+   				<f:param name="action" value="#{sid['action.update']}" />
+   				<f:param name="row_id" value="#{groupOperationBackingBean.operationId}" />
+   			
+   				</p:commandButton>
+   				
+   				
+						<p:commandButton value="#{sid['label.deleteConfirmed']}" action="#{groupOperationBackingBean.actionListener}" ajax="false" 
+   				immediate="true"
+				rendered="#{groupOperationBackingBean.deleteConfirmedAction}">
+   				<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+   				<f:param name="row_id" value="#{groupOperationBackingBean.operationId}" />
+   				</p:commandButton>
+   				
+   				
+   				
+   				
+   				  <p:commandButton value="#{sid['label.cancel']}" action="#{groupOperationBackingBean.actionListener}" ajax="false" rendered="#{groupOperationBackingBean.cancelAction}">
+   	<f:param name="action" value="#{sid['action.cancel']}" />
+   </p:commandButton>
+   				
+   			
+   				
+   			<p:commandButton ajax="false" value="Clear" type="reset" >
+						</p:commandButton>
+   				
+				</p:column>
+				</p:row>
+			
+			</p:panel>
+		</h:form>
+	</ui:composition>
+	</h:body>
+	</html>

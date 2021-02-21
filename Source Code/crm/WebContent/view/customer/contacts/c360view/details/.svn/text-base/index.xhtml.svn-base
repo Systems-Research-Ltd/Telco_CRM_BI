@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form">
+			<h:panelGrid id="grid" columns="2" styleClass="content-table">
+
+				<h:outputLabel for="fname">
+					First Name
+				</h:outputLabel>
+				<h:outputText id="fname" value="#{customer360Details.contact_fname}" />
+				<h:outputLabel for="lname">
+					Last Name
+				</h:outputLabel>
+				<h:outputText id="lname" value="#{customer360Details.contact_lname}"  label="Last Name" />
+
+				<h:outputLabel for="contactType">
+					Contact Type 
+				</h:outputLabel>
+				<h:outputText id="contactType" value="#{customer360Details.company ? 'Company':'Individual'}" />
+				<h:outputLabel for="account">
+					Account
+				</h:outputLabel>
+				<h:outputText id="account" value="#{customer360Details.accountTitle}" label="account" />
+
+				<h:outputLabel for="father">
+					Father Name 
+				</h:outputLabel>
+				<h:outputText id="father" value="#{customer360Details.contact_father_name}" label="Father Name" />
+				<h:outputLabel for="email">
+					Email 
+				</h:outputLabel>
+				<h:outputText id="email" value="#{customer360Details.contact_email}" label="Email" />
+
+				<h:outputLabel for="phone">
+					Contact Number
+				</h:outputLabel>
+				<h:outputText id="phone" value="#{customer360Details.contact_phone}" label="Contact Number" />
+				<h:outputLabel for="status">
+					Status 
+				</h:outputLabel>
+				<h:outputText id="status" value="#{customer360Details.contact_status ? 'Active':'In-Active'}" />
+
+
+				<h:outputLabel for="country">
+					Country 
+				</h:outputLabel>
+				<h:outputText id="country" value="#{addressBean.retCountry(contacts.contact_country)}" />
+				<h:outputLabel for="state">
+					State
+				</h:outputLabel>
+				<h:outputText id="state" value="#{addressBean.retState(contacts.contact_state)}" />
+
+				<h:outputLabel for="city">
+					City
+				</h:outputLabel>
+				<h:outputText id="city" value="#{addressBean.retCity(contacts.contact_city)}" />
+				<h:outputLabel for="zip">
+					Zip Code
+				</h:outputLabel>
+				<h:outputText id="zip" value="#{customer360Details.contact_zipcode}"
+					label="Zip Code" />
+
+				<h:outputLabel for="dob">
+					Date of Birth
+				</h:outputLabel>
+				<h:outputText id="dob" value="#{customer360Details.contact_dob}"
+					label="Date of Birth" pattern="MMMM dd, yyyy" />
+				<h:outputLabel for="createdon" >
+					Created On 
+				</h:outputLabel>
+				<h:outputText id="createdon" value="#{customer360Details.contact_createdon}"
+					label="Date of Birth" pattern="MMMM dd, yyyy" />
+
+
+				<h:outputLabel for="cnic">
+					NIC Number 
+				</h:outputLabel>
+				<h:outputText id="cnic" value="#{customer360Details.contact_cnic}" label="NIC Number" />
+					
+					
+				<h:outputLabel for="address">
+    		 		Address
+    		 	</h:outputLabel>
+				<h:outputText id="address" value="#{customer360Details.contact_address}" label="Address" />
+				<p:column />
+				<p:column/>
+				
+				<h:column />
+			</h:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

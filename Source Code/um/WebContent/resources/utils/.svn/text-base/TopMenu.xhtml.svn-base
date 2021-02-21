@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<body>
+	<!-- Top MENU -->
+	<composite:interface />
+	<composite:implementation>
+
+
+		<!-- Top MENU -->
+
+		<h:form>
+			<!-- Menus -->
+			<ul id="m1">
+				<c:choose>
+					<c:when test="#{actionListener.selectedTab == 'admin'}">
+						<!-- For Admin -->
+						<li class="sep"></li>
+
+						<c:if
+							test="#{facesContext.externalContext.isUserInRole('Administrator')}">
+							<li
+								class="${(actionListener.selectedMenu=='companies'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									value="#{sid['topMenu.um.companies']}"
+									rendered="#{security.companies.read}">
+									<f:param name="action" value="companies" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+
+						<c:if
+							test="#{facesContext.externalContext.isUserInRole('AccountManager')}">
+							<li
+								class="${(actionListener.selectedMenu=='franchises'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{security.franchises.read}"
+									value="#{sid['topMenu.um.franchises']}">
+									<f:param name="action" value="franchises" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+
+							<li
+								class="${(actionListener.selectedMenu=='users'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{security.users.read}"
+									value="#{sid['topMenu.um.users']}">
+									<f:param name="action" value="users" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='groups'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{security.groups.read}"
+									value="#{sid['topMenu.um.groups']}">
+									<f:param name="action" value="groups" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='manageServices'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									value="#{sid['title.um.admin.manageServices']}"
+									rendered="#{security.services.read}">
+									<f:param name="action" value="manageServices" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							
+							<li
+								class="${(actionListener.selectedMenu=='mailTemplates'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{security.mailTemplates.read}"
+									value="#{sid['topMenu.um.mailTemplates']}">
+									<f:param name="action" value="mailTemplates" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+
+						</c:if>
+
+
+
+
+
+					</c:when>
+
+
+					<c:when test="#{actionListener.selectedTab == 'accountsettings'}">
+						<!-- For Settings -->
+						<li class="sep"></li>
+
+						<li
+							class="${(actionListener.selectedMenu=='themesSettings'?'selected':'')}">
+							<h:commandLink action="#{actionListener.menuListener}"
+								value="#{sid['topMenu.accountsettings.themesSettings']}"
+								rendered="#{security.themesSettings.read}">
+								<f:param name="action" value="themesSettings" />
+							</h:commandLink>
+						</li>
+						<li class="sep"></li>
+						<li
+							class="${(actionListener.selectedMenu=='profile'?'selected':'')}">
+							<h:commandLink action="#{actionListener.menuListener}"
+								value="#{sid['topMenu.accountsettings.profile']}"
+								rendered="#{security.userProfile.read}">
+								<f:param name="action" value="profile" />
+							</h:commandLink>
+						</li>
+						<li class="sep"></li>
+						<li
+							class="${(actionListener.selectedMenu=='changePassword'?'selected':'')}">
+							<h:commandLink action="#{actionListener.menuListener}"
+								value="#{sid['topMenu.accountsettings.changePassword']}"
+								rendered="#{security.changePassword.read}">
+								<f:param name="action" value="changePassword" />
+							</h:commandLink>
+						</li>
+						<li class="sep"></li>
+						<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+							<li
+								class="${(actionListener.selectedMenu=='documents'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{documentBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.documents']}">
+									<f:param name="action" value="documents" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'customer'}">
+						<!-- For Settings -->
+						<li class="sep"></li>
+						<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+							<li
+								class="${(actionListener.selectedMenu=='contacts'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{contactBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.customer.contacts']}">
+									<f:param name="action" value="contacts" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='accounts'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{accountBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.customer.accounts']}">
+									<f:param name="action" value="accounts" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'sales'}">
+						<!-- For Settings -->
+						<li class="sep"></li>
+						<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+							<li
+								class="${(actionListener.selectedMenu=='leads'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{leadsBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.leads']}">
+									<f:param name="action" value="leads" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='opportunities'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{opportunityBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.opportunities']}">
+									<f:param name="action" value="opportunities" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='products'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{productBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.products']}">
+									<f:param name="action" value="products" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='packages'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{packageBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.package']}">
+									<f:param name="action" value="packages" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='orders'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{orderBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.orders']}">
+									<f:param name="action" value="orders" />
+								</h:commandLink>
+							</li>
+
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='invoiceSettings'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{invoiceSettingsBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.invoiceSettings']}">
+									<f:param name="action" value="invoiceSettings" />
+								</h:commandLink>
+							</li>
+
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='billreimbursement'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{billReImbursementBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.sales.billreimbursement']}">
+									<f:param name="action" value="billreimbursement" />
+								</h:commandLink>
+							</li>
+
+						</c:if>
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'orders'}">
+						<c:if
+							test="#{facesContext.externalContext.isUserInRole('Customer')}">
+							<li
+								class="${(actionListener.selectedMenu=='orders'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									value="#{sid['topMenu.customer.order']}">
+									<f:param name="action" value="orders" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'support'}">
+						<!-- For Settings -->
+						<li class="sep"></li>
+						<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+							<li
+								class="${(actionListener.selectedMenu=='cases'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{caseBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.support.cases']}">
+									<f:param name="action" value="caseList" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='escalations'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{caseEscalationBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.support.escalations']}">
+									<f:param name="action" value="escalations" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+						<li class="sep"></li>
+						<c:if
+							test="#{facesContext.externalContext.isUserInRole('Customer')}">
+							<li
+								class="${(actionListener.selectedMenu=='My Tickets'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									value="#{sid['topMenu.customer.support.cases']}">
+									<f:param name="action" value="Tickets" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'loyalty'}">
+						<!-- For Settings -->
+						<li class="sep"></li>
+						<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+							<li
+								class="${(actionListener.selectedMenu=='loyaltyRule'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{loyaltyBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.loyalty.loyaltyRule']}">
+									<f:param name="action" value="loyaltyRule" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='messageTemplate'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{messageTemplateBackingBean.profile.permission.read}"
+									value="#{sid['topMenu.loyalty.messageTemplate']}">
+									<f:param name="action" value="messageTemplate" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+					</c:when>
+
+					<c:when test="#{actionListener.selectedTab == 'customer area'}">
+						<!-- For Customer Area -->
+						<li class="sep"></li>
+						<c:if
+							test="#{facesContext.externalContext.isUserInRole('Customer')}">
+							<li
+								class="${(actionListener.selectedMenu=='customer orders'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									value="#{sid['topMenu.customerArea.orders']}">
+									<f:param name="action" value="customer orders" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+							<li
+								class="${(actionListener.selectedMenu=='alertsnreminders'?'selected':'')}">
+								<h:commandLink action="#{actionListener.menuListener}"
+									rendered="#{privilege.isRead(22)}"
+									value="#{sid['topMenu.customerArea.alertsnreminders']}">
+									<f:param name="action" value="alertsnreminders" />
+								</h:commandLink>
+							</li>
+							<li class="sep"></li>
+						</c:if>
+					</c:when>
+
+
+				</c:choose>
+			</ul>
+		</h:form>
+	</composite:implementation>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:sr="http://java.sun.com/jsf/composite/utils"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.documents.listdocument']}</ui:define>
+	<ui:define name="contents">
+	<h:outputText value="Access Restricted!" rendered="#{!privilege.isRead(23)}" />	
+		
+	<h:form id="tableform" rendered="#{privilege.isRead(23)}">
+	
+	 <sr:datatable value="#{Documents.list}" columns="#{Documents.columns}" delrowlistener="#{Documents.deleteRow}" rowid="documentId"  heading="Documents Listing" actiondelete="#{privilege.isDelete(23)}" actioncreate="#{privilege.isCreate(23)}" actionedit="#{privilege.isUpdate(23)}" actionview="#{privilege.isRead(23)}" actionparameter="false"/>
+		
+
+	</h:form>
+	</ui:define>
+	
+</ui:composition>
+

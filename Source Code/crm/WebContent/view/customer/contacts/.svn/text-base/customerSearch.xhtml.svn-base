@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="searchform" prependId="false">
+		<script type="text/javascript"
+			src="${request.contextPath}/js/collapsible.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("fieldset.collapsible").collapse();				
+			});
+			function checkFilter(){
+				if($("#filterby option:selected").val() == "" || $("#filterfor").val() == ""){
+					alert("Both Filter and Value fields are required");
+					return false;
+				}
+				return true;	
+			}			
+		</script>
+		<fieldset class="collapsible">
+			<legend>
+				${sid['title.quick.search']}&nbsp;
+				<h:graphicImage library="themes/default/images" name="downarrow.png"
+					width="10" height="8" />
+			</legend>
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['title.filter']}:" for="filterby"
+							style="font-weight:bold" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu value="#{contactBackingBean.filterBy}"
+							id="filterby" style="width:148px">
+							<f:selectItem itemLabel="Filter By" itemValue="" />
+							<f:selectItem itemLabel="First Name" itemValue="fname" />
+							<f:selectItem itemLabel="Last Name" itemValue="lname" />
+							<f:selectItem itemLabel="Father Name" itemValue="fathername" />
+							<f:selectItem itemLabel="Login Id" itemValue="loginId" />
+							<f:selectItem itemLabel="Phone No" itemValue="phone" />
+							<f:selectItem itemLabel="Email ID" itemValue="email" />
+							<f:selectItem itemLabel="CNIC" itemValue="cnic" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+				<p:column>
+				<h:outputLabel value="#{sid['title.value']}:" for="filterValue"
+					style="font-weight:bold" />
+				</p:column>
+				<p:column>
+				<h:panelGroup>
+					<p:inputText id="filterValue"
+						value="#{contactBackingBean.filterValue}" style="width:140px" />&nbsp;
+					<p:commandButton id="searchfilter" ajax="true"
+						action="#{contactBackingBean.getList()}" update=":lst"
+						icon="ui-icon-search"
+						style="width:27px; height:27px; vertical-align:middle;"
+						onclick="return checkFilter();" />
+				</h:panelGroup>
+				</p:column>	
+				</p:row>
+			</p:panelGrid>
+		</fieldset>
+	</h:form>
+</ui:composition>

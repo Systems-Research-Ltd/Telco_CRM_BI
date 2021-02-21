@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+	<ui:define name="title"> ${sid['title.sales.leads.createlead']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form" enctype="multipart/form-data">
+			<h:inputHidden value="#{Documents.currentAction}"
+				validator="#{Documents.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" closable="true"/>
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="name">
+					Title <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="name" value="#{Documents.documentTitle}"
+							disabled="#{Documents.disabled}" required="true"
+							label="Document Title" maxlength="50"
+							requiredMessage="Document Title is required." />
+
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="details">
+    		 		Description
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputTextarea id="details" value="#{Documents.documentDetails}"
+							disabled="#{Documents.disabled}" maxlength="500" label="Address" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="upload"
+							rendered="#{Documents.renderUploadedDocument}">
+    		 		Uploaded Document
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLink id="upload"
+							rendered="#{Documents.renderUploadedDocument}"
+							value="#{request.contextPath}/resources/documents/#{Documents.documentSource}">
+    		 	              View
+    		 	</h:outputLink>
+
+					</p:column>
+					<p:column>
+						<h:outputLabel for="pdate">
+					Publish Date 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="pdate" value="#{Documents.documentPdate}"
+							disabled="#{Documents.disabled}" navigator="true"
+							yearRange="c-50:c-20" required="true"
+							requiredMessage="Valid Publish date is required"
+							label="Publish Date" pattern="MMMM dd, yyyy"
+							converterMessage="Valid Publish date is required">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="edate">
+					Expired On 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="edate" value="#{Documents.documentEdate}"
+							disabled="#{Documents.disabled}" navigator="true"
+							yearRange="c-50:c-20" required="true"
+							requiredMessage="Valid Expire date is required"
+							label="Expired Date" pattern="MMMM dd, yyyy"
+							converterMessage="Valid Expire date is required">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+
+					</p:column>
+					<p:column>
+						<h:outputLabel for="status">
+					Status
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" value="#{Documents.documentStatus}"
+							styleClass="hundred-percent"
+							disabled="#{Documents.disabled}" label="Status">
+							<f:selectItem itemLabel="Published" itemValue="true" />
+							<f:selectItem itemLabel="Un-Published" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="source">
+    		 		Document
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:fileUpload id="source" value="#{Documents.file}" mode="simple" />
+						<h:inputHidden value="#{Documents.documentSource}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton value="#{sid['label.save']}"
+							action="#{Documents.actionListener}" ajax="false"
+							rendered="#{Documents.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							action="#{Documents.actionListener}" immediate="true"
+							ajax="false" rendered="#{Documents.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							<f:param name="row_id" value="#{Documents.documentId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}"
+							action="#{Documents.actionListener}" ajax="false"
+							rendered="#{Documents.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							<f:param name="row_id" value="#{Documents.documentId}" />
+						</p:commandButton>
+
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{Documents.resetAction}" type="reset">
+						</p:commandButton>
+
+						<p:commandButton immediate="true"
+							value="#{(Documents.disabled) ? sid['label.back'] : sid['label.cancel']}"
+							action="#{Documents.actionListener}" ajax="false"
+							rendered="#{Documents.cancelAction}">
+
+							<f:param name="action" value="#{sid['action.cancel']}" />
+
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

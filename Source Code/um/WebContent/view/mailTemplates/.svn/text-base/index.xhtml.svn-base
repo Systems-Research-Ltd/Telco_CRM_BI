@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="${initParam.template2Col}">
+
+	<ui:define name="title">${sid['label.mail.template']}&nbsp; </ui:define>
+
+	<ui:define name="left-heading">
+	</ui:define>
+	<ui:define name="left-contents">
+	<h:form id="lst" prependId="false" styleClass="listHeight">
+			<fieldset>
+				<legend>${sid['label.mail.templates.list']}&nbsp;</legend>
+				<h:panelGrid columns="3" style="float:right;">
+				<p:commandLink id="createNewIcon" update=":tabView"  action="#{mailTemplate.actionListener()}">
+						<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="plus-icon.png" width="20" />
+						<f:param name="action" value="create" />
+					</p:commandLink>
+					<p:tooltip for="createNewIcon" value="  Add new template " showEffect="fade" hideEffect="fade" /> 
+				</h:panelGrid>
+				<h:outputText value=""/><br/><br/>
+				<p:selectOneListbox id="listBox" value="#{sessionDataBean.mtModule_selectedTemplate}"  styleClass="select-list">
+					<f:selectItems value="#{mailTemplate.list}" var="data" itemLabel="#{data.title}" itemValue="#{data.templateId}" />
+					<f:param name="action" value="view" />
+					<f:param name="fromListing" value="fromListing" />
+					<p:ajax update=":tabView" event="change" listener="#{mailTemplate.actionListener()}" />
+				</p:selectOneListbox>	
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="create-button">				
+
+	</ui:define>
+
+
+	<ui:define name="contents">
+
+		<p:tabView id="tabView" dynamic="true"
+			activeIndex="#{mailTemplate.session.mtModule_tabIndex}">
+
+			<p:tab title="#{mailTemplate.session.mtTabs.get(0).title}">
+				<div id="${mailTemplate.session.mtTabs.get(0).container}">
+					<ui:include src="${mailTemplate.session.mtTabs.get(0).path}" />
+				</div>
+			</p:tab>
+
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>

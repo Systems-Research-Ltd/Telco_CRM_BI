@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+	<ui:define name="title"> ${sid['title.sales.opportunities.createopportunity']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form">
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="customer">
+					Customer 
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputText id="customer"
+							value="#{caseEscalationBean.customer.getContactFname()}" />
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="mobile">
+					Mobile Number 
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputText id="mobile"
+							value="#{caseEscalationBean.mobileNumber}" />
+
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="query">
+					Query
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputText id="query"
+							value="#{caseEscalationBean.customerQuery}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel for="product">
+					Product
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputText id="product"
+							value="#{caseEscalationBean.product.getProductTitle()}" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="type">
+					Case Type
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputText id="type" value="#{caseEscalationBean.caseType}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel for="assignedTo">
+					Assigned To <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="assignedTo"
+							value="#{caseEscalationBean.userId}" label="Assigned To"
+							styleClass="hundred-percent"
+							required="true" requiredMessage="Case assigned to is required.">
+							<f:selectItem itemLabel="Select user" itemValue="" />
+							<f:selectItems value="#{caseEscalationBean.listUsersByCompany()}"
+								var="a" itemLabel="#{a.userName}" itemValue="#{a.userId}" />
+						</p:selectOneMenu>
+
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="comments">
+					Comments
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="comments"
+							maxlength="500"
+							value="#{caseEscalationBean.assignedcomments}" required="false"
+							label="Comments" />
+
+						<h:inputHidden value="#{caseEscalationBean.caseId}" />
+
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+
+						<p:commandButton value="#{sid['label.assignConfirmed']}"
+							action="#{caseEscalationBean.actionListener()}" ajax="false">
+							<f:param name="action" value="assignConfirmed" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.cancel']}"
+							action="#{caseEscalationBean.actionListener()}" ajax="false"
+							immediate="true">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							immediate="true" type="reset" />
+
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

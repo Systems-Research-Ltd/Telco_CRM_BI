@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<body>
+	<!-- Top MENU -->
+	<composite:interface />
+	<composite:implementation>
+		<h:form>
+			<!-- Tabs -->
+			<ul>
+				
+				
+				<c:if
+					test="#{facesContext.externalContext.isUserInRole('Administrator')}">
+					<li
+						class="#{(actionListener.selectedTab == 'dashboard') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.dashboard']}"
+							action="#{actionListener.tabListener}">
+							<f:param name="action" value="dashboard" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				</c:if>
+				<c:if
+					test="#{facesContext.externalContext.isUserInRole('Customer')}">
+					<li
+						class="#{(actionListener.selectedTab == 'dashboard') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.dashboard']}"
+							action="#{actionListener.tabListener}" rendered="#{security.dashboard.read}">
+							<f:param name="action" value="dashboard" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				</c:if>
+				
+				<c:if
+					test="#{facesContext.externalContext.isUserInRole('Customer')}">
+					<li
+						class="#{(actionListener.selectedTab == 'orders') ? 'selected':''}">
+						<h:commandLink value="Orders"
+							action="#{actionListener.tabListener}" rendered="#{security.order.read}">
+							<f:param name="action" value="orders" />
+							<f:param name="toolbar" value="My Orders" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+					<li
+						class="#{(actionListener.selectedTab == 'support') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.support']}"
+							action="#{actionListener.tabListener}" rendered="#{security.support.read}">
+							<f:param name="action" value="support" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+
+				</c:if>
+
+				<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+				<li
+						class="#{(actionListener.selectedTab == 'dashboard') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.dashboard']}"
+							action="#{actionListener.tabListener}" rendered="#{security.dashboard.read}">
+							<f:param name="action" value="dashboard" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				<li
+						class="#{(actionListener.selectedTab == 'marketing') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.marketing']}"
+							action="#{actionListener.tabListener}"
+						rendered="#{security.marketing.read}">
+							<f:param name="action" value="marketing" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					
+					</li>
+					
+					<li class="sep"></li>
+					<li
+						class="#{(actionListener.selectedTab == 'sales') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.sales']}"
+							action="#{actionListener.tabListener}"
+						rendered="#{security.sales.read}">
+							<f:param name="action" value="sales" />
+							<f:param name="toolbar" value="#{security.leads.read ? 'leads' : 'orders'}" />
+						</h:commandLink>
+					
+					</li>
+					<li class="sep"></li>
+					<li
+						class="#{(actionListener.selectedTab == 'support') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.support']}"
+							action="#{actionListener.tabListener}" rendered="#{security.support.read}">
+							<f:param name="action" value="support" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+					<li
+						class="#{(actionListener.selectedTab == 'customer') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.customer']}"
+							action="#{actionListener.tabListener}"  rendered="#{security.customer.read}">
+							<f:param name="action" value="customer" />
+							<f:param name="toolbar" value="contacts" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				</c:if>
+
+				
+				<c:if
+					test="#{facesContext.externalContext.isUserInRole('AccountManager')}">
+					<li
+						class="#{(actionListener.selectedTab == 'import') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.import']}"
+							action="#{actionListener.tabListener}" rendered="#{security.import.read}" >
+							<f:param name="action" value="import" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				</c:if>
+				<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+					<li
+						class="#{(actionListener.selectedTab == 'loyalty') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.loyalty']}"
+							action="#{actionListener.tabListener}" rendered="#{security.loyalty.read}" >
+							<f:param name="action" value="loyalty" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					</li>
+					<li class="sep"></li>
+				</c:if>
+				
+				<c:if test="#{facesContext.externalContext.isUserInRole('User')}">
+					<li
+						class="#{(actionListener.selectedTab == 'reports') ? 'selected':''}">
+						<h:commandLink value="#{sid['tab.reports']}"
+							action="#{actionListener.tabListener}" rendered="#{security.reports.read}">
+							<f:param name="action" value="reports" />
+							<f:param name="toolbar" value="" />
+						</h:commandLink>
+					
+					</li>
+					<li class="sep"></li>
+				</c:if>
+			</ul>
+
+			<div class="clear"></div>
+
+		</h:form>
+	</composite:implementation>
+</body>
+</html>

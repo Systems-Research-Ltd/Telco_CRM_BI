@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form">
+		   <p:dataTable var="bill" value="#{customer360controller.listCustomerBills()}">  
+               <p:column header="#{sid['label.bill.id']}">  
+                  <h:outputText value="#{bill.billId}" />  
+               </p:column>
+               <p:column header="#{sid['label.amount']}">  
+                  <h:outputText value="#{bill.billAmount}" />  
+               </p:column>
+               <p:column header="#{sid['label.paid.amount']}">  
+                  <h:outputText value="#{bill.billPaidAmount}" />  
+               </p:column>
+               <p:column header="#{sid['label.arrears']}">  
+                  <h:outputText value="#{bill.billArrears}" />  
+               </p:column>
+               <p:column header="#{sid['label.due.date']}">  
+                  <h:outputText value="#{bill.billDueDate}" />  
+               </p:column>
+                 
+           </p:dataTable>
+		  	
+		</h:form>
+	</ui:composition>
+	
+</h:body>
+
+</html>

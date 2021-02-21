@@ -1,0 +1,80 @@
+10
+
+dir
+3111
+svn://68.169.55.222/crm/srpl/src/bi/WebContent
+svn://68.169.55.222/crm
+
+
+
+2013-09-18T12:36:24.425923Z
+3105
+sadia
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+META-INF
+dir
+
+WEB-INF
+dir
+
+index.jsp
+file
+
+
+
+
+2013-07-09T12:24:21.174000Z
+5feebecc36453828bc9e590dc833cc37
+2013-07-06T14:47:31.935322Z
+2031
+akareem
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+811
+
+js
+dir
+
+resources
+dir
+
+view
+dir
+
+wiki
+dir
+

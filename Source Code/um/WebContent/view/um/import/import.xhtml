@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+	<ui:define name="title">${sid['title.import.data']}</ui:define>
+	<ui:define name="contents">	
+		<style type="text/css">
+			.ui-widget-content { border: 1px solid #a8a8a8; }		
+			.ui-panelgrid td { border-width: 1px; padding-right: 10px; }
+			.db-conn { width:350px; }
+			.db-conn tr, .db-conn td { font-weight:bold; border-style:solid; border-width:1px; }
+			.ui-picklist { width:400px; }
+		</style>
+		<h:form enctype="multipart/form-data" id="mainform">
+			<p:toolbar style="margin-bottom:10px; padding:5px;">
+				<p:toolbarGroup align="right">
+					<h:panelGrid columns="4" cellpadding="5">
+						<h:outputText value="Import Type:" />
+						<h:selectOneMenu id="selectType" value="#{import.fileFormat}" style="margin-right:10px; width:150px;">
+							<f:selectItem itemLabel="CSV" itemValue="CSV" />
+							<f:selectItem itemLabel="EXCEL" itemValue="XLS" />
+							<f:selectItem itemLabel="DATABASE" itemValue="DB" />
+							<f:ajax event="change" render="mainform" listener="#{import.clearHeader}" />
+						</h:selectOneMenu>
+						<h:outputText value="Saved Mappings:" />
+						<h:selectOneMenu id="selectMap" style="width:150px;" value="#{import.mapId}">
+							<f:selectItem itemLabel="Select Mapping" itemValue="" />
+							<f:selectItems value="#{import.savedMappings}" var="x" itemLabel="#{x.mappingTitle}" itemValue="#{x.mappingId}" />
+							<f:ajax event="change" listener="#{import.mapData}" render="rowmap" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:messages globalOnly="true" id="globalmsg" />
+			<p:outputPanel id="showhide" autoUpdate="true" rendered="${import.fileFormat == 'DB'}">
+				<p:selectBooleanCheckbox id="usedata" value="#{import.useData}" style="float:right;">
+					<h:outputText value="Use Data directly from DB" style="float:right; font-weight:bold;" />
+					<p:ajax update="btns" />
+				</p:selectBooleanCheckbox>
+				<fieldset>
+					<legend style="font-size:13px; font-weight:bold;">&nbsp;Database Configuration&nbsp;</legend>
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:panelGrid columns="4" styleClass="db-conn" id="dblogin">
+							<f:facet name="header">
+								<h:outputText value="Database Connection" style="float:left;" />
+							</f:facet>
+							<h:outputLabel for="dbtype" value="DB Type:" />
+							<h:selectOneMenu id="dbtype" value="#{import.dbType}" style="width:100px;">
+								<f:selectItems value="#{import.dbTypes}" var="type" itemLabel="#{type}" itemValue="#{type}" />
+							</h:selectOneMenu>		
+					        <h:outputLabel for="dbhost" value="DB Host:" />  
+					        <p:inputText id="dbhost" value="#{import.dbHost}" label="DB Host" style="width:90px;"/>
+					        <h:outputLabel for="dbport" value="DB Port:" /> 
+					        <p:inputText id="dbport" value="#{import.dbPort}" label="DB Port" style="width:90px;"/>
+					        <h:outputLabel for="dbname" value="DB Name:" /> 
+					        <p:inputText id="dbname" value="#{import.dbName}" label="DB Name" style="width:90px;"/>  
+					        <h:outputLabel for="username" value="UserName:" />  
+					        <p:inputText id="username" value="#{import.dbUser}" label="User Name" style="width:90px;"/>
+					        <h:outputLabel for="password" value="Password:" />  
+					        <p:inputText id="password" value="#{import.dbPassword}" label="Password" style="width:90px;"/>
+					        <f:facet name="footer">
+								<p:commandButton value="Connect" style="margin-top:5px; float:right;" actionListener="#{import.dbConnect}" process="dblogin" update="tablecols" />
+					            <p:commandButton value="Test Connection" style="margin-top:5px; float:right;" actionListener="#{import.testConnection}" process="dblogin" update=":conn" />
+							</f:facet>				  
+					    </p:panelGrid>
+						<h:graphicImage library="themes/default/images/icons" name="arrow_right.png" height="50" width="40" />
+						<h:panelGroup>
+							<fieldset>
+								<legend style="font-size:13px; font-weight:bold;">Select Tables for Mapping</legend>
+								<p:pickList id="tablecols" value="#{import.dualListTables}" var="dual" itemLabel="#{dual}" itemValue="#{dual}" />
+								<p:commandButton value="Populate Fields" actionListener="#{import.mapTables}" process="@this,tablecols" update="rowmap,:dialog" style="float:right;" />
+							</fieldset>
+						</h:panelGroup>
+					</h:panelGrid>
+				</fieldset>
+			</p:outputPanel>
+			<h:panelGroup id="includeh" style="float:right;">
+				<p:selectBooleanCheckbox id="selectHeader" value="#{import.rowHeader}" rendered="${import.fileFormat != 'DB'}" />
+				<h:outputText value="Has Header" style="font-weight:bold;" rendered="${import.fileFormat != 'DB'}" />
+			</h:panelGroup>
+			<p:panelGrid style="width:100%; margin-top:10px;" id="rowmap">
+				<f:facet name="header">					
+					<p:row>
+						<p:column style="width:35%;"><h:outputText value="Required Column(s)" style="float:left; padding-top:6px;" />
+							<h:selectOneMenu id="selectTable" value="#{import.mappingTable}" style="float:right; width:150px;">
+								<f:selectItem itemLabel="USER" itemValue="USER"/>
+								<f:selectItem itemLabel="ACCOUNT" itemValue="ACCOUNT"/>
+								<f:selectItem itemLabel="CONTACT" itemValue="CONTACT"/>
+								<f:selectItem itemLabel="PAYMENT" itemValue="PAYMENT"/>
+								<f:selectItem itemLabel="PRODUCT" itemValue="PRODUCT"/>
+								<f:selectItem itemLabel="PACKAGE" itemValue="PACKAGE"/>
+								<f:selectItem itemLabel="ORDER" itemValue="ORDER"/>
+								<f:ajax event="change" render="rowmap" listener="#{import.changeFields}"/>
+							</h:selectOneMenu>
+						</p:column>
+						<p:column style="width:35%;">
+							<h:outputText value="Referenced Column(s)" style="float:left; padding-top:6px;" />
+							<h:commandLink id="fileimp" onclick="browse.show(); return false;" style="float:right;" rendered="${import.fileFormat != 'DB'}">
+							<h:graphicImage library="themes/default/images/icons" name="plus-icon.png" height="30" width="30" /></h:commandLink>
+						</p:column>
+						<p:column>
+							<h:outputText value="Default Values" style="float:left;" />							
+						</p:column>
+					</p:row>
+				</f:facet>
+				<c:forEach items="#{import.mappingColumns}" var="req" varStatus="status">
+					<p:row>
+						<p:column style="font-weight:bold;"><h:outputText value="#{req}" /></p:column>
+						<p:column>
+							<h:selectOneMenu value="#{import.selectedCSVHeader[status.index]}" id="column${status.index}" style="width:150px;" required="#{import.mapRequired(req)}" requiredMessage="Mapping Required">
+								<f:selectItem itemLabel="Select Column" itemValue="" />
+								<c:forEach items="${import.csvHeader}" var="x" varStatus="sts">
+									<f:selectItem itemLabel="${x}" itemValue="${sts.index}"  />
+								</c:forEach>
+							</h:selectOneMenu>
+							<h:outputText value=" *" style="color:#F00; font-weight:bold;" rendered="#{import.mapRequired(req)}" />
+							<h:panelGroup style="float:right;"><p:message id="message${status.index}" for="column${status.index}" /></h:panelGroup>
+						</p:column>
+						<p:column>
+							<c:choose>
+								<c:when test="${req eq 'Password'}">
+									<h:inputSecret id="input${status.index}" value="#{import.defaultValues[status.index]}" />
+								</c:when>
+								<c:when test="${req eq 'Country'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Select Country" itemValue="" />
+										<f:selectItems value="#{addressBean.countryList}" var="c" itemLabel="#{c.countryName}" itemValue="#{c.id}" />
+										<f:ajax event="change" listener="#{addressBean.stateAL(import.defaultValues[status.index])}" execute="@this" render="input${status.index+1}" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'State'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Select State" itemValue="" />
+										<f:selectItems value="#{addressBean.stateList}" var="c" itemLabel="#{c.stateName}" itemValue="#{c.stateId}" />
+										<f:ajax event="change" listener="#{addressBean.cityAL(import.defaultValues[status.index])}" execute="@this" render="input${status.index+1}" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'City'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Select City" itemValue="" />
+										<f:selectItems value="#{addressBean.cityList}" var="c" itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'Status'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Select Status" itemValue="" />
+										<f:selectItem itemLabel="Active" itemValue="1" />
+										<f:selectItem itemLabel="In-Active" itemValue="0" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'Company Account'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Company Account" itemValue="" />
+										<f:selectItem itemLabel="True" itemValue="1" />
+										<f:selectItem itemLabel="False" itemValue="0" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'Product Type'}">
+									<h:selectOneMenu id="input${status.index}" value="#{import.defaultValues[status.index]}" style="width:170px;">
+										<f:selectItem itemLabel="Select Type" itemValue="" />
+										<f:selectItem itemLabel="Simple" itemValue="Simple" />
+										<f:selectItem itemLabel="Value Added" itemValue="Value Added" />
+									</h:selectOneMenu>
+								</c:when>
+								<c:when test="${req eq 'Date of Birth'}">
+									<p:calendar id="input${status.index}" value="#{import.defaultValues[status.index]}" navigator="true" yearRange="c-80:c-10" label="#{req}" pattern="yyyy-mm-dd">
+										<f:convertDateTime pattern="yyyy-mm-dd" />
+									</p:calendar>
+								</c:when>
+								<c:when test="${req eq 'Paid On' || req eq 'Order Date'}">
+									<p:calendar id="input${status.index}" value="#{import.defaultValues[status.index]}" navigator="true" yearRange="c-10:c" label="#{req}" pattern="yyyy-mm-dd">
+										<f:convertDateTime pattern="yyyy-mm-dd" />
+									</p:calendar>
+								</c:when>
+								<c:when test="${req eq 'User Name' || req eq 'ID' || req eq 'Reports To' || req eq 'Account Title' || req eq 'Invoice ID' || req eq 'Account ID' || req eq 'CNIC No.' || req eq 'Customer ID' || req eq 'Product ID' || req eq 'Opportunity ID' || req eq 'Created By' || req eq 'Assigned To'}">
+									<h:inputText id="input${status.index}" value="#{import.defaultValues[status.index]}" disabled="true" />
+								</c:when>
+								<c:otherwise>
+									<h:inputText id="input${status.index}" value="#{import.defaultValues[status.index]}" />								
+								</c:otherwise>
+							</c:choose>
+						</p:column>
+					</p:row>
+				</c:forEach>	
+				<p:row>
+					<p:column colspan="2">
+						<p style="font-style:italic;"><b>Note :</b><br/> Fields marked with <span style="color:red;">*</span> are required.<br/>Default values will replace empty values in selected referenced fields.<br/>For CSV file, enclose value in double quotes if it contains comma(s) in it.</p>
+					</p:column>
+					<p:column>
+						<h:outputText value="Save Mapping : " style="font-weight:bold;" />
+						<p:inputText id="savedmap" value="#{import.savedMap}" />
+					</p:column>
+				</p:row>
+				<f:facet name="footer">
+					<p:row>
+						<p:column colspan="3">
+							<h:panelGroup id="btns">
+								<p:commandButton id="btnNext" value="Next" ajax="false" action="#{import.importCSVData}" rendered="#{import.useData eq false}" />
+								<p:commandButton id="btnSave" value="Save" update="mainform" oncomplete="if(!args.validationFailed) titledlg.show()" rendered="#{import.useData eq true}" />
+								<p:commandButton id="btnDelete" value="Delete" process="@this,selectMap" actionListener="#{import.deleteMap}" update="selectMap" oncomplete="if(#{import.mapId eq ''}) { alert('Selected Mapping Deleted Successfully!') } else { alert('Please select mapping to delete?') }" />
+								<p:commandButton id="btnCancel" value="Cancel" process="@this" actionListener="#{import.resetBeanData}" action="import" />
+							</h:panelGroup>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+			<p:dialog header="Select File" widgetVar="browse" width="600">
+				<p:fileUpload mode="advanced" fileUploadListener="#{import.handleFileUpload}" value="#{import.file}" allowTypes="/(\.|\/)(csv|xls|xlsx)$/" oncomplete="browse.hide();" update="rowmap globalmsg selectMap"  />  
+			</p:dialog>		
+		</h:form>
+		<p:dialog id="conn" header="Connection Status" widgetVar="info" visible="${import.connMessage != null}">
+			<h:outputText value="#{import.connMessage}" />
+		</p:dialog>
+		<p:dialog id="dialog" header="Join Tables" widgetVar="dlg" visible="#{import.visible}" width="600"> 
+			<h:form id="joinform"> 
+				<p:panelGrid id="dataSourceJoinGrid">
+					<p:row>
+						<p:column>
+							<h:outputLabel value="Join Clause(s):" />&nbsp;<h:outputText value="*" style="color:red; font-weight:bold;" />&nbsp;<p:message for="joinclause" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:selectManyMenu id="joinclause" required="#{import.joinClauseList.size() eq 0}" requiredMessage="* Join Clause(s) Required!" value="#{import.joinClause}" style="width:550px;height:70px;">
+								<f:selectItems value="#{import.joinClauseList}" />
+							</p:selectManyMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton id="deleteJoinBtn" value="Remove" style="width:90px;height:30px;" process="dataSourceJoinGrid" actionListener="#{import.removeJoin}" update="joinclause" />						
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<fieldset>
+					<legend style="font-weight:bold;">Add Join Clause</legend>
+					<p:panelGrid id="addJoinClauseGrid">
+						<p:row>
+							<p:column>
+								<p:selectOneMenu id="leftTable"	value="#{import.leftTable}"	style="width:130px;height:30px;">
+									<f:selectItem itemLabel="Select Table" itemValue="" />
+									<f:selectItems value="#{import.selectedColumns}" />
+									<f:ajax event="change" render="leftColumn" listener="#{import.populateLeftCols}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column></p:column>
+							<p:column></p:column>
+							<p:column>
+								<p:selectOneMenu id="rightTable" styleClass="ui-rightalign"	value="#{import.rightTable}" style="width:130px;height:30px;">
+									<f:selectItem itemLabel="Select Table" itemValue="" />
+									<f:selectItems value="#{import.selectedColumns}" />
+									<f:ajax event="change" render="rightColumn" listener="#{import.populateRightCols}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:selectOneListbox id="leftColumn" value="#{import.leftColumn}" style="width:200px;height:170px;">
+									<f:selectItems value="#{import.leftColumnList}" />
+								</p:selectOneListbox>
+							</p:column>
+							<p:column colspan="2">
+								<h:outputText value="Join With" />
+							</p:column>
+							<p:column>
+								<p:selectOneListbox id="rightColumn" styleClass="ui-rightalign" value="#{import.rightColumn}" style="width:200px;height:170px;">
+									<f:selectItems value="#{import.rightColumnList}" />
+								</p:selectOneListbox>
+							</p:column>						
+						</p:row>
+						<p:row>
+							<p:column colspan="4"><p:commandButton value="Add" style="width:90px;height:30px;" actionListener="#{import.mapColumns}" process="addJoinClauseGrid" update="joinclause" /></p:column>
+						</p:row>
+					</p:panelGrid>
+				</fieldset>
+				<h:panelGroup style="float:right;">
+					<p:commandButton id="conSaveBtn" value="Save" style="width:90px;height:30px;" process="@this,joinclause" actionListener="#{import.saveJoins}" update=":mainform:rowmap,dataSourceJoinGrid" oncomplete="if(!args.validationFailed) { dlg.hide(); }" />
+					<p:commandButton id="conCancelBtn" value="Cancel" styleClass="ui-rightalign" style="width:90px;" onclick="dlg.hide()" />
+				</h:panelGroup>
+			</h:form>	
+		</p:dialog>
+		<p:dialog id="confdialog" header="Configuration Title" widgetVar="titledlg">  
+		    <h:form>		  
+		        <h:panelGrid columns="3" cellpadding="5">  
+		            <h:outputLabel for="conf" value="Connection Title:" />
+		            <p:inputText value="#{import.configTitle}" required="true" requiredMessage="Title Required" id="conf" label="conf" />
+		            <p:message for="conf" />  
+		            <f:facet name="footer">  
+		                <p:commandButton id="confButton" value="OK" update="@form,:mainform:globalmsg" action="#{import.saveConfiguration}" />  
+		            </f:facet>  
+		        </h:panelGrid>		          
+		    </h:form>  
+		</p:dialog>
+	</ui:define>
+</ui:composition>

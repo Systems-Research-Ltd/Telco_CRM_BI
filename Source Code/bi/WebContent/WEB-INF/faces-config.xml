@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	<application>
+		<resource-bundle>
+			<base-name>resources.sid</base-name>
+			<var>sid</var>
+		</resource-bundle>
+	</application>
+	<!-- TAB -->
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.tabListener}</from-action>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Administrator')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/view/dashboard/dash.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>reports</from-outcome>
+			<to-view-id>/view/reportsbuilder/reportsBuilder.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- MENU -->
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.menuListener}</from-action>
+		<navigation-case>
+			<from-outcome>companies</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>users</from-outcome>
+			<to-view-id>../um/view/um/admin/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>groups</from-outcome>
+			<to-view-id>../um/view/um/admin/groups/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>connection</from-outcome>
+			<to-view-id>/view/datasources/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataSet</from-outcome>
+			<to-view-id>/view/datasources/dataSet/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+				<from-action>#{userBackingBean.signOut}</from-action>
+				<from-outcome>signout</from-outcome>
+				<to-view-id>/view/public/SignOutForm.jsp</to-view-id>
+				<redirect />
+		</navigation-case>
+		</navigation-rule>
+		
+		
+		<!--start dashboard -->
+		<navigation-rule>
+		<from-view-id>/view/dashboard/*</from-view-id>
+		<from-action>#{dashBoardBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/dashboard/dash.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/dashboard/dash.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/view/dashboard/dash.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/dashboard/index.xhtml</to-view-id>
+		</navigation-case>
+		</navigation-rule>
+		<!--end dashboard -->
+		
+		<!-- start reports -->
+		<navigation-rule>
+		<from-view-id>/view/reportsbuilder/*</from-view-id>
+		<from-action>#{reportBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/reports/reportsForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/reports/reportsForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/view/reports/reportsForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/reports/index.xhtml</to-view-id>
+		</navigation-case>
+		
+		</navigation-rule>
+		<!-- end reports -->
+	<!--start company -->
+	<navigation-rule>
+		<from-view-id>/view/admin/company/*</from-view-id>
+		<from-action>#{companyBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/view/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/admin/company/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>parameter</from-outcome>
+			<to-view-id>/view/admin/company/parameters/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- end company -->
+
+	<!-- start company parameter -->
+	<navigation-rule>
+		<from-view-id>/view/admin/company/parameters/*</from-view-id>
+		<from-action>#{companyParameterBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/admin/company/parameters/parameterForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/admin/company/parameters/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- end company parameter -->
+
+	<!--start user -->
+	<navigation-rule>
+		<from-view-id>/view/admin/users/*</from-view-id>
+		<from-action>#{userBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/admin/users/userForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/view/admin/users/userForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/admin/users/userForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/admin/users/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--end user -->
+		<navigation-rule>
+		<from-view-id>/view/reportsbuilder/datapallete/dialogs/datasourcedialog.xhtml</from-view-id>
+		<from-action>#{reportBuilderBean.actionListener}</from-action>		
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/view/reportsbuilder/datapallete/dialogs/datasourcedialog.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+</faces-config>

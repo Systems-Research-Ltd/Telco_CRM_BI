@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="um_bi_persistence" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/SRPLDS</jta-data-source>
+		<class>com.srpl.um.ejb.entity.City</class>
+		<class>com.srpl.um.ejb.entity.Country</class>
+	    <class>com.srpl.um.ejb.entity.DBConfiguration</class>
+		<class>com.srpl.um.ejb.entity.GroupPermission</class>
+		<class>com.srpl.um.ejb.entity.State</class>
+		<class>com.srpl.um.ejb.entity.UmCompany</class>
+		<class>com.srpl.um.ejb.entity.UmFranchise</class>
+		<class>com.srpl.um.ejb.entity.UmGroup</class>
+		<class>com.srpl.um.ejb.entity.UmGroupRole</class>
+		<class>com.srpl.um.ejb.entity.UmLocation</class>
+		<class>com.srpl.um.ejb.entity.UmService</class>
+		<class>com.srpl.um.ejb.entity.UmParameter</class>
+		<class>com.srpl.um.ejb.entity.UmRole</class>
+		<class>com.srpl.um.ejb.entity.UmUser</class>
+		<class>com.srpl.um.ejb.entity.UmUserGroup</class>
+ 		<class>com.srpl.um.ejb.entity.UmUserHistory</class>
+ 		<class>com.srpl.um.ejb.entity.ThemesORM</class>
+ 		<class>com.srpl.um.ejb.entity.UserPreference</class>
+ 		<class>com.srpl.um.ejb.entity.UsersThemeORM</class>
+	    <class>com.srpl.um.ejb.entity.MailTemplateModuleORM</class>
+	    <class>com.srpl.um.ejb.entity.MailTemplateORM</class>
+	    <properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="none"/>
+			<property name="hibernate.default_schema" value="um_bi"/>
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="um_crm_persistence" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/SRPLDS</jta-data-source>
+		<class>com.srpl.um.ejb.entity.City</class>
+		<class>com.srpl.um.ejb.entity.Country</class>
+	    <class>com.srpl.um.ejb.entity.DBConfiguration</class>
+		<class>com.srpl.um.ejb.entity.GroupPermission</class>
+		<class>com.srpl.um.ejb.entity.State</class>
+		<class>com.srpl.um.ejb.entity.UmCompany</class>
+		<class>com.srpl.um.ejb.entity.UmFranchise</class>
+		<class>com.srpl.um.ejb.entity.UmGroup</class>
+		<class>com.srpl.um.ejb.entity.UmGroupRole</class>
+		<class>com.srpl.um.ejb.entity.UmLocation</class>
+		<class>com.srpl.um.ejb.entity.UmService</class>
+		<class>com.srpl.um.ejb.entity.UmParameter</class>
+		<class>com.srpl.um.ejb.entity.UmRole</class>
+		<class>com.srpl.um.ejb.entity.UmUser</class>
+		<class>com.srpl.um.ejb.entity.UmUserGroup</class>
+ 		<class>com.srpl.um.ejb.entity.UmUserHistory</class>
+ 		<class>com.srpl.um.ejb.entity.ThemesORM</class>
+ 		<class>com.srpl.um.ejb.entity.UserPreference</class>
+ 		<class>com.srpl.um.ejb.entity.UsersThemeORM</class>
+	    <properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="none"/>
+			<property name="hibernate.default_schema" value="um_crm"/>
+		</properties>
+	</persistence-unit>
+</persistence>

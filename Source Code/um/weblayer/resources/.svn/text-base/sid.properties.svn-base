@@ -1,0 +1,385 @@
+#Shared Information/Data Model or SID 
+#is a unified reference data model providing a single set of terms
+# for business objects in telecommunications. The objective is to 
+#enable people in different departments, companies or geographical
+# locations to use the same terms to describe the same real world objects,
+# practices and relationships.
+#The TeleManagement Forum's Frameworx Shared Information/Data (SID)
+# model provides the telecommunications industry with a common
+# vocabulary and set of information/data definitions and relationships
+# used in the definition of NGOSS architectures, now known as Frameworx
+#
+# URL: http://en.wikipedia.org/wiki/Frameworx_Shared_Information/Data_Model
+
+
+#@author Abdul Kareem bitguiders@gmail.com
+
+# SAMPLE NAMING Conventions
+# MESSAGE ->  message.validate.module.propertyName = xxx xxx
+# LABLE   ->  label.module.propertyName = xxx xxx
+# TITLE   ->  title.module.propertyName = xxx xxx
+#
+
+
+
+#APPLICATION
+franchise.load.fail = Couldn't Load the Franchise.
+company.successfully.created=Company Successfully Created.
+title.um.admin.companies=Company
+franchise.successfully.created = Franchise Successfully Created
+franchise.creation.fail = Franchise Creation Failed.
+franchise.delete.confirm = Do you really want to delete 
+franchise.successfully.deleted = Franchise Successfully Deleted.
+franchise.delete.fail = Couldn't Delete the Franchise.
+franchise.successfully.updated = Franchise Successfully Updated
+franchise.update.fail = Franchise Updation Failed.
+no.franchise.found = No Franchise Found.
+
+signin.choose.application = Choose Application
+signin.username = Login Name / Email
+signin.password = Password
+
+email.not.valid = Email not valid
+old.password.required = Old Password Required;
+confirm.password.required = Confirm Password Required
+password.not.match = Password not match
+password.sent = Password Sent at your provided email address.
+provided.email.not.exist = Provided Email does not exist in our database.
+password.updated = Password Updated Successfully.
+invalid.old.password = Invalid Old Password
+
+select.country.first = Select Country First
+select.state.first = Select State First
+
+group.successfully.created = Group Successfully Created.
+group.creation.fail = Group Creation Failed.
+group.successfully.updated = Group Successfully Updated.
+group.update.fail = Group Update Failed.
+group.successfully.deleted = Group Successfully Deleted.
+group.deletion.fail = Group Deletion Failed.
+no.group.found = No Group Found.
+
+user.confirmation.removed = Are You Sure To Remove User From the Group?
+user.successfully.removed = User Successfully Removed from the Group.
+could.not.remove.user = Couldn't Remove User from the Group.
+user.successfully.added = User Successfully Added to Group.
+user.addition.to.group.fail = User Addition to Group Failed.
+could.not.load.group.services = Couldn't Load the Group Services.
+group.services.created.successfully = Group Services Successfully Created
+group.service.creation.fail = Group Services Creation Failed.
+could.not.load.group.service = Couldn't Load the Group Services.
+group.service.successfully.deleted = Group Service Successfully Deleted.
+could.not.delete.group.service = Couldn't Delete the Group Service.
+could.not.load.group.operations = Couldn't Load the Group Operations.
+service.successfully.updated = Service Successfully Updated
+service.updation.fail = Service Updation Failed.
+
+no.user.found = No User Found.
+user.successfully.created = User Successfully Created.
+user.creation.fail = User Creation Failed.
+user.successfully.updated = User Successfully Updated.
+user.update.fail = User Update Failed.
+user.successfully.deleted = User Successfully deleted.
+user.deletion.fail = User Deletion Failed.
+user.already.exists = User already exists.
+
+
+company.load.fail = Couldn't Load the Company.
+company.creation.fail = Company Creation Failed.
+company.delete.confirm = Do you really want to delete 
+company.delete.fail = Couldn't Delete the Company.
+company.delete.successfully = Deleted Successfully
+company.successfully.updated = Company Successfully Updated
+file.type.not.allowed = File type not allowed for company logo
+
+parameter.successfully.created = Parameter Successfully Created
+parameter.creation.fail = Parameter Creation Failed.
+parameter.delete.successfully = Parameter deleted successfully
+parameter.could.not.delete = Couldn't Delete the Parameter.
+parameter.successfully.updated = Parameter Successfully Updated
+parameter.updation.fail = Parameter Updation Failed.
+
+file.upload.fail = File type not allowed
+logo.upload.successfully = Logo uploaded successfully
+upload.fail = Upload failed
+
+could.not.load.user.profile = Couldn't load User profile
+profile.updated.successfully = Profile updated successfully
+profile.could.not.updated = Profile could not be updated
+
+
+secure.operations=C,R,U,D,S,A
+footer = Copyright © SRPL 2012 - All rights reserved Powered by ICTR&D
+label.back=Back
+title.sales.orders.orderList=Orders Listing
+title.um.alerts=Alerts And Reminders
+topMenu.loyalty.loyaltyRule=Loyalty
+topMenu.loyalty.messageTemplate=Message Template
+topMenu.sales.billreimbursement=Bill ReImbursement
+title.um.admin.companies.parameter=Parameter List
+
+title.um.admin.listcompany=Company List
+title.um.admin.createcompany=Create Company
+title.um.admin.viewcompany=View Company
+title.um.user.createuser=Create User
+title.um.user.listuser=User List
+title.um.user.viewuser=View User
+title.um.customer.listCustomer=Customer Listings
+title.um.customer.createCustomer=Create Customer
+title.um.customer.editCustomer=Edit Customer
+title.um.admin.groups.groupsOperations=Group Operations
+title.um.admin.manageServices=Manage Services
+title.um.customer.viewCustomer=View Customer
+title.report=Reports
+
+
+label.title = Title
+label.description = Description
+label.status = Status
+label.country = Country
+label.state = State
+label.city = City
+label.zip.code = Zip Code
+label.outlet = Outlet/Franchise
+label.address = Address
+label.first.name = First Name
+label.last.name = Last Name
+label.username = Username
+label.job.title= Job Title
+label.login.status = Login Status
+label.user.status = User Status
+label.reports.to = Reports To 
+label.group.title = Group Title
+label.add.group.to.user = Add user to Group
+label.group = Group
+label.login.time = Login Time
+label.user.group = User Group
+label.groups = Groups
+label.roles = Roles
+label.group.name = Group Name
+label.logout.time = Logout Time
+label.honorific.title = Honorific Title
+label.old.password = Old Password
+label.new.password = New Password
+label.change.password = Change Password
+
+
+#TABS        sample = tab.moduleName
+tab.marketing 	= Marketing
+tab.sales 		= Sales
+tab.order 		= Order
+tab.um 			= User Management
+tab.register 	= Register
+tab.dashboard 	= Dashboard
+tab.home	 	= Home
+tab.support 	= Support
+tab.customer 	= Customer
+tab.admin 		= Admin
+tab.loyalty		= Loyalty
+tab.accountsettings= Account Settings
+tab.reports		= Reports
+tab.customerArea= Customer Area
+
+#form tabs
+title.details = Details
+title.settings = Settings
+title.leads = Leads
+title.products = Products
+title.subscribe = Subscribe
+title.invoice = Invoice
+title.notes = Notes
+title.provisioning = Provisioning
+title.billing = Billing
+title.template = Template
+title.groups = Groups
+title.userHistory = User History
+title.manageServices = Manage Services
+title.users = Users
+title.permissions = Permissions
+title.company = Company
+title.parameter = Parameter
+title.closedTickets = Closed Tickets
+title.queryType = Query Types
+title.quick.search = Quick Search
+title.filter = Filter
+title.value = Value
+title.users.list = Users List
+
+
+label.company.details = Company Details
+label.company.title = Company Title
+label.contact.number = Contact Number
+label.company.address = Company Address
+label.url = URL
+label.account.manager = Account Manager
+label.contact.person = Contact Person
+label.login.id = Login ID
+label.password = Password
+label.confirm.password = Confirm Password
+label.parameter.title = Parameter Title
+label.mail.templates.list = Mail Template List
+label.mail.template = Mail Template
+label.section = Section
+label.avaliable.palceholder = Avaliable Palceholders
+label.profile.pic = Profile pic
+label.activate.theme = Activate Theme
+label.active.theme = Active Theme
+label.my.services = My Services
+label.my.log = My Log
+label.my.groups = My Groups
+
+
+
+#Top Menu          sample = topMenu.tabName.menu
+topMenu.um.users 					= Users
+topMenu.um.groups					= Groups
+topMenu.documents					= Documents
+topMenu.um.applicationParameters 	= Application Parameters
+topMenu.um.companies 				= Companies
+topMenu.um.franchises 				= Franchises
+topMenu.um.documents 				= Documents
+topMenu.um.alertsReminders			= Alerts & Reminders 
+topMenu.um.importAccounts			= Import Accounts 
+topMenu.um.importContacts			= Import Contacts
+topMenu.um.importUsers				= Import Users
+topMenu.um.import					= Import Data
+topMenu.um.mailTemplates			= Mail Templates
+title.um.admin.uploadlogo           = Upload Logo
+#Settings
+topMenu.accountsettings.themesSettings= Theme Settings
+topMenu.accountsettings.profile= Profile
+topMenu.accountsettings.changePassword= Change Password
+#Customer
+topMenu.customer.contacts			= Contacts
+topMenu.customer.accounts			= Accounts
+topMenu.sales.opportunities         = Manage Opportunities
+topMenu.sales.package         		= Manage Packages
+topMenu.sales.orders                = Manage Orders
+
+#Support
+topMenu.support.cases               = Manage Cases
+
+#Customer Area
+topMenu.customerArea.orders			= Customer Orders
+topMenu.customerArea.aleartsnreminders= Alerts and Reminders
+
+# Side Menu  sample = sideMenu.tabName.menu.menuItem
+sideMenu.um.users.changePassword= Change Password
+sideMenu.um.users.settings = Account Settings
+sideMenu.um.users.profile = View Profile
+
+#TITLES
+title.um.dashboard 			= User Management Dashboard
+title.marketing.dashboard 	= User Management Dashboard
+title.sales.dashboard 		= User Management Dashboard
+title.marketing				= Marketing
+title.import.data 			= Import CRM Data
+
+#Form Fields
+label.view=View
+label.edit = Edit
+label.submit = Submit
+label.cancel = Cancel
+label.createNew = Create New
+label.delete= Delete
+label.save= Save
+label.update=Update
+label.send=Send
+label.deleteConfirmed=Delete Confirmation
+label.search=Search
+label.reset=Reset
+label.clear=Clear
+label.assignConfirmed= Assign
+label.amount=Amount
+label.name=Name
+label.email=Email
+label.date=Date
+label.phone=Phone
+label.cnic=CNIC
+label.gender = Gender
+#actions these are static values
+# and should not translate in any language
+action.create =create
+action.edit = edit
+action.save = save
+action.delete =delete
+action.view=view
+action.update=update
+action.cancel=cancel
+action.deleteConfirmed=deleteConfirmed
+action.reset =reset
+action.send=send
+label.franchises = Franchises
+label.actions = Actions
+#Company Form
+label.company.state = State **
+
+#APPLICATION MESSAGES
+message.sampleMessage = >> {0} >> {1} >> {2}
+message.required = *
+message.validate.amount=Please enter valid amount
+#Company Messages
+message.company.created = Company created successfully
+
+#Bill Remibusement
+label.bill.reimburse = Reimburse
+
+#HELP
+com.srpl.crm.web.model.um.admin.AdminBackingBean=This Service is for Administration related Activities
+com.srpl.crm.web.model.um.company.CompanyBean=This service is related to companies related activities
+com.srpl.crm.web.model.FranchiseBackingBean=This Service is related to Franchise related Activities
+com.srpl.crm.web.model.um.admin.users.UserModuleGroupsBackingBean=This Service is for User Groups related Activities
+com.srpl.crm.web.model.um.company.ParameterBackingBean=This Service Handles Company Parametres related Activities
+com.srpl.crm.web.model.um.admin.groups.ServiceBackingBean=This service is for Groups related activities
+com.srpl.crm.web.model.user.settings.SettingsBackingBean=This Service is for  Account Settings related Activities
+com.srpl.crm.web.model.um.company.CompanyBackingBean=Company Help \n Company help contents \n Tips
+com.srpl.crm.web.model.user.settings.ThemeSettingsBean=This Service is for Themes related Activities
+com.srpl.crm.web.model.um.admin.users.UserModuleDetailBackingBean=This Service is for User Accounts related Activities
+com.srpl.crm.web.model.user.settings.ProfileBackingBean=This Service is for User Profile related Activities
+com.srpl.crm.web.model.um.admin.groups.ManageServicesBackingBean=This Service is related to Application Management 
+com.srpl.crm.web.model.ImportBackingBean=Data Import related Services
+com.srpl.crm.web.model.user.ChangePasswordBackingBean=This Service is used to Change Password
+com.srpl.crm.web.model.um.admin.groups.GroupModuleDetailBackingBean=Group \n Categorize Users and apply authorization
+com.srpl.crm.web.model.dashboard.DashBean=This service is used for Dashboard related activities
+com.srpl.bi.web.model.dashboard.DashBoardBean=This service is related to Dashboard related activities
+com.srpl.crm.web.controller.CustomerContactController=This Service handles Customer Contact related Activities
+com.srpl.crm.web.controller.CustomerAccountController=This Service handles Customers Accounts related Activities
+com.srpl.bi.web.model.reportsbuilder.ReportDesignerBackingBean=Report Designer pallets 
+com.srpl.bi.web.model.reports.ReportBean=This service is related to Reporting
+
+com.srpl.crm.web.model.loyalty.TemplateBackingBean=This Service handles Loyalty Templates and its related Activities
+com.srpl.crm.web.model.documents.DocumentsBackingBean=This service is related to documents
+com.srpl.crm.web.model.sales.BillBackingBean=This Service is for Sales Billing  related Activities
+com.srpl.crm.web.model.support.QueryTypeBackingBean=This service is related to  users Queries
+com.srpl.crm.web.model.support.SupportBackingBean=This Service is for  Support related Activities
+com.srpl.crm.web.model.report.ReportBackingBean=This Service is for  Reports related Activities
+com.srpl.crm.web.model.sales.SalesBackingBean=This Service is related to Sales related Activities
+com.srpl.crm.web.model.marketing.MarketingBackingBean=This Service is for  Marketing related Activities
+com.srpl.crm.web.model.sales.OpportunityBackingBean=This Service is for Sales Oppurtuntiy related Activities
+com.srpl.crm.web.model.sales.ProductBackingBean=This Service is for Sales Product related Activities
+com.srpl.crm.web.model.sales.PackageBackingBean=This service handles all Sales Packages and its related activities
+com.srpl.crm.web.model.sales.OrderBackingBean=This Service is for  Order related Activities
+com.srpl.crm.web.model.sales.LeadsBackingBean=This Service is for Sales Leads related Activities
+com.srpl.crm.web.model.sales.InvoiceSettingsBackingBean=This Service is for Sales Invoices and its related Activities
+com.srpl.crm.web.model.support.CaseBackingBean=This Service is for Support Case related Activities
+com.srpl.crm.web.model.loyalty.LoyaltyBackingBean=This Service is for Loyalty Service related Activities
+com.srpl.crm.web.model.MarketingModuleSettingsBackingBean=This Service is for Marketing Settings related Activities
+com.srpl.crm.web.model.MarketingModuleCampaignBackingBean=This Service is for Marketing Campaign related Activities
+com.srpl.crm.web.model.um.admin.AlertsAndRemindersBackingBean=This Service Generates Alerts and Reminders for different activities.
+com.srpl.crm.web.model.support.CaseEscalationBackingBean=This Service is for Support Case Escalation related Activities
+com.srpl.crm.web.model.customer.customer360.ContactBackingBean=This service is related to Customer360  View Contacts  related activities
+com.srpl.crm.web.model.customer.customer360.AccountBackingBean=This service is related to Customer360  View Accounts related activities
+com.srpl.crm.web.model.loyalty.LoyaltyBean=This Service  is for Customer Loyality related Activities
+com.srpl.crm.web.model.BillBackingBean=This service is related to Billing related activities
+com.srpl.crm.web.model.um.customer.CustomerBackingBean=This Service is for  Customer related Activities
+
+com.srpl.crm.web.model.MailTemplateBackingBean=This service is related to Mail Templates related activities
+
+com.srpl.crm.web.controller.PackagesController=This service is related to Packages related activities
+
+com.srpl.crm.web.model.user.UserBackingBean=This service is related to Users related activities
+
+com.srpl.crm.web.model.customer.customer360.Customer360InvoiceBackingBean=This service is related to Customer 360 View and its related activities
+com.srpl.crm.web.model.customer.customer360.Customer360NotesBackingBean=This service is related to Customer360 Notes related activities
+com.srpl.crm.web.model.customer.customer360.Customer360SubscribeBackingBean=This service is related to Customer 360 Subscriber related activities
+com.srpl.crm.web.model.customer.customer360.Customer360ProvisioningBackingBean=This service is related to Customer 360 Provisioning related activities

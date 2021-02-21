@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form id="leadsMarketingForm" styleClass="ui-form">
+			<p:panelGrid id="grid" colstyleClass="content-table">
+				<h:outputText value="leads is pending." />
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel>
+							${sid['labellead.source']}&nbsp;			
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="leadSource"
+							value="#{Leads.marketingLeadSource}" style="width:232px;">
+							<f:selectItem itemLabel="Email" itemValue="email" />
+							<f:selectItem itemLabel="Phone" itemValue="phone" />
+							<f:selectItem itemLabel="WebSite" itemValue="website" />
+							<f:selectItem itemLabel="NewsPaper" itemValue="newspaper" />
+							<f:selectItem itemLabel="Advertisement" itemValue="advertisement" />
+							<f:selectItem itemLabel="Friends" itemValue="friends" />
+							<f:selectItem itemLabel="Others" itemValue="others" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</ui:composition>
+</h:body>
+
+</html>

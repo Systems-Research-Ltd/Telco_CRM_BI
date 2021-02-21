@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:dash="http://java.sun.com/jsf/composite/dash"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+	<ui:define name="title"> Dashboard</ui:define>
+	<ui:define name="contents">
+		<h:form id="form">
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<p:dashboard id="board" model="#{dashBean.model}" disabled="true">
+
+				<p:panel id="widget1" header="#{dashBean.reportLabels[0]}" style="height:310px">
+					<dash:graphtag report="#{dashBean.reports[0].graphtype}" value="#{dashBean.graphs[0].chart}" min="#{dashBean.graphs[0].minY}" max="#{dashBean.graphs[0].maxY}" rendered="#{dashBean.reports[0].report ne 0 and dashBean.reports[0].graphtype ne 1 and dashBean.graphs[0].chartvalid}"></dash:graphtag>
+					<!-- <dash:datatablegeneric rows="#{dashBean.rowdata}" dndcolumns="#{dashBean.dnd}"></dash:datatablegeneric> -->
+					<p:dataTable id="table1" var="rdata"
+						value="#{dashBean.reportData[0].rows}" widgetVar="dndTable"
+					    rendered="#{dashBean.reports[0].report ne 0 and dashBean.reports[0].graphtype eq 1}" paginator="true" rows="7" paginatorPosition="bottom"
+		paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:columns value="#{dashBean.reportData[0].dndColumns}" var="column">
+							<f:facet name="header">
+								<c:choose>
+									<c:when test="${column.property eq 'serialNo'}">
+										<h:outputText value="#{column.header}" />
+									</c:when>
+									<c:otherwise>
+										<h:outputLink value="#"
+											onclick="currentcolumn([{name: 'column', value: '#{column.property}'}, {name: 'table', value: '#{column.table}'}]);">
+											<h:outputText value="#{column.header}" />
+										</h:outputLink>
+									</c:otherwise>
+								</c:choose>
+							</f:facet>
+							<h:outputText value="#{rdata[column.property]}" />
+						</p:columns>
+					</p:dataTable>
+					<f:facet name="actions">
+						<p:commandLink	styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" onclick="reportdlg.show()" actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="1" />
+						</p:commandLink>
+						<p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="1" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="widget3" header="#{dashBean.reportLabels[2]}" style="height:310px">
+					<!--  <sr:dashwidget report="#{dashBean.reports[2]}" />-->
+					<dash:graphtag report="#{dashBean.reports[2].graphtype}" value="#{dashBean.graphs[2].chart}" min="#{dashBean.graphs[2].minY}" max="#{dashBean.graphs[2].maxY}" rendered="#{dashBean.reports[2].report ne 0 and dashBean.reports[2].graphtype ne 1 and dashBean.graphs[2].chartvalid}"></dash:graphtag>
+					<p:dataTable id="table3" var="rdata"
+						value="#{dashBean.reportData[2].rows}" widgetVar="dndTable"
+					    rendered="#{dashBean.reports[2].report ne 0 and dashBean.reports[2].graphtype eq 1}" paginator="true" rows="7" paginatorPosition="bottom"
+		paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:columns value="#{dashBean.reportData[2].dndColumns}" var="column">
+							<f:facet name="header">
+								<c:choose>
+									<c:when test="${column.property eq 'serialNo'}">
+										<h:outputText value="#{column.header}" />
+									</c:when>
+									<c:otherwise>
+										<h:outputLink value="#"
+											onclick="currentcolumn([{name: 'column', value: '#{column.property}'}, {name: 'table', value: '#{column.table}'}]);">
+											<h:outputText value="#{column.header}" />
+										</h:outputLink>
+									</c:otherwise>
+								</c:choose>
+							</f:facet>
+							<h:outputText value="#{rdata[column.property]}" />
+						</p:columns>
+					</p:dataTable>
+					<f:facet name="actions">
+						<p:commandLink	styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" onclick="reportdlg.show()" actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="3" />
+						</p:commandLink>
+						<p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="3" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="widget2" header="#{dashBean.reportLabels[1]}" style="height:310px">
+					<!--  <sr:dashwidget report="#{dashBean.reports[1]}" />-->
+					<dash:graphtag report="#{dashBean.reports[1].graphtype}" value="#{dashBean.graphs[1].chart}" min="#{dashBean.graphs[1].minY}" max="#{dashBean.graphs[1].maxY}" rendered="#{dashBean.reports[1].report ne 0 and dashBean.reports[1].graphtype ne 1 and dashBean.graphs[1].chartvalid}"></dash:graphtag>
+					<p:dataTable id="table2" var="rdata"
+						value="#{dashBean.reportData[1].rows}" widgetVar="dndTable"
+						rendered="#{dashBean.reports[1].report ne 0 and dashBean.reports[1].graphtype eq 1}" paginator="true" rows="7" paginatorPosition="bottom"
+		paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:columns value="#{dashBean.reportData[1].dndColumns}" var="column">
+							<f:facet name="header">
+								<c:choose>
+									<c:when test="${column.property eq 'serialNo'}">
+										<h:outputText value="#{column.header}" />
+									</c:when>
+									<c:otherwise>
+										<h:outputLink value="#"
+											onclick="currentcolumn([{name: 'column', value: '#{column.property}'}, {name: 'table', value: '#{column.table}'}]);">
+											<h:outputText value="#{column.header}" />
+										</h:outputLink>
+									</c:otherwise>
+								</c:choose>
+							</f:facet>
+							<h:outputText value="#{rdata[column.property]}" />
+						</p:columns>
+					</p:dataTable>
+					<f:facet name="actions">
+						<p:commandLink	styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" onclick="reportdlg.show()" actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="2" />
+						</p:commandLink>
+						<p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="2" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+				<p:panel id="widget4" header="#{dashBean.reportLabels[3]}" style="height:310px">
+					<dash:graphtag report="#{dashBean.reports[3].graphtype}" value="#{dashBean.graphs[3].chart}" min="#{dashBean.graphs[3].minY}" max="#{dashBean.graphs[3].maxY}" rendered="#{dashBean.reports[3].report ne 0 and dashBean.reports[3].graphtype ne 1 and dashBean.graphs[3].chartvalid}"></dash:graphtag>
+					<!--  <sr:dashwidget report="#{dashBean.reports[3]}" />-->
+					<p:dataTable id="table4" var="rdata"
+						value="#{dashBean.reportData[3].rows}" widgetVar="dndTable"
+						rendered="#{dashBean.reports[3].report ne 0 and dashBean.reports[3].graphtype eq 1}" paginator="true" rows="7" paginatorPosition="bottom"
+		paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:columns value="#{dashBean.reportData[3].dndColumns}" var="column">
+							<f:facet name="header">
+								<c:choose>
+									<c:when test="${column.property eq 'serialNo'}">
+										<h:outputText value="#{column.header}" />
+									</c:when>
+									<c:otherwise>
+										<h:outputLink value="#"
+											onclick="currentcolumn([{name: 'column', value: '#{column.property}'}, {name: 'table', value: '#{column.table}'}]);">
+											<h:outputText value="#{column.header}" />
+										</h:outputLink>
+									</c:otherwise>
+								</c:choose>
+							</f:facet>
+							<h:outputText value="#{rdata[column.property]}" />
+						</p:columns>
+					</p:dataTable>
+					<f:facet name="actions">
+						<p:commandLink	styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" onclick="reportdlg.show()" actionListener="#{dashBean.selectedPanel}">
+							<h:outputText styleClass="ui-icon ui-icon-plusthick" />
+							<f:attribute name="selectedPanel" value="4" />
+						</p:commandLink>
+						<p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{dashBean.clearReport}" update="board">
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+							<f:attribute name="selectedPanel" value="4" />
+						</p:commandLink>
+					</f:facet>
+				</p:panel>
+
+			</p:dashboard>
+			<p:dialog header="Select Report" widgetVar="reportdlg"
+			resizable="false" modal="true" showEffect="fade" hideEffect="fade">
+				<h:form id="dlgform">
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5"
+						columnClasses="label, column">
+						<h:outputText value="#{sid['label.reports']}:" />
+						<p:selectOneListbox id="reportDropdown"
+							style="width:200px;height:250px"
+							value="#{dashBean.reportDropdown}">
+							<f:selectItem itemLabel="No Report" itemValue="0" />
+							<f:selectItems value="#{dashBean.reportsList}" var="r"
+								itemLabel="#{r.key}" itemValue="#{r.value}"></f:selectItems>
+						</p:selectOneListbox>
+						<h:outputText value="Type" />
+						<p:selectOneButton value="#{dashBean.selectedGraphType}">
+							<f:selectItem itemLabel="Table" itemValue="1" />
+							<f:selectItem itemLabel="Bar Graph" itemValue="3" />
+							<f:selectItem itemLabel="Line Graph" itemValue="5" />
+							<f:selectItem itemLabel="Area Graph" itemValue="6" />
+						</p:selectOneButton>
+					</h:panelGrid>
+					<p:commandButton id="submitButton" value="#{sid['label.submit']}"
+						actionListener="#{dashBean.addReport}"
+						oncomplete="reportdlg.hide();" update=":form:board" />
+					<p:commandButton id="cancelButton" value="#{sid['label.cancel']}"
+						onclick="reportdlg.hide();" />
+				</h:form>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

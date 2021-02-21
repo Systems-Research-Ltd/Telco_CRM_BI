@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="value" required="true"
+			shortDescription="List to be populated"></composite:attribute>
+		<composite:attribute name="columns" required="true"
+			shortDescription="List of ColumModel"></composite:attribute>
+		<composite:attribute name="rowid" required="true"></composite:attribute>
+		<composite:attribute name="heading" required="true"></composite:attribute>
+		<composite:attribute name="actionview" default="true"></composite:attribute>
+		<composite:attribute name="actionedit" default="true"></composite:attribute>
+		<composite:attribute name="actioncreate" default="true"></composite:attribute>
+	</composite:interface>
+
+	<composite:implementation>
+		<p:messages id="messages"/>
+		<p:dataTable id="dataTable" var="row" value="#{cc.attrs.value}" 
+						paginator="true" rows="6" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						tableStyleClass="dash-table">
+			<!-- <p:column selectionMode="multiple" style="width:18px" /> -->
+			<f:facet name="header">
+				Orders
+			</f:facet>
+			<p:columns value="#{cc.attrs.columns}" var="column"
+				columnIndexVar="colIndex">
+				<f:facet name="header">  
+                			#{column.headerText}  
+            			</f:facet>  
+            			#{row[column.value]}  
+        	</p:columns>
+			<p:column>
+				<f:facet name="header">ACTIONS</f:facet>
+				<div class="actions">
+					<ul>
+						<c:if test="#{cc.attrs.actionview eq 'true'}">
+							<li><h:commandLink action="view" title="View Row">
+									<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="view.gif" />
+									<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+									<f:param name="mode" value="view"></f:param>
+									<f:param name="action" value="view"></f:param>
+									<f:param name="page" value="dash"></f:param>
+									<f:setPropertyActionListener target="#{actionListener.selectedAction}" value="view" />
+								</h:commandLink></li>
+								
+						</c:if>
+						<c:if test="#{cc.attrs.actionedit eq 'true'}">
+							<li><p:commandLink action="edit" title="Edit Row">
+									<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="edit.png" />
+									<f:param name="row_id" value="#{row[cc.attrs.rowid]}"></f:param>
+									<f:param name="mode" value="edit"></f:param>
+									<f:param name="action" value="edit"></f:param>
+									<f:param name="page" value="dash"></f:param>
+									<f:setPropertyActionListener target="#{actionListener.selectedAction}" value="edit" />
+								</p:commandLink></li>
+						</c:if>
+					</ul>
+				</div>
+			</p:column>
+			<f:facet name="footer">
+			</f:facet>
+		</p:dataTable>
+
+	</composite:implementation>
+</h:body>
+</html>

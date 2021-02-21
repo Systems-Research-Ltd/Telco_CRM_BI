@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:sr="http://java.sun.com/jsf/composite/utils"
+      xmlns:p="http://primefaces.org/ui">
+<h:head><title>PrimeFaces Intro Exercises</title>
+	<h:outputStylesheet library="themes/original/css" name="default.css" />
+</h:head>
+<h:body>
+
+<h1 class="ui-widget-header ui-corner-all" align="center">Sample List</h1>
+<h:form>
+<h:messages/>
+ <br></br>
+   <p:commandButton value="Create New" action="#{sampleBackingBean.actionListener}" ajax="false" >
+   	<f:param name="action" value="create" />
+   </p:commandButton>
+
+	<h:dataTable value="#{sampleBackingBean.titles}" var="item">
+		
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Title" />
+				</f:facet>
+					<h:outputText value="#{item}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Value" />
+				</f:facet>
+					<h:outputText value="#{item}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Action" />
+				</f:facet>
+					   <p:commandLink value="#{sid['label.edit']}" action="#{sampleBackingBean.actionListener}" ajax="false" >
+   							<f:param name="action" value="#{sid['action.edit']}" />
+   							<f:param name="id" value="#{item}" />
+   					  </p:commandLink>
+   					  &nbsp;
+ 					  <p:commandLink value="#{sid['label.view']}" action="#{sampleBackingBean.actionListener}" ajax="false" >
+ 						  	<f:param name="action" value="#{sid['action.view']}" />
+ 						  	<f:param name="id" value="#{item}" />
+ 					  </p:commandLink>
+ 					  &nbsp;
+ 					  <p:commandLink value="#{sid['label.delete']}" action="#{sampleBackingBean.actionListener}" ajax="false" >
+ 						  	<f:param name="action" value="#{sid['action.delete']}" />
+ 						  	<f:param name="id" value="#{item}" />
+ 					  </p:commandLink>
+					
+				</h:column>
+		
+	</h:dataTable>
+	<br />
+	<p:separator id="separator"/>  
+	<br />
+	<sr:datatableHammad value="#{sampleBackingBean.sampleList}"
+	 		columns="#{sampleBackingBean.columns}"
+	 		rowid="id"
+	 		actionListener="#{sampleBackingBean.actionListener()}"
+	 		heading="Sample Datatable" />
+</h:form>
+</h:body></html>

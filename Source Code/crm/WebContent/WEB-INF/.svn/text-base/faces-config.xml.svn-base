@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<!-- Message Resource Boundle -->
+	<application>
+		<resource-bundle>
+			<base-name>resources.sid</base-name>
+			<var>sid</var>
+		</resource-bundle>
+	</application>
+
+	<converter>
+		<converter-id>orderProductConverter</converter-id>
+		<converter-class>com.srpl.crm.web.model.sales.OrderProductConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>productQuantityConverter</converter-id>
+		<converter-class>com.srpl.crm.web.model.sales.ProductQuantityConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>customerConverter</converter-id>
+		<converter-class>com.srpl.crm.web.model.support.CustomerConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>autoCompleteCustomerConverter</converter-id>
+		<converter-class>com.srpl.crm.web.model.support.AutoCompleteCustomerConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>umServiceConverter</converter-id>
+		<converter-class>com.srpl.crm.web.common.UmServiceConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-id>mailTemplateConverter</converter-id>
+		<converter-class>com.srpl.crm.web.common.MailTemplateConverter</converter-class>
+	</converter>
+	
+	<!-- NAVIGATION START -->
+	<!-- TAB -->
+
+	<navigation-rule>
+		<from-view-id>/view/sample/*</from-view-id>
+		<from-action>#{sampleBackingBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sample/sampleForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sample/sampleList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.tabListener}</from-action>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/view/dashboard/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>themesSettings</from-outcome>
+			<to-view-id>/view/settings/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>orders</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>support</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>mapdata</from-outcome>
+			<to-view-id>/view/admin/import/confimport.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>marketing</from-outcome>
+			<to-view-id>/view/marketing/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>import</from-outcome>
+			<to-view-id>/view/admin/import/import.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sales</from-outcome>
+			<if>#{security.leads.read == true}</if>
+			<to-view-id>/view/sales/leads/leadList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sales</from-outcome>
+			<if>#{security.order.read == true}</if>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>documents</from-outcome>
+			<to-view-id>/view/documents/documentList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>alertsReminders</from-outcome>
+			<to-view-id>/view/alertsandreminders/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>adminalertsReminders</from-outcome>
+			<to-view-id>/view/admin/alertsandreminders/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>support</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>queryType</from-outcome>
+			<to-view-id>/view/support/cases/querytype/queryTypeList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>um</from-outcome>
+			<to-view-id>../um/view/um/user/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>register</from-outcome>
+			<to-view-id>/view/Register.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>customer</from-outcome>
+			<to-view-id>/view/customer/contacts/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>caseList</from-outcome>
+			<to-view-id>/view/support/cases/caseList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Customer')}</if>
+			<from-outcome>Tickets</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Administrator')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('AccountManager')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>/view/alertsandreminders/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>loyalty</from-outcome>
+			<to-view-id>/view/loyalty/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>settings</from-outcome>
+			<to-view-id>/view/settings/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>reports</from-outcome>
+			<to-view-id>/view/reports/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageServices</from-outcome>
+			<to-view-id>../um/view/um/admin/manageServices/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	<!--  	<navigation-case>
+		<if>#{facesContext.externalContext.isUserInRole('Customer')}</if>
+			<from-outcome>invoiceSettings</from-outcome>
+			<to-view-id>/view/sales/orders/invoiceSettings.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>-->
+	</navigation-rule>
+	<!-- MENU -->
+	<navigation-rule>
+		<from-view-id>/view/*</from-view-id>
+		<from-action>#{actionListener.menuListener}</from-action>
+		<navigation-case>
+			<from-outcome>orders</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>companies</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>users</from-outcome>
+			<to-view-id>../um/view/um/admin/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>groups</from-outcome>
+			<to-view-id>../um/view/um/admin/groups/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>import</from-outcome>
+			<to-view-id>/view/admin/import/import.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>setup</from-outcome>
+			<to-view-id>/view/dashboard/setup.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>importAccounts</from-outcome>
+			<to-view-id>/view/um/import/importAccounts.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>importContacts</from-outcome>
+			<to-view-id>/view/um/import/importContacts.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>importUsers</from-outcome>
+			<to-view-id>/view/um/import/importUsers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>franchises</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>uploadLogo</from-outcome>
+			<to-view-id>/view/um/admin/company/uploadLogo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<!-- Customer Menu Starts -->
+		<navigation-case>
+			<from-outcome>contacts</from-outcome>
+			<to-view-id>/view/customer/contacts/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>accounts</from-outcome>
+			<to-view-id>/view/customer/accounts/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Customer Menu Ends -->
+
+		<!-- Customer Area Starts -->
+		<navigation-case>
+			<from-outcome>orders</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+			<redirect />
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/view/dashboard/*</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<!-- CUstomer Area Ends -->
+
+		<!-- Settings Menu Starts -->
+		<navigation-case>
+			<from-outcome>changePassword</from-outcome>
+			<to-view-id>../um/view/um/admin/user/changepassword.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>profile</from-outcome>
+			<to-view-id>/view/settings/userProfile.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>leads</from-outcome>
+			<to-view-id>/view/sales/leads/leadList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('User')}</if>
+			<from-outcome>caseList</from-outcome>
+			<to-view-id>/view/support/cases/caseList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Settings Menu Ends -->
+
+		<!-- Sales Menu Starts -->
+		<navigation-case>
+			<from-outcome>opportunities</from-outcome>
+			<to-view-id>/view/sales/opportunities/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>products</from-outcome>
+			<to-view-id>/view/sales/products/productList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>invoiceSettings</from-outcome>
+			<to-view-id>/view/sales/orders/invoiceSettings.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>packages</from-outcome>
+			<to-view-id>/view/sales/packages/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>billreimbursement</from-outcome>
+			<to-view-id>/view/sales/billReimbursement/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Sales Menu Ends -->
+		<!-- Loyalty Menu Starts -->
+		<navigation-case>
+			<from-outcome>loyaltyRule</from-outcome>
+			<to-view-id>/view/loyalty/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>messageTemplate</from-outcome>
+			<to-view-id>/view/loyalty/messageTemplate/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Loyalty Menu Ends -->
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Customer')}</if>
+			<from-outcome>Tickets</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+		<navigation-case>
+			<from-action>#{userBackingBean.signOut}</from-action>
+			<from-outcome>signout</from-outcome>
+			<to-view-id>/view/public/SignOutForm.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- MENU ENDS HERE -->
+
+	<!-- company hammad -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/company/*</from-view-id>
+		<from-action>#{companyBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>parameter</from-outcome>
+			<to-view-id>../um/view/um/admin/company/parameter/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- Franchise Hammad -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/franchise/*</from-view-id>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/franchiseForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+
+	<!-- Customer -->
+	<!-- Account -->
+	<!-- No need its ajax based -->
+	
+	
+	<!-- Contact -->
+	<navigation-rule>
+               <from-view-id>/view/customer/contacts/*</from-view-id>
+               <from-action>#{customer360Provisioning.actionListener}</from-action>
+               <navigation-case>
+                       <from-outcome>orderdetail</from-outcome>
+                       <to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+               </navigation-case>
+       </navigation-rule>
+	<!-- No need its ajax based -->
+
+	<!-- Groups -->
+	<!-- No need its ajax based -->
+
+
+
+	<!-- User List -->
+	<!-- No Need its ajax based -->
+
+	<!-- hammad parameters -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/company/parameter/*</from-view-id>
+		<from-action>#{parameterBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/company/parameter/parameterForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>../um/view/um/admin/company/parameter/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- Parameter Listing -->
+
+	<!-- Operations/Services Listing -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/groups/groupsOperations/*</from-view-id>
+		<from-action>#{groupOperationBackingBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/groups/groupsOperations/groupOperationForm.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>../um/view/um/admin/groups/groupsOperations/groupOperationList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Operations/Services Listing -->
+	<navigation-rule>
+		<from-view-id>/view/um/admin/manageServices/*</from-view-id>
+		<from-action>#{groupOperationBackingBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/manageServices/serviceForm.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>../um/view/um/admin/manageServices/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+
+	<!-- Loyalty -->
+	<navigation-rule>
+		<from-view-id>/view/loyalty/*</from-view-id>
+		<from-action>#{newLoyaltyBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/loyalty/loyaltyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/loyalty/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Message Template -->
+	<navigation-rule>
+		<from-view-id>/view/loyalty/messageTemplate/*</from-view-id>
+		<from-action>#{newTemplateBackingBean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/loyalty/messageTemplate/templateForm.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/loyalty/messageTemplate/index.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+	<!-- end -->
+
+
+	<!-- Reports -->
+	<navigation-rule>
+		<from-view-id>/view/reports/index1.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>create</from-outcome>
+			<to-view-id>/view/reports/indexn.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/view/reports/indexn.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Opportunity -->
+
+	<navigation-rule>
+		<from-view-id>/view/sales/opportunities/*</from-view-id>
+		<from-action>#{opportunityBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/opportunities/opportunityForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/opportunities/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- end Opportunity -->
+
+	<!-- products -->
+
+
+	<navigation-rule>
+		<from-view-id>/view/sales/products/*</from-view-id>
+		<from-action>#{productBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/products/productForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/products/productList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- end products -->
+
+	<!-- orders -->
+	<navigation-rule>
+		<from-view-id>/view/sales/orders/*</from-view-id>
+		<from-action>#{orderBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/orders/orderForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dash</from-outcome>
+			<to-view-id>/view/dashboard/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<!-- orders -->
+	<!-- bill reimbursement -->
+	<navigation-rule>
+		<from-view-id>/view/sales/billReimbursement/*</from-view-id>
+		<from-action>#{billBean.actionListener}</from-action>
+		<!-- <navigation-case> <from-outcome>crud</from-outcome> <to-view-id>/view/sales/billReimbursement/viewOrderDetails.xhtml</to-view-id> 
+			</navigation-case> -->
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/billReimbursement/billReimbursementForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/billReimbursement/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- end -->
+
+	<!-- Packages -->
+	<navigation-rule>
+		<from-view-id>/view/sales/packages/*</from-view-id>
+		<from-action>#{packagescontrollerbean.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/packages/packagesForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/packages/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Packages Ends -->
+
+	<!-- Leads -->
+	<navigation-rule>
+		<from-view-id>/view/sales/leads/*</from-view-id>
+		<from-action>#{leads.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/leads/leadForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/sales/leads/leadList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- support cases start -->
+	<navigation-rule>
+		<from-view-id>/view/support/cases/querytype/*</from-view-id>
+		<from-action>#{queryTypeBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/support/cases/querytype/queryTypeForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/support/cases/querytype/queryTypeList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/view/support/*</from-view-id>
+		<from-action>#{caseBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/support/cases/caseForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/support/cases/caseList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dash</from-outcome>
+			<to-view-id>/view/support/cases/dashBoardTicketView.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>caseList</from-outcome>
+			<to-view-id>/view/support/cases/caseList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<if>#{facesContext.externalContext.isUserInRole('Customer')}</if>
+			<from-outcome>Tickets</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>support</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>querySetting</from-outcome>
+			<to-view-id>/view/support/cases/querytype/queryTypeList.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>escalations</from-outcome>
+			<to-view-id>/view/support/cases/escalated/escCaseList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/view/support/cases/escalated*</from-view-id>
+		<from-action>#{caseEscalationBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>assign</from-outcome>
+			<to-view-id>/view/support/cases/escalated/assignCase.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/support/cases/escalated/escCaseList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- support cases ends -->
+
+	<!-- Documents -->
+	<navigation-rule>
+		<from-view-id>/view/documents/*</from-view-id>
+		<from-action>#{Documents.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/documents/documentForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/documents/documentList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+
+
+	<!-- alerts and reminders tahir -->
+
+
+<!--  	<navigation-rule>
+		<from-view-id>/view/alertsandreminders/*</from-view-id>
+		<from-action>#{alertsAndRemindersUser.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/alertsandreminders/alertsAndRemindersForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/alertsandreminders/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>-->
+
+	<navigation-rule>
+		<from-view-id>/view/admin/alertsandreminders/*</from-view-id>
+		<from-action>#{alertsAndRemindersBean.actionListener()}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/admin/alertsandreminders/alertsAndRemindersForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/admin/alertsandreminders/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>alertsettings</from-outcome>
+			<to-view-id>/view/admin/alertsandreminders/alertsAndRemindersSettings.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	<!-- ends -->
+
+	<!-- Sales Dashboard -->
+
+<!-- <navigation-rule>
+		<from-view-id>/view/dashboard/*</from-view-id>
+		<navigation-case>
+			<from-action>#{orderBackingBean.actionListener}</from-action>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{companyBackingBean.actionListener}</from-action>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/company/companyForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{userDetails.actionListener}</from-action>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/user/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{franchiseBackingBean.actionListener}</from-action>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/index.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+	<from-view-id>/view/dashboard/*</from-view-id>
+	<from-action>#{dashReportBean.actionListener}</from-action>
+	<navigation-case>
+			<from-outcome>campOrderDetails</from-outcome>
+			<from-outcome>marketing</from-outcome>
+			<to-view-id>/view/marketing/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>support</from-outcome>
+			<to-view-id>/view/support/cases/tickets.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>order</from-outcome>
+			<to-view-id>/view/sales/orders/orderList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>company</from-outcome>
+			<to-view-id>../um/view/um/admin/company/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>user</from-outcome>
+			<to-view-id>../um/view/um/admin/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>franchise</from-outcome>
+			<to-view-id>../um/view/um/admin/franchise/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>-->
+
+	<!-- Dashboard -->
+
+	<!-- User Profile -->
+	<navigation-rule>
+		<from-view-id>/view/settings/userProfile.xhtml</from-view-id>
+		<from-action>#{profile.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/view/settings/userProfile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- User Profile -->
+
+
+	<!-- sample1 hammad -->
+	<navigation-rule>
+		<from-view-id>/view/admin/sample/*</from-view-id>
+		<from-action>#{sample1.actionListener}</from-action>
+		<navigation-case>
+			<from-outcome>crud</from-outcome>
+			<to-view-id>/view/admin/sample/sampleForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/view/admin/sample/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ends -->
+</faces-config>

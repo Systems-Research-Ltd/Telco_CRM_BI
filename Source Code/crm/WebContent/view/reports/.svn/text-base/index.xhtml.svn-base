@@ -1,0 +1,767 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="#{initParam.reportsTemplate}">
+
+
+	<ui:define name="title" class="reports-content-area ">${sid['title.report']}</ui:define>
+
+	<ui:define name="contents">
+		<style type="text/css">
+/*********** Reports ***********/
+.ui-picklist-target {
+	margin-left: 40px !important;
+/*	left: 3% !important;*/
+	position: relative !important;
+	top : 175px !important;
+	width: 840px !important;
+	height: 310px !important;
+	overflow: auto;
+	border: 1px solid #CCCCCC !important;
+	
+	
+
+}
+
+.ui-picklist .ui-picklist-target .ui-picklist-item {
+	width: 10% !important;
+	float: left !important;
+	/*border: 1px solid #CCCCCC !important;*/
+	word-wrap: break-word
+}
+
+.ui-picklist-source {
+	width: 330px !important;
+	border: 1px solid #CCCCCC !important;
+	vertical-align: top;
+	border-spacing:20px;
+}
+
+.row {
+	width: 98%;
+	float: left;
+	padding-bottom: 10px;
+}
+
+.row_center {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+.row-right {
+	float: right;
+	padding-bottom: 10px;
+}
+
+.label {
+	font-weight: bold;
+}
+
+.label-sml {
+	font-weight: bold;
+	vertical-align: top;
+	padding-right: 40px;
+}
+
+.label-designPalette {
+	font-weight: bold;
+	float: left;
+}
+
+.label-50 {
+	width: 100px;
+	float: left;
+	font-weight: bold;
+}
+
+.label-right {
+	width: 30%;
+	float: left;
+	font-weight: bold;
+	text-align: right;
+}
+
+.label-small {
+	width: 20%;
+	float: left;
+	font-weight: bold;
+}
+
+.field {
+	width: 68%;
+	float: left
+}
+
+.field-50 {
+	width: 34%;
+	float: left
+}
+
+.field-right1 {
+	width: 68%;
+	float: right
+}
+
+.field-right {
+	width: 36%;
+	float: right;
+}
+
+.rep-title {
+	font-family: Arial;
+	font-size: 26px;
+	font-weight: bold;
+	width: 180px;
+}
+
+.rep-desc {
+	font-family: Arial;
+	font-size: 18px;
+	font-weight: bold;
+	width: 180px;
+}
+
+.indent {
+	margin-left: 20%;
+}
+.help-icon-indent{
+		margin-left:55%;
+}
+.add-summary {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.ui-picklist .ui-picklist-list {
+	height: 270px !important;
+	
+}
+.picklist-source{
+padding:10px;
+}
+
+input[type="text"].grey_txt {
+	color: #999999;
+}
+
+input[type="text"].black_txt {
+	color: #000000;
+}
+
+.ui-picklist .ui-button {
+	display: none;
+	margin-bottom: 0.3em;
+}
+
+.link-right {
+	float: right;
+}
+.ui-accordion .ui-accordion-content {
+    border-top: 0 none;
+    margin-bottom: 2px;
+    margin-top: -2px;
+    overflow: auto;
+    padding: 1em 0em;
+    position: relative;
+    top: 1px;
+}
+
+.ui-toolbar-group-left {
+    float: left;
+    padding-top :2px;
+}
+dialog{
+overflow:auto;
+}
+</style>
+		<!--  <h:messages errorClass="Error" styleClass="ErrorBox" />-->
+		<p:messages id="reportmsgs" autoUpdate="true" closable="true" />
+		<h:form id="report" >
+			<script type="text/javascript"
+				src="${request.contextPath}/js/report.js">
+			</script>
+			<p:toolbar id="paletteToolBar">
+				<p:toolbarGroup align="center">
+				<div class="label">
+				<h2>
+					Data Palette <span class="indent">Design Palette 
+					
+					</span>
+				</h2>
+				
+			</div>
+				</p:toolbarGroup> </p:toolbar>
+
+				<div id="lc"
+					style="float: left; width: 28%;border: 1px solid #CCCCCC;padding: 5px 5px;height: 589px">
+
+					<div class="row">
+						<div class="field">
+							<p:outputLabel for="table" value="Tables" styleClass="label" />
+							<p:selectOneMenu id="table" value="#{reportBean.selectedTable}"
+								style="width: 143%;">
+								<f:selectItems value="#{reportBean.tables}" />
+								<p:ajax update="repPickList" event="change"
+									listener="#{reportBean.columnListener}" oncomplete="setCols()"
+									onstart="saveCols()"  />
+							</p:selectOneMenu>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="field">
+							<p:outputLabel for="repPickList" value="Columns"
+								styleClass="label" />
+							<p:pickList id="repPickList" value="#{reportBean.columns}"
+								var="cols" itemLabel="#{cols.col}" itemValue="#{cols.colDB}"
+							>
+								<p:ajax event="transfer" listener="#{reportBean.onTransfer}" 
+									update="palette:groupby,palette:orderby,from,cols, colsTitles,:groupByForm:groupByCheckBox,:orderByForm:orderByCheckBox" />
+							</p:pickList>
+							
+						</div>
+					</div>
+					<div class="row">
+					
+							<p:accordionPanel id="palette" style="width:97%; margin:2px;"  >
+								<p:tab title="Add Filter" >
+								<h:panelGrid  width="100%" columns="1" bgcolor="#dfdfdf"
+									style="height:25px; margin-bottom:5px; padding:0px;">
+									<p:row>
+										<p:column>
+											<p:commandLink id="addFilter" onclick="dlg1.show()" title="Add Filter" value="#{sid['label.add.filter']}" 
+												styleClass="link-right">
+												</p:commandLink>
+											<p:tooltip for="addFilter" value="  Add  " showEffect="fade"
+												hideEffect="fade" />
+										</p:column>
+										
+									</p:row>
+									<p:fieldset style="width:90%;height:52px;overflow:auto;">
+										<p:dataList value="#{reportBean.currentFilterList}"
+											var="flt" itemType="disc" id="filter">  
+			   							#{flt}
+									</p:dataList>
+									</p:fieldset>
+								</h:panelGrid>
+							</p:tab>
+								<p:tab title="Group By">
+								<h:panelGrid width="100%" columns="1" bgcolor="#dfdfdf"
+									style="height:25px; margin-bottom:5px;padding:1px;">
+									<p:row>
+										<p:column>
+											<p:commandLink id="addGroupByClause"
+												onclick="grpordDlg.show()" styleClass="link-right" disabled="${reportBean.selectedReport ne 0}">
+												<h:graphicImage
+													library="themes/#{themeBean.userTheme.title}/images"
+													name="plus.jpg" width="20" height="20" />
+											</p:commandLink>
+											<p:tooltip for="addGroupByClause" value="Add  "
+												showEffect="fade" hideEffect="fade" />
+										</p:column>
+										<p:column>
+
+											<p:commandLink ajax="true" id="editGroupByClause"
+												title="Edit" update="groupby" styleClass="link-right"
+												onclick="grpordDlg.show()" disabled="${reportBean.selectedReport eq 0}">
+												<h:graphicImage library="themes/default/images/icons"
+													name="edit.png" width="20" height="20" />
+											</p:commandLink>
+										</p:column>
+									</p:row>
+									<p:fieldset style="width:90%;height:52px;overflow:auto;">
+										<p:dataList value="#{reportBean.selectedGroupByColumns}"
+											var="grp" itemType="disc" id="groupby">  
+			   							#{grp}  
+									</p:dataList>
+									</p:fieldset>
+								</h:panelGrid>
+							</p:tab>
+								<p:tab title="Order By">
+								<h:panelGrid width="100%" columns="1" bgcolor="#dfdfdf"
+									style="height:25px; margin-bottom:5px;padding:1px;">
+									<p:row>
+										<p:column>
+											<p:commandLink id="addOrderByClause" onclick="ordDlg.show()"
+												styleClass="link-right" disabled="${reportBean.selectedReport ne 0}">
+												<h:graphicImage
+													library="themes/#{themeBean.userTheme.title}/images"
+													name="plus.jpg" width="20" height="20" />
+											</p:commandLink>
+											<p:tooltip for="addOrderByClause" value=" Add  "
+												showEffect="fade" hideEffect="fade" />
+										</p:column>
+										<p:column>
+
+											<p:commandLink ajax="true" id="editOrderByClause"
+												title="Edit" update="orderby" styleClass="link-right"
+												onclick="ordDlg.show()" disabled="${reportBean.selectedReport eq 0}">
+												<h:graphicImage library="themes/default/images/icons"
+													name="edit.png" width="20" height="20" />
+											</p:commandLink>
+										</p:column>
+									</p:row>
+									<p:fieldset style="width:90%;height:52px;overflow:auto;">
+										<p:dataList value="#{reportBean.selectedOrderByColumns}"
+											var="ord" itemType="disc" id="orderby">  
+			   						 #{ord}  
+									</p:dataList>
+									</p:fieldset>
+								</h:panelGrid>
+							</p:tab>
+				</p:accordionPanel>
+						</div>
+					</div>
+				
+
+
+
+				<div id="rc"
+					style="float: right; width: 70%; border: 1px solid #CCCCCC; padding: 15px 5px; height: 569px;">
+					<div class="tool-bar-row ">
+
+						<p:toolbar id="repToolBar">
+							<p:toolbarGroup align="left">
+								<p:commandButton ajax="true" id="createReport"
+									icon="ui-icon-plus" title="#{sid['label.createNew']}"
+									action="#{reportBean.createNewReport()}"
+									update="report,:dataFilterForm,palette" />
+
+								<p:commandButton ajax="true" title="#{sid['label.save']}"
+									icon="ui-icon-disk" id="saveButton"
+									action="#{reportBean.saveReport()}" update="savedReports" />
+
+								<p:commandButton ajax="true" id="previewButton" title="Preview"
+									icon="ui-icon-document" action="#"
+									oncomplete="if (#{!facesContext.validationFailed})$('#report\\:preview').trigger('click');;" />
+								<h:commandLink id="preview"
+									action="#{reportBean.generateReport('view')}" target="_blank"></h:commandLink>
+
+								<p:commandButton id="updateButton"
+									action="#{reportBean.updateReport()}"
+									title="#{sid['label.update']}" icon="ui-icon-disk"
+									style="display:none;"
+									update="savedReports,repToolBar,title,description,repPickList,palette:groupby,palette:orderby,palette:filter"
+									ajax="true"></p:commandButton>
+
+								<p:commandButton id="delButton" type="button"
+									title="#{sid['label.delete']}" icon="ui-icon-trash"
+									style="display:none;" onclick="cdDialog.show();" />
+
+								<p:commandButton title="#{sid['label.cancel']}"
+									id="cancelButton" action="#{reportBean.createNewReport()}"
+									update="report,:dataFilterForm,:orderByForm,:groupByForm,palette,savedReports"
+									style="display:none;" icon="ui-icon-cancel" >
+									<f:setPropertyActionListener target="#{reportBean.selectedReport}" value="0"></f:setPropertyActionListener>
+								</p:commandButton>
+								<p:separator />
+								</p:toolbarGroup>
+								
+									<p:toolbarGroup align="left" >
+								<p:selectOneMenu id="savedReports" style="width:142px;"
+									value="#{reportBean.selectedReport}">
+									<f:selectItem itemLabel="Saved Reports" itemValue="0" />
+									<f:selectItems value="#{reportBean.savedReports()}" var="r"
+										itemLabel="#{r.title}" itemValue="#{r.id}" />
+									<f:param name="action" value="#{sid['action.edit']}"></f:param>
+									<p:ajax
+										update="repPickList,repToolBar, title, description,cols,  from, colsTitles, summary,editsummary,:groupByForm:groupByCheckBox,:orderByForm:orderByCheckBox,:dataFilterForm,palette"
+										event="change" listener="#{reportBean.editReport()}"
+										onstart="resetReport()" oncomplete="editReport()" />
+								</p:selectOneMenu>
+
+							</p:toolbarGroup>
+
+							<p:toolbarGroup align="right">
+						Graph:
+							<p:selectOneMenu value="#{reportBean.graphType}" id="graphType"
+									onchange="changeGraphCol()" style="width:142px;">
+									<f:selectItem itemValue="" itemLabel="No graph" />
+									<f:selectItem itemValue="bar" itemLabel="Bar Chart" />
+									<f:selectItem itemValue="line" itemLabel="Line Chart" />
+									<f:selectItem itemValue="area" itemLabel="Area Chart" />
+								</p:selectOneMenu>
+								<p:separator/>
+								
+								<p:commandLink ajax="false" id="xls"
+								action="#{reportBean.generateReport('download')}" disabled="${reportBean.selectedReport eq 0}">
+								<h:graphicImage library="themes/default/images" name="xls.png"
+									width="30" height="30" style="margin-right:3px;"
+									title="#{sid['label.downloadReportXLS']}" />
+								<f:setPropertyActionListener target="#{reportBean.exportOption}"
+									value="xls"></f:setPropertyActionListener>
+							</p:commandLink>
+							<h:graphicImage
+								library="themes/#{themeBean.userTheme.title}/images"
+								name="help_icon.png" id="help" width="25" height="25"
+								style="float:right;margin-right:3px;" />
+							<pe:tooltip for="help" value="#{help.report}"
+								myPosition="top center" />
+							<h:graphicImage library="themes/default/images"
+								name="seprator.png" width="2" height="35"
+								styleClass="link-right" style="margin-right:3px;" />
+
+							<p:commandLink ajax="false" id="pdf"
+								action="#{reportBean.generateReport('download')}" disabled="${reportBean.selectedReport eq 0}">
+								<h:graphicImage library="themes/default/images" name="pdf.png"
+									width="29" height="29" style="float:right; margin-right:3px;"
+									title="#{sid['label.downloadReportPDF']}" />
+								<f:setPropertyActionListener target="#{reportBean.exportOption}"
+									value="pdf"></f:setPropertyActionListener>
+							</p:commandLink>
+							<h:graphicImage library="themes/default/images"
+								name="seprator.png" width="2" height="35"
+								styleClass="link-right" style="margin-right:3px;" />
+							<p:commandLink ajax="false" id="doc"
+								action="#{reportBean.generateReport('download')}" disabled="${reportBean.selectedReport eq 0}">
+								<h:graphicImage library="themes/default/images" name="doc.png"
+									width="30" height="30" style="float:right;margin-right:3px;"
+									title="#{sid['label.downloadReportDOC']}" />
+								<f:setPropertyActionListener target="#{reportBean.exportOption}"
+									value="doc"></f:setPropertyActionListener>
+							</p:commandLink>
+							<h:graphicImage library="themes/default/images"
+								name="seprator.png" width="2" height="35"
+								styleClass="link-right" style="margin-right:3px;" />
+
+
+							</p:toolbarGroup>
+						</p:toolbar>
+
+					</div>
+					<div class="row_center">
+						<p:inputText value="#{reportBean.title}" id="title"
+							required="true"
+							styleClass="noborder-txtfield  rep-title grey_txt"
+							disabled="#{reportBean.editMode}"
+							onfocus="focusField('title', 'Report Title')"
+							onblur="blurField('title', 'Report Title')" />
+						<p:commandLink ajax="true" id="titleEdit" title="Edit"
+							style="display: none" action="#{reportBean.resetField()}"
+							update="title">
+							<h:graphicImage library="themes/default/images/icons"
+								name="edit.png" />
+						</p:commandLink>
+
+					</div>
+					<div class="row_center">
+						<p:inputText value="#{reportBean.description}" id="description"
+							styleClass="noborder-txtfield rep-desc  grey_txt"
+							disabled="#{reportBean.editMode}"
+							onfocus="focusField('description', 'Report Description')"
+							onblur="blurField('description', 'Report Description')" />
+						<p:commandLink ajax="true" id="descEdit" title="Edit"
+							style="display: none" action="#{reportBean.resetField()}"
+							update="description">
+							<h:graphicImage library="themes/default/images/icons"
+								name="edit.png" />
+						</p:commandLink>
+					</div>
+
+					<div class="row">
+						<span class="add-summary">Report Summary<span
+							onclick="addSummary()" title="Add Summary">&nbsp;&nbsp;+</span></span>
+					</div>
+					<div class="row" id="sumC">
+						<p:panel id="summary" legend="Simple FieldSet" widgetVar="ss"
+							style="border:none">
+							<table width="100%">
+								<tr>
+									
+								</tr>
+								<c:forEach var="r" items="#{reportBean.getReportSummary()}">
+									<tr>
+										<td><p:inputText value="#{r.label}"
+												id="#{'lbl_'.concat(r.labelId)}"
+												disabled="#{reportBean.editMode}" /></td>
+										<td><p:inputText value="#{r.value}"
+												id="#{'val_'.concat(r.labelId)}"
+												disabled="#{reportBean.editMode}" /> <p:commandLink
+												action="#{reportBean.resetField()}" ajax="true"
+												update="#{'lbl_'.concat(r.labelId)} , #{'val_'.concat(r.labelId)}"
+												id="#{'editbtn_'.concat(r.labelId)}"
+												onsuccess="showHideBtn('add', '#{r.labelId}')">
+												<h:graphicImage library="themes/default/images/icons"
+													name="edit.png" />
+												<f:param name="temp_id" value="#{r.labelId}" />
+												<f:param name="temp_label" value="#{r.label}" />
+												<f:param name="temp_value" value="#{r.value}" />
+											</p:commandLink> <p:commandLink style="display:none"
+												action="#{reportBean.editSummary()}" ajax="true"
+												id="#{'addbtn_'.concat(r.labelId)}"
+												update="#{'lbl_'.concat(r.labelId)} , #{'val_'.concat(r.labelId)}"
+												onsuccess="showHideBtn('edit', '#{r.labelId}')">
+												<f:param name="temp_id" value="#{r.labelId}" />
+												<f:param name="temp_label" value="#{r.label}" />
+												<f:param name="temp_value" value="#{r.value}" />
+												<h:graphicImage library="themes/default/images/icons"
+													name="assign.png" />
+											</p:commandLink> <p:commandLink id="#{'cancelbtn_'.concat(r.labelId)}"
+												onclick="resetVals('#{r.label}', '#{r.value}', '#{r.labelId}')"
+												style="display:none" action="#{reportBean.resetSummary()}"
+												ajax="true"
+												update="#{'lbl_'.concat(r.labelId)} , #{'val_'.concat(r.labelId)}"
+												onsuccess="showHideBtn('edit', '#{r.labelId}')">
+												<h:graphicImage library="themes/default/images/icons"
+													name="delete.png" />
+												<f:param name="temp_id" value="#{r.labelId}" />
+												<f:param name="temp_label" value="#{r.label}" />
+												<f:param name="temp_value" value="#{r.value}" />
+											</p:commandLink></td>
+									</tr>
+								</c:forEach>
+								<tr id="slv" style="display: none">
+									<td><p:inputText id="labels" value="#{reportBean.labels}" /></td>
+									<td><p:inputText id="values" value="#{reportBean.values}" />
+										<p:commandLink ajax="true" action="#{reportBean.addSummary()}"
+											title="Save" update="summary" onsuccess="hideAddSummary();">
+											<f:param name="action" value="add"></f:param>
+											<h:graphicImage library="themes/default/images/icons"
+												name="assign.png" />
+										</p:commandLink> <p:commandLink onclick="cancelAddSummary(20)" title="Cancel">
+											<h:graphicImage library="themes/default/images/icons"
+												name="delete.png" />
+										</p:commandLink></td>
+								</tr>
+							</table>
+
+						</p:panel>
+						<p:panel id="editsummary" style="display:none">
+							<c:forEach var="r" items="#{reportBean.getReportSummary()}">
+								<script type="text/javascript">positionElements(25);</script>
+							</c:forEach>
+						</p:panel>
+					</div>
+					<div class="row">
+						<h:inputHidden id="cols" value="#{reportBean.cols}" />
+						<h:inputHidden id="colsTitles" value="#{reportBean.colsTitles}" />
+						<h:inputHidden id="from" value="#{reportBean.from}" />
+						<h:inputHidden id="alias" value="#{reportBean.tableAlias}" />
+						<h:inputHidden id="selalias"
+							value="#{reportBean.selectedTableAlias}" />
+
+						<span class="rep-desc">Report Data</span>
+					</div>
+				</div>
+		
+		</h:form>
+
+		<br />
+
+		<p:dialog widgetVar="cdDialog" appendToBody="true"
+			header="Are you sure to delete this Report">
+			<p:panel id="display">
+				<p:commandButton value="Yes" action="#{reportBean.deleteReport()}"
+					update="report" ajax="true" onclick="cdDialog.hide();"></p:commandButton>
+				<p:commandButton value="No" onclick="cdDialog.hide();" type="button" />
+			</p:panel>
+		</p:dialog>
+
+		<p:dialog id="grpord" header="Group By" widgetVar="grpordDlg"
+			modal="true" height="215" width="275" styleClass="HeaderGrid"
+			resizable="false">
+			<h:form id="groupByForm">
+				<h:panelGrid cellpadding="5" width="100" >
+					<p:row>
+						<p:column>
+							<p:fieldset style="width:200px;height:140px;overflow:auto">
+								<p:selectManyCheckbox id="groupByCheckBox"
+									value="#{reportBean.selectedGroupByColumns}"
+									layout="pageDirection">
+									<f:selectItems value="#{reportBean.populateDropDown()}" />
+								</p:selectManyCheckbox>
+							</p:fieldset>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton id="okbtn" value="Ok"
+								action="#{reportBean.GroupByColumns()}"
+								update=":report:palette:groupby" ajax="true"
+								onclick="grpordDlg.hide();"></p:commandButton>
+
+							<p:commandButton value="Cancel" onclick="grpordDlg.hide();"
+								type="button" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog id="ord" header="Order By" widgetVar="ordDlg" modal="true"
+			height="215" width="275" styleClass="HeaderGrid" resizable="false">
+			<h:form id="orderByForm">
+				<h:panelGrid cellpadding="5" width="100">
+				<p:row>
+						<p:column>
+							<p:fieldset style="width:200px;height:140px;overflow:auto">
+							<p:row>
+							<p:column styleClass="fifty-percent">
+							<h:outputLabel value="SortBy" />
+							</p:column>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<p:column>
+							 <p:selectOneMenu id="options" value="#{reportBean.orderBySorting}">  
+								<f:selectItem itemLabel="ASC" itemValue="asc" />  
+							     <f:selectItem itemLabel="DESC" itemValue="desc" />  
+							  </p:selectOneMenu>
+							</p:column>
+							</p:row>
+							<p:row>
+							<p:column>
+							<p:selectManyCheckbox id="orderByCheckBox"
+									value="#{reportBean.selectedOrderByColumns}"
+									layout="pageDirection">
+									<f:selectItems value="#{reportBean.populateDropDown()}" />
+								</p:selectManyCheckbox>
+							</p:column>
+							</p:row>
+							 
+								
+							</p:fieldset>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton id="okbtn" value="Ok"
+								action="#{reportBean.OrderByColumns()}"
+								update=":report:palette:orderby" ajax="true"
+								onclick="ordDlg.hide();"></p:commandButton>
+
+							<p:commandButton value="Cancel" onclick="ordDlg.hide();"
+								type="button" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog id="filterDialog" header="Add Filter" widgetVar="dlg1"
+			modal="true" height="530" width="625" styleClass="HeaderGrid"
+			resizable="false">
+			<h:form id="dataFilterForm" prependId="false">
+				<p:messages id="filterMsgs" autoUpdate="false" closable="true" />
+				<p:panelGrid id="grid" columns="1">
+					<p:row>
+						<p:column>
+							<h:outputLabel value="#{sid['label.current.filter']}" />
+						</p:column>
+						<p:column>
+							<p:selectManyMenu id="currentFilter"
+								validator="#{reportBean.listValidator}"
+								style="width:585px;height:100px;"
+								value="#{reportBean.currentFilter}">
+								<f:selectItems value="#{reportBean.currentFilterList}" var="cf" />
+							</p:selectManyMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							
+							<p:commandButton id="deletebtn" value="#{sid['label.delete']}"
+								ajax="true" partialSubmit="true" process="@this currentFilter"
+								style="width:90px;" update="currentFilter, currentFilterSize"
+								action="#{reportBean.deleteFilter()}">
+							</p:commandButton>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:fieldset legend="Add Filter">
+								<p:panelGrid styleClass="HeaderGrid" id="filterGrid" width="300">
+									<p:row>
+										<p:column>
+											<p:selectOneMenu id="selectedFilterTable"
+												value="#{reportBean.selectedFilterTable}"
+												style="width:222px;">
+												<f:selectItems value="#{reportBean.tables}" />
+												<p:ajax update="availableColumns" event="change"
+													process="@this" partialSubmit="true"
+													listener="#{reportBean.filterColumnListener}" />
+
+											</p:selectOneMenu>
+
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column></p:column>
+										<p:column></p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<h:selectManyListbox id="availableColumns"
+												value="#{reportBean.selectedColumn}"
+													style="width:225px;height:160px;" >
+												<f:selectItems value="#{reportBean.ColumnList()}" var="t"
+													itemLabel="#{t}" itemValue="#{t}" />
+											</h:selectManyListbox>
+										</p:column>
+										<p:column></p:column>
+										<p:column colspan="2">
+											<p:selectOneMenu id="operator"
+												value="#{reportBean.selectedOperator}"
+												style="width:90px;height:30px;">
+												<f:selectItems value="#{reportBean.operatorList()}" />
+											</p:selectOneMenu>
+
+											<p:commandButton id="addbtn" value="#{sid['label.add']}"
+												style="width:92px;height:30px;" ajax="true"
+												update="currentFilter" partialSubmit="true"
+												process="availableColumns operator value @this" async="true"
+												action="#{reportBean.addFilter()}"  />
+										</p:column>
+										<p:column>
+											<p:inputTextarea id="value" rows="20" cols="25"
+												style="height:155px !important;width:195px !important"
+												value="#{reportBean.filterValue}">
+											</p:inputTextarea>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:fieldset>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:commandButton value="#{sid['label.cancel']}"
+					onclick="dlg1.hide()" styleClass="ui-rightalign"
+					style="width:90px;" id="cancelBtn" partialSubmit="true"
+					process="dataFilterForm" update="dataFilterForm" immediate="true">
+
+				</p:commandButton>
+				<p:commandButton type="reset" value="#{sid['label.reset']}"
+					styleClass="ui-rightalign" style="width:90px;"></p:commandButton>
+				<p:commandButton id="saveFilter" value="#{sid['label.save']}"
+					styleClass="ui-rightalign" action="#{reportBean.saveFilter()}"
+					oncomplete="dlg1.hide()"  style="width:90px;"
+					update="currentFilter,:report:palette:filter" ajax="true"
+					process="currentFilter,@this" partialSubmit="true">
+
+				</p:commandButton>
+				<h:inputHidden id="currentFilterSize"
+					value="#{reportBean.currentFilterSize}"></h:inputHidden>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog id="delFilter" widgetVar="delFilterDialog"
+			appendToBody="true"
+			header="#{sid['message.report.filter.delete.confirmation']}">
+			<p:panel id="displayDelFilter">
+				<p:commandButton value="Yes" action="#{reportBean.deleteFilter()}"
+					update="report" ajax="true" onclick="delFilterDialog.hide();"></p:commandButton>
+				<p:commandButton value="No" onclick="delFilterDialog.hide();"
+					type="button" />
+			</p:panel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

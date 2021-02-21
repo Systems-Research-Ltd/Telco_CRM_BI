@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+
+	<ui:define name="title"> ${sid['title.um.dashboard']}</ui:define>
+	<ui:define name="contents">
+	
+<h:form id="form">
+
+
+<div class="content-area">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="blue-box-tlc"></td>
+    <td class="blue-box-tbg"><span class="bread-crumb"> <a href="index.html">Settings</a> &gt; Theme Settings</span></td>
+    <td class="blue-box-trc"></td>
+  </tr>
+  <tr>
+    <td class="blue-box-lc"></td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td class="blue-box-rc"></td>
+  </tr>
+  <tr>
+    <td class="blue-box-lc"></td>
+    <td bgcolor="#FFFFFF"><table width="98%" border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="left" valign="top"><table border="0" align="left" cellpadding="0" cellspacing="0" class="content-table">
+            <tr>
+              <th align="left" valign="top">Change Theme</th>
+              </tr>
+			  <tr>
+			  <td style="border-bottom:none;">
+				  <ul class="gallery">
+					<li>
+						<a href="#" class="thumb"><span><img src="#{}" alt="" width="275" height="200" /></span></a>
+						<h2><a href="#" onclick="javascript:alert('Theme Activated Successfully!');">Activate Theme</a></h2>
+					</li>
+					<li>
+						<a href="#" class="thumb"><span><img src="themes/green.png" alt="" width="275" height="200" /></span></a>
+						<h2>Active Theme</h2>
+					</li>				
+					<li>
+						<a href="#" class="thumb"><span><img src="themes/orange.png" alt="" width="275" height="200" /></span></a>
+						<h2><a href="#" onclick="javascript:alert('Theme Activated Successfully!');">Activate Theme</a></h2>
+					</li>	
+					<li>
+						<a href="#" class="thumb"><span><img src="themes/red.png" alt="" width="275" height="200" /></span></a>
+						<h2><a href="#" onclick="javascript:alert('Theme Activated Successfully!');">Activate Theme</a></h2>
+					</li>
+				</ul>
+			  </td>
+			  </tr>
+
+			             
+            </table></td>
+          </tr>
+      </table></td>
+    <td class="blue-box-rc"></td>
+  </tr>
+  <tr>
+    <td class="blue-box-blc"></td>
+    <td class="blue-box-bbg"></td>
+    <td class="blue-box-brc"></td>
+  </tr>
+  <tr>
+    <td height="30"></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>	  
+</div> <!-- content area -->
+
+</h:form>
+                    
+
+<!-- 
+	<p:themeSwitcher style="width:150px">
+		<f:selectItem itemLabel="Choose Theme" itemValue="" />
+		<f:selectItems value="#{theme}" />
+	</p:themeSwitcher>
+-->
+
+<!-- 
+		<h:outputText value="Settings is Pending!." />
+		
+		<h:graphicImage value="" />
+		
+-->
+	</ui:define>
+	
+</ui:composition>
+

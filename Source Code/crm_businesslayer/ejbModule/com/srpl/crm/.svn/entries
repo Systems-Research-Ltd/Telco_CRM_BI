@@ -1,0 +1,34 @@
+10
+
+dir
+3114
+svn://68.169.55.222/crm/srpl/src/crm_businesslayer/ejbModule/com/srpl/crm
+svn://68.169.55.222/crm
+
+
+
+2013-09-19T06:43:29.368019Z
+3111
+fahad
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+common
+dir
+
+ejb
+dir
+

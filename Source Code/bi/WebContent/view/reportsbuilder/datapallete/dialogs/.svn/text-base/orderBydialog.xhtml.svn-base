@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- Data Filter Dialog -->
+	<h:form id="orderByForm" prependId="false">
+		<script type="text/javascript">
+	function showDialog(){
+		if($("#orderBySize").val() > 0){
+			delobDialog.show();
+		}	
+	}
+</script>
+		<p:dialog id="obDialog" header="#{sid['label.add.orderBy']}"
+			widgetVar="obDlg" modal="true" height="500" width="470"
+			styleClass="HeaderGrid" resizable="false">
+			<p:messages id="obMsgs" autoUpdate="false" closable="true" />
+			<p:panelGrid id="orderByGrid" columns="1">
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.current.orderBy']}" />
+					</p:column>
+					<p:column>
+						<p:selectManyMenu id="selectedOrderBy"
+							validator="#{orderByBean.listValidator}"
+							style="width:422px;height:100px;"
+							value="#{orderByBean.selectedOrderBy}">
+							<f:selectItems value="#{orderByBean.orderByList}" var="ob"
+								itemLabel="#{ob.value}" itemValue="#{ob.key}" />
+						</p:selectManyMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:commandButton id="obdeletebtn" value="#{sid['label.delete']}"
+							ajax="true" partialSubmit="true" process="@this selectedOrderBy"
+							oncomplete="showDialog()" update="delob orderBySize"
+							style="width:90px;">
+							<f:param name="action" value="delete"></f:param>
+						</p:commandButton>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="text-align:center !important">
+						<p:fieldset legend="Add Order By" style="">
+							<p:panelGrid styleClass="HeaderGrid" id="obGrid" style="width:100%">
+								<p:row>
+									<p:column>
+										<p:selectOneMenu id="selectedTableOb" style="width:250px;"
+											value="#{orderByBean.selectedTable}">
+											<f:selectItems value="#{orderByBean.selectedTableList()}"
+												var="r" itemLabel="#{r.value.split(' ')[0]}"
+												itemValue="#{r.key}" />
+											<p:ajax partialSubmit="true" process="@this" update="columnsob" event="change" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:selectManyListbox id="columnsob"
+											value="#{orderByBean.selectedColumns}"
+											style="width:250px;height:152px;">
+											<f:selectItems value="#{orderByBean.columnsList()}" var="c"
+												itemLabel="#{c.key}" itemValue="#{c.key}" />
+										</h:selectManyListbox>
+
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:commandButton id="addbtnOb" value="#{sid['label.add']}"
+											style="width:90px;height:30px;" ajax="true"
+											update="selectedOrderBy" partialSubmit="true"
+											process="columnsob @this" async="true"
+											action="#{orderByBean.addOrderBy()}" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:fieldset>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:commandButton value="#{sid['label.cancel']}"
+							onclick="dlg1.hide()" styleClass="ui-rightalign"
+							style="width:90px;" id="cancelBtnOb" partialSubmit="true"
+							process="orderByForm" update="orderByForm, obDialog"
+							immediate="true">
+							<f:param name="action" value="cancel"></f:param>
+						</p:commandButton>
+						<p:commandButton type="reset" value="#{sid['label.reset']}"
+							styleClass="ui-rightalign"></p:commandButton>
+						<p:commandButton id="saveOrderBy" value="#{sid['label.save']}"
+							action="#{orderByBean.actionListener()}"
+							styleClass="ui-rightalign"
+							update="obMsgs selectedOrderBy :palette:orderby :sql :reportDesignerForm:reportDataGrid :reportDesignerForm:graphCon"
+							ajax="true"
+							process="selectedOrderBy :dsform:savedSources, @this"
+							partialSubmit="true" oncomplete="initDND();">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+						<h:inputHidden id="orderBySize" value="#{orderByBean.orderBySize}"></h:inputHidden>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:dialog>
+
+		<p:dialog id="delob" widgetVar="delobDialog"
+			header="Delete Confirmation">
+
+			<span><b>#{sid['message.report.orderBy.delete.confirmation']}</b></span>
+			<br />
+			<br />
+			<c:forEach var="r" items="#{orderByBean.selectedOrderBy}">
+				<span>#{r}</span>
+				<br />
+				<br />
+			</c:forEach>
+			<p:commandButton id="delConfirmOb"
+				value="#{sid['label.deleteConfirmed']}"
+				action="#{orderByBean.actionListener()}"
+				update="obMsgs selectedOrderBy delob :palette:orderby :sql :reportDesignerForm:reportDataGrid :reportDesignerForm:graphCon"
+				ajax="true"
+				process="selectedOrderBy  @this :reportDesignerForm:savedReports"
+				partialSubmit="true" oncomplete="initDND();obDlg.hide()">
+				<f:param name="action" value="deleteConfirmed" />
+			</p:commandButton>
+
+			<p:commandButton value="#{sid['label.cancel']}"
+				action="#{filterBean.actionListener()}" immediate="true"
+				onclick="delobDialog.hide();" type="button" />
+
+		</p:dialog>
+
+	</h:form>
+</ui:composition>

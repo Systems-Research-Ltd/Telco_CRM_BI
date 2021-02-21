@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+	<ui:define name="title"> Parameters</ui:define>
+	<ui:define name="contents">
+        <h:panelGroup style=" margin-left:97%">  
+				        <h:graphicImage library="themes/default/images"	name="help_icon.png" id="help"/>				        
+				         <p:tooltip for="help" value="#{parameterController.profile.help}" showEffect="fade" hideEffect="fade" />  
+	    </h:panelGroup>
+		<h:form id="tableform">
+
+			<sr:datatableHammad value="#{parameterController.parameters}"
+				columns="#{parameterController.columns}" rowid="parameterId"
+				heading="Parameters Listing" actiondelete="true"
+				actionListener="#{parameterController.actionListener()}" />
+			<br />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

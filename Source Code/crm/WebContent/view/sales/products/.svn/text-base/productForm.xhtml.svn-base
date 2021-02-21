@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<h:form styleClass="ui-form" enctype="multipart/form-data">
+			<h:inputHidden id="currentAction" value="#{productBean.currentAction}"
+				validator="#{productBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="title">
+					${sid['label.product.title']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="title" value="#{productBean.productTitle}"
+							disabled="#{productBean.disabled}" maxlength="50" required="true"
+							label="Product Title"
+							requiredMessage="Product Title is required."
+							validatorMessage="Title should be alpha numeric and must start with alphabet">
+							<f:validateRegex pattern="^[a-zA-Z]+[a-zA-Z0-9-_ ]*$"></f:validateRegex>
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>	
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="cost">
+					${sid['label.product.cost']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="cost" value="#{productBean.productCost}"
+							disabled="#{productBean.disabled}" maxlength="10" required="true"
+							label="Product Cost" requiredMessage="Product Cost is required."
+							converterMessage="Invalid product cost" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+
+						<h:outputLabel for="type">
+					${sid['label.product.type']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="type"
+							value="#{productBean.productType}" label="type"
+							disabled="#{productBean.disabled}">
+							<f:selectItem itemLabel="Simple" itemValue="Simple" />
+							<f:selectItem itemLabel="Value Added" itemValue="Value Added" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>	
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="description">
+					${sid['label.product.description']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputTextarea id="description" maxlength="500"
+							value="#{productBean.productDescription}"
+							disabled="#{productBean.disabled}" required="false"
+							label="Description" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="fifty-percent"><h:outputLabel for="prdimg">${sid['label.product.image']}&nbsp;</h:outputLabel></p:column>
+					<p:column styleClass="fifty-percent"><p:fileUpload value="#{productBean.file}" id="prdimg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" mode="simple"/><h:inputHidden value="#{productBean.productImage}" /></p:column>
+				</p:row>
+				<p:row>	
+					<p:column styleClass="fifty-percent"><h:outputLabel for="img">${sid['label.uploaded.image']}&nbsp;</h:outputLabel></p:column>
+					<p:column styleClass="fifty-percent"><h:graphicImage id="img" value="/resources/images/#{productBean.productImage}" width="150" height="150" /></p:column>		
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+						<h:inputHidden value="#{productBean.productId}" />
+						<p:commandButton value="#{sid['label.save']}"
+							actionListener="#{productBean.actionListener}" ajax="false"
+							rendered="#{productBean.saveAction}">
+							<f:param name="action" value="save" />
+						</p:commandButton>						
+						
+						<p:commandButton ajax="false" value="#{sid['label.edit']}"
+							rendered="#{productBean.editAction}"
+							action="#{productBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="product_id" value="#{productBean.productId}" />	
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							action="#{productBean.actionListener}" rendered="#{productBean.deleteConfirmedAction}">
+							<f:param name="action" value="deleteConfirmed" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}" 
+							action="#{productBean.actionListener}" ajax="false"
+							rendered="#{productBean.updateAction}">
+							<f:param name="action" value="update" />
+							<f:param name="product_id" value="#{productBean.productId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false"
+							value="#{sid['label.delete']}"
+							rendered="#{productBean.deleteAction}"
+							action="#{productBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="product_id" value="#{productBean.productId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{productBean.resetAction}" type="reset">
+						</p:commandButton>
+
+						<p:commandButton immediate="true"
+							value="#{(productBean.disabled) ? sid['label.back'] : sid['label.cancel']}"
+							actionListener="#{productBean.actionListener}" ajax="false"
+							rendered="#{productBean.cancelAction}">
+
+							<f:param name="action" value="cancel" />
+							<f:param name="product_id" value="#{productBean.productId}" />
+
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
+</h:body>
+</html>

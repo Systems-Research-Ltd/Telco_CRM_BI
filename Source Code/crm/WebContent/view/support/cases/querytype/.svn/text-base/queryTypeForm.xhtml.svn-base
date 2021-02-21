@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+	<ui:define name="title"> ${sid['title.sales.opportunities.createopportunity']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form">
+			<h:inputHidden value="#{queryTypeBean.currentAction}"
+				validator="#{queryTypeBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="queryType">
+					${sid['label.query.type.title']}&nbsp;<span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="queryType"
+							value="#{queryTypeBean.queryTypeTitle}"
+							disabled="#{queryTypeBean.disabled}" required="true"
+							label="Query Type Title"
+							requiredMessage="Query Type Title is required." />
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="queryTypeAlias">
+						${sid['label.query.type.alias']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="queryTypeAlias"
+							value="#{queryTypeBean.queryTypeAlias}"
+							disabled="#{queryTypeBean.disabled}" required="true"
+							label="Query Type Alias"
+							requiredMessage="Query Type Alias is required." />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="buttons-row">
+
+						<p:commandButton value="#{sid['label.save']}"
+							action="#{queryTypeBean.actionListener}" ajax="false"
+							rendered="#{queryTypeBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							action="#{queryTypeBean.actionListener}" immediate="true"
+							ajax="false" rendered="#{queryTypeBean.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							<f:param name="row_id" value="#{queryTypeBean.queryTypeId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}"
+							action="#{queryTypeBean.actionListener}" ajax="false"
+							rendered="#{queryTypeBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							<f:param name="row_id" value="#{queryTypeBean.queryTypeId}" />
+						</p:commandButton>
+
+						<p:commandButton immediate="true" value="#{sid['label.cancel']}"
+							action="#{queryTypeBean.actionListener}" ajax="false"
+							rendered="#{queryTypeBean.cancelAction}">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+						</p:commandButton>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

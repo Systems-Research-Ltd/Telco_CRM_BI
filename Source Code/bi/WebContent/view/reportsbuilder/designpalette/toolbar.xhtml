@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+		<p:toolbar id="toolbar">
+			<p:toolbarGroup align="left">
+				<h:selectOneMenu id="savedReports" style="width:130px;"
+					value="#{reportDesignerBean.selectedReport}"
+					onclick=" return saveReport()">
+					<f:selectItem itemLabel="Saved Reports" itemValue="0" />
+					<f:selectItems value="#{reportDesignerBean.savedReportsList()}"
+						var="r" itemLabel="#{r.key}" itemValue="#{r.value}"></f:selectItems>
+					<f:param name="action" value="#{sid['action.edit']}"></f:param>
+					<p:ajax event="change"
+						listener="#{reportDesignerBean.actionListener()}"
+						update="reportDesignerForm :logoForm :reportMsgs :sql :dsform:savedSources :palette"
+						partialSubmit="true" process="@this" oncomplete="positionLogo()"></p:ajax>
+				</h:selectOneMenu>
+
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="seprator.png" 
+					styleClass="separator" />
+				<p:commandButton ajax="true" id="createNewReport"
+					action="#{reportDesignerBean.actionListener()}" icon="ui-icon-plus"
+					update="reportDesignerForm :logoForm :reportMsgs :palette:tabletree :sql :palette"
+					rendered="#{reportDesignerBean.createAction}" partialSubmit="true"
+					process="@this" oncomplete="positionLogo();"
+					title="Create new report">
+					<f:param name="action" value="#{sid['action.create']}"></f:param>
+				</p:commandButton>
+				<p:commandButton action="#{reportDesignerBean.actionListener()}"
+					title="#{sid['label.save']}" icon="ui-icon-disk"
+					update="reportDesignerForm  :reportMsgs :logoForm :sql"
+					partialSubmit="true"
+					process="reportDesignerForm, :dsform:savedSources"
+					rendered="false"
+					oncomplete="positionLogo();">
+					<f:param name="action" value="#{sid['action.save']}"></f:param>
+				</p:commandButton>
+				<p:commandButton action="#{reportDesignerBean.actionListener()}"
+					title="#{sid['label.update']}" icon="ui-icon-disk"
+					update="reportDesignerForm  :reportMsgs :logoForm :sql :tabs:tabsForm :logout :dsform"
+					partialSubmit="true"
+					process="reportDesignerForm, :dsform:savedSources"
+					rendered="#{reportDesignerBean.updateAction}"
+					oncomplete="positionLogo();">
+					<f:param name="action" value="#{sid['action.update']}"></f:param>
+				</p:commandButton>
+				<p:commandButton type="button" title="#{sid['label.delete']}"
+					icon="ui-icon-trash" onsuccess="cdDialog.hide()"
+					rendered="#{reportDesignerBean.updateAction}"
+					onclick="cdDialog.show();" />
+				<p:commandButton title="#{sid['label.cancel']}"
+					onstart="return saveReport();" icon="ui-icon-cancel"
+					rendered="#{reportDesignerBean.updateAction}"
+					action="#{reportDesignerBean.actionListener()}" process="@this"
+					partialSubmit="true" ajax="true"
+					update="reportDesignerForm  :reportMsgs :logoForm :sql :palette :tabs:tabsForm :logout :dsform"
+					oncomplete="positionLogo();">
+					<f:param name="action" value="#{sid['action.cancel']}"></f:param>
+				</p:commandButton>
+				<p:commandButton type="button" title="#{sid['label.print']}"
+					icon="ui-icon-print" rendered="false" />
+				<h:graphicImage id="loader"
+					library="themes/#{themeBean.userTheme.title}/images"
+					name="loading.gif" alt="Loading.."
+					style="display:none;position:fixed;right:14px;bottom:14px" />
+				<p:commandLink id="editReportLink" ajax="true"
+					onstart="$('#loader').show()"
+					update="reportDesignerForm :logoForm  :sql :tabs:tabsForm :logout :dsform :palette :saveRepForm:saveReportDlg"
+					partialSubmit="true" process="@this"
+					oncomplete="positionLogo();$('#loader').hide()"
+					actionListener="#{reportDesignerBean.actionListener()}">
+					<f:param name="action" value="edit"></f:param>
+				</p:commandLink>
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<p:selectBooleanCheckbox id="logoChkBox"
+					value="#{reportDesignerBean.showLogo}" disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<p:ajax update=":logoForm" oncomplete="positionLogo()"></p:ajax>
+				</p:selectBooleanCheckbox>
+				<h:outputLabel value="#{sid['label.logo']}" />
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="seprator.png" styleClass="separator" />
+				<h:outputLabel value="#{sid['label.limit.rows']}" />
+				<p:spinner id="limit" min="1" max="1000"
+					value="#{reportDesignerBean.limit}"
+					disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<p:ajax event="change" update="rdata, graphCon">
+					</p:ajax>
+				</p:spinner>
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="seprator.png" styleClass="separator" />
+				<p:selectBooleanCheckbox id="serialNo"
+					value="#{reportDesignerBean.serialNo}"
+					disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<p:ajax listener="#{reportBuilderBean.populateDataTable()}"
+						update="rdata"></p:ajax>
+				</p:selectBooleanCheckbox>
+				<h:outputLabel value="#{sid['label.serial.no']}." />
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="seprator.png"  styleClass="separator"/>
+
+
+				<!-- Menu Button to Select Graphs -->
+				<p:menuButton id="report_toolbar_graphtype"
+					value="#{sid['label.graph']}">
+					<p:menuitem value="#{sid['label.no.graph']}"
+						oncomplete="showHideGraph()"
+						actionListener="#{reportDesignerBean.changeSelectedGraph}"
+						update="graphCon selectedGraph">
+						<f:attribute name="selectedgraph" value="0" />
+					</p:menuitem>
+					<p:menuitem value="#{sid['label.bar.graph']}"
+						actionListener="#{reportDesignerBean.changeSelectedGraph}"
+						update="graphCon selectedGraph" oncomplete="showHideGraph()">
+						<f:attribute name="selectedgraph" value="3" />
+					</p:menuitem>
+					<p:menuitem value="#{sid['label.line.graph']}"
+						actionListener="#{reportDesignerBean.changeSelectedGraph}"
+						update="graphCon selectedGraph" oncomplete="showHideGraph()">
+						<f:attribute name="selectedgraph" value="5" />
+					</p:menuitem>
+					<p:menuitem value="#{sid['label.area.graph']}"
+						actionListener="#{reportDesignerBean.changeSelectedGraph}"
+						update="graphCon selectedGraph" oncomplete="showHideGraph()">
+						<f:attribute name="selectedgraph" value="6" />
+					</p:menuitem>
+				</p:menuButton>
+				<h:graphicImage library="themes/#{themeBean.userTheme.title}/images"
+					name="seprator.png" styleClass="separator" />
+				<p:commandLink ajax="false" id="xls"
+					action="#{reportDesignerBean.exportReport()}"
+					disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<h:graphicImage
+						library="themes/#{themeBean.userTheme.title}/images"
+						name="xls.png" width="30" height="30"
+						style="float:right; margin-right:4px;"
+						title="#{sid['label.downloadReportXLS']}" />
+					<f:setPropertyActionListener
+						target="#{reportDesignerBean.exportType}" value="xls"></f:setPropertyActionListener>
+				</p:commandLink>
+				<p:commandLink ajax="false" id="pdf"
+					action="#{reportDesignerBean.exportReport()}"
+					disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<h:graphicImage
+						library="themes/#{themeBean.userTheme.title}/images"
+						name="pdf.png" width="30" height="30"
+						style="float:right; margin-right:4px;"
+						title="#{sid['label.downloadReportPDF']}" />
+					<f:setPropertyActionListener
+						target="#{reportDesignerBean.exportType}" value="pdf"
+						disabled="#{reportDesignerBean.selectedReport eq '0'}"></f:setPropertyActionListener>
+				</p:commandLink>
+				<p:commandLink ajax="false" id="doc"
+					action="#{reportDesignerBean.exportReport()}"
+					disabled="#{reportDesignerBean.selectedReport eq '0'}">
+					<h:graphicImage
+						library="themes/#{themeBean.userTheme.title}/images"
+						name="doc.png" width="30" height="30"
+						style="float:right; margin-right:4px;"
+						title="#{sid['label.downloadReportDOC']}" />
+					<f:setPropertyActionListener
+						target="#{reportDesignerBean.exportType}" value="doc"></f:setPropertyActionListener>
+				</p:commandLink>
+			</p:toolbarGroup>
+
+		</p:toolbar>
+	</ui:composition>
+</body>
+</html>

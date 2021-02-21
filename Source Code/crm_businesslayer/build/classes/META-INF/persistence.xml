@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="businesslayer" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/SRPLDS</jta-data-source>
+		<class>com.srpl.um.ejb.entity.UmGroup</class>
+		<class>com.srpl.um.ejb.entity.UmRole</class>
+		<class>com.srpl.um.ejb.entity.UmUserGroup</class>
+		<class>com.srpl.um.ejb.entity.UmGroupRole</class>
+ 		<class>com.srpl.um.ejb.entity.UmUserHistory</class>
+		<class>com.srpl.um.ejb.entity.UmUser</class>
+		<class>com.srpl.crm.ejb.entity.CsAccount</class>
+		<class>com.srpl.crm.ejb.entity.CsContactORM</class>
+		<class>com.srpl.um.ejb.entity.UmCompany</class>
+		<class>com.srpl.um.ejb.entity.UmFranchise</class>
+		<class>com.srpl.um.ejb.entity.UmService</class>
+		<class>com.srpl.um.ejb.entity.UmLocation</class>
+		<class>com.srpl.um.ejb.entity.UmParameter</class>
+		<class>com.srpl.um.ejb.entity.City</class>
+		<class>com.srpl.um.ejb.entity.Country</class>
+		<class>com.srpl.um.ejb.entity.State</class>
+		<class>com.srpl.crm.ejb.entity.MCampaign</class>
+		<class>com.srpl.crm.ejb.entity.MarketingCampaignSettings</class>
+		<class>com.srpl.crm.ejb.entity.MarketingCampaignSettingsCustomers</class>
+		<class>com.srpl.crm.ejb.entity.CurrencyType</class>
+		<class>com.srpl.crm.ejb.entity.CampaignType</class>
+		<class>com.srpl.crm.ejb.entity.SalesLeadORM</class>
+		<class>com.srpl.crm.ejb.entity.SalesLeadCommentORM</class>
+		<class>com.srpl.crm.ejb.entity.SalesLeadHistoryORM</class>
+		<class>com.srpl.crm.ejb.entity.SalesOpportunityORM</class>
+		<class>com.srpl.crm.ejb.entity.OrderORM</class>
+		<class>com.srpl.crm.ejb.entity.OrderDetailORM</class>
+		<class>com.srpl.crm.ejb.entity.InvoiceSettingsORM</class>
+		<class>com.srpl.crm.ejb.entity.SupportCaseORM</class>
+		<class>com.srpl.crm.ejb.entity.SupportCaseHistoryORM</class>
+		<class>com.srpl.crm.ejb.entity.SupportQueryTypeORM</class>
+		<class>com.srpl.crm.ejb.entity.SupportCaseCommentORM</class>
+		<class>com.srpl.crm.ejb.entity.ProductORM</class>
+		<class>com.srpl.crm.ejb.entity.LoyaltyORM</class>
+		<class>com.srpl.crm.ejb.entity.DocumentORM</class>
+		<class>com.srpl.crm.ejb.entity.LoyaltyRuleORM</class>
+		<class>com.srpl.crm.ejb.entity.MessageTemplateORM</class>
+		<class>com.srpl.crm.ejb.entity.SPackageORM</class>
+		<class>com.srpl.crm.ejb.entity.SPackageProductORM</class>
+		<class>com.srpl.crm.ejb.entity.ReportsORM</class>	
+		<class>com.srpl.crm.ejb.entity.UmAlertsAndReminders</class>
+		<class>com.srpl.crm.ejb.entity.SServiceSubscribeORM</class>
+		<class>com.srpl.crm.ejb.entity.SServiceSubscriptionHistoryORM</class>
+		<class>com.srpl.crm.ejb.entity.TableMapping</class>
+		<class>com.srpl.crm.ejb.entity.SInvoiceORM</class>
+		<class>com.srpl.crm.ejb.entity.SInvoiceDetailORM</class>
+		<class>com.srpl.crm.ejb.entity.AssignedTaskORM</class>
+		<class>com.srpl.crm.ejb.entity.AtCategoryORM</class>
+		<class>com.srpl.crm.ejb.entity.AtPriorityORM</class>
+		<class>com.srpl.crm.ejb.entity.AtStatusORM</class>
+		<class>com.srpl.crm.ejb.entity.PaymentORM</class>
+		<class>com.srpl.crm.ejb.entity.CustomerPaymentORM</class>
+		<class>com.srpl.crm.ejb.entity.ThemesORM</class>
+		<class>com.srpl.crm.ejb.entity.UsersThemeORM</class>
+		<class>com.srpl.um.ejb.entity.UserPreference</class>
+		<class>com.srpl.crm.ejb.entity.Theme</class>
+		<class>com.srpl.crm.ejb.entity.DashboardORM</class>
+		<class>com.srpl.crm.ejb.entity.BillORM</class>
+	    <class>com.srpl.crm.ejb.entity.SampleTableORM</class>
+	    <class>com.srpl.crm.ejb.entity.DBConfiguration</class>
+	    <class>com.srpl.um.ejb.entity.GroupPermission</class>
+	    <class>com.srpl.crm.ejb.entity.CustomerNotesORM</class>
+	    <class>com.srpl.crm.ejb.entity.CustomerProvisioningORM</class>
+	    <class>com.srpl.crm.ejb.entity.CampaignProduct</class>
+	    <class>com.srpl.crm.ejb.entity.SalesOpportunitiesListViewORM</class>
+	    <properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="none"/>
+			<property name="hibernate.default_schema" value="crm"/>
+		</properties>
+	</persistence-unit>
+</persistence>

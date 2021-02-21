@@ -1,0 +1,153 @@
+#Shared Information/Data Model or SID 
+#is a unified reference data model providing a single set of terms
+# for business objects in telecommunications. The objective is to 
+#enable people in different departments, companies or geographical
+# locations to use the same terms to describe the same real world objects,
+# practices and relationships.
+#The TeleManagement Forum's Frameworx Shared Information/Data (SID)
+# model provides the telecommunications industry with a common
+# vocabulary and set of information/data definitions and relationships
+# used in the definition of NGOSS architectures, now known as Frameworx
+#
+# URL: http://en.wikipedia.org/wiki/Frameworx_Shared_Information/Data_Model
+
+
+#@author Abdul Kareem bitguiders@gmail.com
+
+# SAMPLE NAMING Conventions
+# MESSAGE ->  message.validate.module.propertyName = xxx xxx
+# LABLE   ->  label.module.propertyName = xxx xxx
+# TITLE   ->  title.module.propertyName = xxx xxx
+#
+
+
+
+#APPLICATION
+footer = Copyright © SRPL 2012 - All rights reserved Powered by ICTR&D
+label.back=Back
+title.sales.orders.orderList=Orders Listing
+title.um.alerts=Alerts And Reminders
+topMenu.loyalty.loyaltyRule=Loyalty
+topMenu.loyalty.messageTemplate=Message Template
+topMenu.sales.billreimbursement=Bill ReImbursement
+title.um.admin.companies.parameter=Paremeter List
+
+title.um.admin.listcompany=Company List
+title.um.admin.createcompany=Create Company
+title.um.admin.viewcompany=View Company
+title.um.user.createuser=Create User
+title.um.user.listuser=User List
+title.um.user.viewuser=View User
+title.um.customer.listCustomer=Customer Listings
+title.um.customer.createCustomer=Create Customer
+title.um.customer.editCustomer=Edit Customer
+title.um.admin.groups.groupsOperations=Group Operations
+title.um.admin.manageServices=Manage Services
+title.um.customer.viewCustomer=View Customer
+title.report=Reports
+
+
+
+#TABS        sample = tab.moduleName
+tab.marketing 	= Marketing
+tab.sales 		= Sales
+tab.order 		= Order
+tab.um 			= User Management
+tab.register 	= Register
+tab.dashboard 	= Dashboard
+tab.support 	= Support
+tab.customer 	= Customer
+tab.admin 		= Admin
+tab.loyalty		= Loyalty
+tab.settings 	= Settings
+tab.reports		= Reports
+tab.customerArea= Customer Area
+
+#Top Menu          sample = topMenu.tabName.menu
+topMenu.um.users 					= Users
+topMenu.um.groups					= Groups
+topMenu.documents					= Documents
+topMenu.um.applicationParameters 	= Application Parameters
+topMenu.um.companies 				= Companies
+topMenu.um.franchises 				= Franchises
+topMenu.um.documents 				= Documents
+topMenu.um.alertsReminders			= Alerts & Reminders 
+topMenu.um.importAccounts			= Import Accounts 
+topMenu.um.importContacts			= Import Contacts
+topMenu.um.importUsers				= Import Users
+topMenu.um.import					= Import Data
+title.um.admin.uploadlogo           = Upload Logo
+#Settings
+topMenu.settings.themesSettings		= Theme Settings
+topMenu.settings.profile			= Profile
+topMenu.settings.changePassword		= Change Password
+#Customer
+topMenu.customer.contacts			= Contacts
+topMenu.customer.accounts			= Accounts
+topMenu.sales.opportunities         = Manage Opportunities
+topMenu.sales.package         		= Manage Packages
+
+#Support
+topMenu.support.cases               = Manage Cases
+
+#Customer Area
+topMenu.customerArea.orders			= Customer Orders
+topMenu.customerArea.aleartsnreminders= Alerts and Reminders
+
+# Side Menu  sample = sideMenu.tabName.menu.menuItem
+sideMenu.um.users.changePassword= Change Password
+sideMenu.um.users.settings = Settings
+sideMenu.um.users.profile = View Profile
+
+#TITLES
+title.um.dashboard 			= User Management Dashboard
+title.marketing.dashboard 	= User Management Dashboard
+title.sales.dashboard 		= User Management Dashboard
+title.marketing				= Marketing
+title.import.data 			= Import CRM Data
+
+#Form Fields
+label.view=View
+label.edit = Edit
+label.submit = Submit
+label.cancel = Cancel
+label.createNew = Create New
+label.delete= Delete
+label.save= Save
+label.update=Update
+label.send=Send
+label.deleteConfirmed=Delete Confirmation
+label.search=Search
+label.reset=Reset
+label.clear=Clear
+label.assignConfirmed= Assign
+label.amount=Amount
+label.name=Name
+label.email=Email
+label.date=Date
+label.phone=Phone
+label.cnic=CNIC
+#actions these are static values
+# and should not translate in any language
+action.create =create
+action.edit = edit
+action.save = save
+action.delete =delete
+action.view=view
+action.update=update
+action.cancel=cancel
+action.deleteConfirmed=deleteConfirmed
+action.reset =reset
+action.send=send
+#Company Form
+label.company.state = State **
+
+#APPLICATION MESSAGES
+message.sampleMessage = >> {0} >> {1} >> {2}
+message.required = *
+message.validate.amount=Please enter valid amount
+#Company Messages
+message.company.created = Company created successfully
+
+#Bill Remibusement
+label.bill.reimburse = Reimburse

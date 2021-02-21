@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+<h:body>
+
+<ui:composition>
+<h:form styleClass="ui-form">
+<h:inputHidden  id="currentAction" value="#{contactBackingBean.currentAction}" validator="#{contactBackingBean.actionValidator}" />
+<p:messages id="msgs" autoUpdate="true" closable="true" />
+<p:fieldset legend="#{sid['label.contact.details']}">
+<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="fname">
+					${sid['label.first.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="fname" value="#{contactBackingBean.contact_fname}"
+							maxlength="30"
+							disabled="#{contactBackingBean.disabled}"
+							label="First Name"
+							validator="#{contactBackingBean.requiredValidator}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="lname">
+					${sid['label.last.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="lname" value="#{contactBackingBean.contact_lname}"
+							maxlength="30"
+							disabled="#{contactBackingBean.disabled}"
+							label="Last Name"
+							validator="#{contactBackingBean.requiredValidator}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="contactType">
+					${sid['label.contact.type']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="contactType"
+							disabled="#{contactBackingBean.disabled or !contactBackingBean.createAction}"
+							value="#{contactBackingBean.company}" required="#{contactBackingBean.createAction}"
+							label="Contact Type" styleClass="hundred-percent"
+							requiredMessage="Contact's Type is required.">
+							<f:selectItem itemLabel="Individual" itemValue="false" />
+							<f:selectItem itemLabel="Corporate" itemValue="true" />
+							<p:ajax event="change" update="account" process="currentAction,contactType" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+					<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="account">
+					${sid['label.account']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="account" value="#{contactBackingBean.account_id}"
+							disabled="#{contactBackingBean.disabled or !contactBackingBean.company or !contactBackingBean.createAction}" required="false"
+							label="account" styleClass="hundred-percent">
+							<f:selectItem itemLabel="Select if Corporate" />
+							<f:selectItems
+								value="#{contactBackingBean.corporateAccountList}"
+								var="a" itemLabel="#{a.label}"
+								itemValue="#{a.id}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="father">
+					${sid['label.father.name']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="father" value="#{contactBackingBean.contact_father_name}"
+							maxlength="50"
+							disabled="#{contactBackingBean.disabled}"
+							label="Father Name"
+							validator="#{contactBackingBean.requiredValidator}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="email">
+					${sid['label.email']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="email" value="#{contactBackingBean.contact_email}"
+							maxlength="75"
+							disabled="#{contactBackingBean.disabled}"
+							label="Email"
+							validator="#{contactBackingBean.emailValidator}" >
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="phone">
+					${sid['label.contact.number']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputMask mask="#{contactBackingBean.phoneMask}" id="phone" value="#{contactBackingBean.contact_phone}"
+							disabled="#{contactBackingBean.disabled}"
+							label="Contact Number"
+							validator="#{contactBackingBean.phoneValidator}" />
+						
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="status">
+					${sid['label.status']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="status" value="#{contactBackingBean.contact_status}"
+							disabled="#{contactBackingBean.disabled}"
+							required="true" label="Status" styleClass="hundred-percent"
+							requiredMessage="Contact's Status is required.">
+							<f:selectItem itemLabel="Active" itemValue="true" />
+							<f:selectItem itemLabel="In-Active" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="country">
+					${sid['label.country']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="country" value="#{contactBackingBean.contact_country}"
+							label="Country" disabled="#{contactBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Country is Required"
+							validator="#{addressBeanUpdated.validateCountry}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select Country" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.countries}" var="c"
+								itemLabel="#{c.countryName} - #{c.countryCode}" itemValue="#{c.countryId}" />
+							<p:ajax update="@this, state" event="change" partialSubmit="true"
+								process="currentAction, country" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="state">
+					${sid['label.state']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="state" value="#{contactBackingBean.contact_state}"
+							label="State" disabled="#{contactBackingBean.disabled}" required="true"
+							requiredMessage="State is Required" styleClass="hundred-percent"
+							validator="#{addressBeanUpdated.validateState}">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select State" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.states}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="@this, city" event="change" partialSubmit="true"
+								process="country, state, currentAction" />
+							<f:param name="action" value="actionAjax" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="city">
+					${sid['label.city']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="city" value="#{contactBackingBean.contact_city}"
+							label="City" disabled="#{contactBackingBean.disabled}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="City is Required">
+							<f:converter converterId="javax.faces.Integer" />
+							<f:selectItem itemLabel="Select City" itemValue="" />
+							<f:selectItems value="#{addressBeanUpdated.cities}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="zip">
+					${sid['label.zip.code']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="zip" value="#{contactBackingBean.contact_zipcode}"
+							maxlength="20"
+							disabled="#{contactBackingBean.disabled}"
+							label="Zip Code" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="dob">
+					${sid['label.dob']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:calendar id="dob" value="#{contactBackingBean.contact_dob}"
+							maxlength="13" yearRange="c-43:c+0"
+							disabled="#{contactBackingBean.disabled}"
+							navigator="true" required="false"
+							label="Date of Birth" pattern="MMMM dd, yyyy">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="cnic">
+					${sid['label.nic.number']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputMask mask="#{contactBackingBean.cnicMask}" id="cnic" value="#{contactBackingBean.contact_cnic}"
+							disabled="#{contactBackingBean.disabled}"
+							label="NIC Number"
+							validator="#{contactBackingBean.cnicValidator}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="address">
+    		 		${sid['label.address']}&nbsp; <span class="form-required">*</span>
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputTextarea id="address" value="#{contactBackingBean.contact_address}"
+							maxlength="500"
+							disabled="#{contactBackingBean.disabled}"
+							label="Address"
+							validator="#{contactBackingBean.requiredValidator}" />
+					</p:column>
+				</p:row>
+			
+</p:panelGrid>
+</p:fieldset>
+<p:fieldset legend="#{sid['label.contact.user']}" >
+<p:panelGrid id="grid_contact_user" styleClass="content-table">
+<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="username">
+					${sid['label.username']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:inputText id="username" value="#{contactBackingBean.contact_username}"
+								maxlength="75"
+								disabled="#{contactBackingBean.disabled or !contactBackingBean.saveAction}"
+								label="Username" validator="#{contactBackingBean.emailValidator}"/>	
+								</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel for="pass">
+					${sid['label.password']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:password id="pass" value="#{contactBackingBean.contact_pass}"
+							maxlength="30"
+							disabled="#{contactBackingBean.disabled or !contactBackingBean.saveAction}"
+							match="confirmPassword"
+							label="Password"
+							validator="#{contactBackingBean.requiredValidator}" validatorMessage="Passwords do not match."/>
+							</p:column>
+					
+				</p:row>
+				<p:row>
+					
+					<p:column styleClass="fifty-percent">
+							<h:outputLabel>
+							${sid['label.confirm.password']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+						</p:column>
+						<p:column styleClass="fifty-percent">
+							<p:password id="confirmPassword" value="#{contactBackingBean.contact_confirm_pass}" maxlength="30"
+							disabled="#{contactBackingBean.disabled or !contactBackingBean.saveAction}" />
+					</p:column>
+					
+				</p:row>
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+					<h:inputHidden value="#{contactBackingBean.contact_id}" />
+					<p:commandButton ajax="true" value="#{sid['label.save']}"
+							update=":tabView,:lst" rendered="#{contactBackingBean.saveAction}"
+							actionListener="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+					
+					
+					<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							update=":tabView" rendered="#{contactBackingBean.editAction}"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="contact_id" value="#{contactBackingBean.contact_id}" />
+						</p:commandButton>
+					
+					<p:commandButton ajax="true" value="#{sid['label.update']}"
+							update=":tabView,:lst" rendered="#{contactBackingBean.updateAction}"
+							action="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="update" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{contactBackingBean.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="contact_id" value="#{contactBackingBean.contact_id}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true"
+							value="#{sid['label.deleteConfirmed']}" update=":tabView,:lst"
+							rendered="#{contactBackingBean.deleteConfirmedAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="deleteConfirmed" />
+							<f:param name="contact_id" value="#{contactBackingBean.contact_id}" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="true" value="#{sid['label.cancel']}"
+							rendered="#{contactBackingBean.cancelAction}" update=":tabView"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{contactBackingBean.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+						
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{contactBackingBean.resetAction}" type="reset">
+						</p:commandButton>
+					</p:column>
+					</p:row>
+</p:panelGrid>
+</p:fieldset>
+</h:form>
+</ui:composition>
+</h:body>
+</html>

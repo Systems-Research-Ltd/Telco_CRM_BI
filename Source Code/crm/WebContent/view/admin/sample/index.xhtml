@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+
+	<ui:define name="title"> Sample 1</ui:define>
+	<ui:define name="contents">
+
+		<h:form id="tableform">
+
+			<sr:datatableHammad value="#{sample1.samples}"
+				columns="#{sample1.sampleColumns}" rowid="id"
+				heading="Samples1 Listing" actiondelete="false"
+				actionListener="#{sample1.actionListener()}" />
+			<br />
+
+			<p:commandButton
+				action="#{sample1.testSendHtmlMail()}"
+				value="send mail"
+			/>
+			
+			<p:commandButton
+				action="#{sample1.regenerateInvoice()}"
+				value="resend invoice"
+			/>
+			
+			<p:commandButton
+				action="#{sample1.testPreviousInvoice()}"
+				value="Previous Invoice"
+			/>
+			
+			<p:commandButton
+				action="#{sample1.createInvoice()}"
+				value="Create Invoice for order 19"
+			/>
+			
+			<p:commandLink
+				action="/view/admin/sample/myInvoice.jsf"
+				value="my invoice"
+				target="_blank"
+			/>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

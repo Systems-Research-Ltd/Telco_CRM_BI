@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="${initParam.template2Col}">
+
+	<ui:define name="title">${sid['label.opportunity']}&nbsp;</ui:define>
+
+	<ui:define name="left-heading">
+		<style type="text/css">
+			.ui-selectonelistbox { overflow: visible;}
+			.ui-widget-content { -webkit-box-shadow: none; box-shadow: none;} 
+			.ui-inputfield { padding:0; padding-left:4px;}
+		</style>
+		<h:form id="lst" prependId="false">
+			<fieldset>
+				<legend>${sid['label.opportunity.list']}&nbsp;</legend>
+				<h:panelGrid columns="3" style="float:right;">
+				<p:commandLink actionListener="#{opportunityBean.clearFilter}" update="listBox"><h:graphicImage library="themes/default/images" name="recycle.jpg" width="25" /></p:commandLink>
+				<p:commandLink update=":tabView"  action="#{opportunityBean.actionListener()}">
+						<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons" name="plus-icon.png" width="20" />
+						<f:param name="action" value="create" />
+					</p:commandLink>
+					<h:panelGroup>
+					<h:graphicImage library="themes/#{themeBean.userTheme.title}/images" name="help_icon.png" id="help" width="25" />
+					<p:tooltip for="help" value="#{help.opportunity}" showEffect="fade" hideEffect="fade" /> 
+					</h:panelGroup>
+				</h:panelGrid>
+				<p:selectOneListbox id="listBox" value="#{sessionDataBean.opportunityModule_selectedOpportunity}" style="width:100%; float:left; height:400px;">
+					<f:selectItems value="#{opportunityBean.list}" var="data" itemLabel="#{data.label}" itemValue="#{data.id}" />
+					<f:param name="action" value="view" />
+					<f:param name="fromListing" value="fromListing" />
+					<p:ajax update=":tabView" event="change" listener="#{opportunityBean.actionListener()}" />
+				</p:selectOneListbox>	
+			</fieldset>
+		</h:form>
+	</ui:define>
+	<ui:define name="left-contents">
+	</ui:define>
+
+	<ui:define name="create-button">				
+
+	</ui:define>
+
+
+	<ui:define name="contents">
+
+		<p:tabView id="tabView" dynamic="true"
+			activeIndex="#{sessionDataBean.opportunityModule_opportunityTabIndex}">
+
+			<p:tab title="#{sessionDataBean.opportunityTabs.get(0).title}">
+				<div id="${sessionDataBean.opportunityTabs.get(0).container}">
+					<ui:include src="${sessionDataBean.opportunityTabs.get(0).path}" />
+				</div>
+			</p:tab>
+
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+

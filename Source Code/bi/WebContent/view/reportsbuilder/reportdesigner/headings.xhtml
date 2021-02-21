@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils">
+	<script type="text/javascript">
+	    $(document).ready(function() {  
+	    	initDND();
+	     	 $("#graphCon_closer").click(function(){
+				showHideGraph();
+			});
+	     	positionLogo();	
+	     	showHideGraph();
+	     	 $("#reportMsgs a").click(function(){
+	     		$(this).parent().slideUp('slow', function() {
+					positionLogo(); });
+	     		return false;
+				});
+			$(".ui-layout-toggler-north").click(function() {
+				$(this).slideToggle('fast', function() {
+					positionLogo();
+				$(this).css("display", "block"); });
+			});	
+	    });
+	
+	</script>
+	<p:row>
+		<p:column>
+			<p:panel id="titleCon" styleClass="display-none noborder">
+				<p:inputText value="#{reportDesignerBean.title}" id="title"
+					name="title" styleClass="rep-title grey_txt" />
+				<h:graphicImage title="#{sid['label.save']}"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="assign.png"
+					onclick="saveValue('title')" styleClass="link" />
+				<h:graphicImage title="#{sid['label.cancel']}" width="15"
+					height="15"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="cancel.gif"
+					onclick="cancel('title')" styleClass="link" />
+			</p:panel>
+			<p:panel id="titleLabelCon" styleClass="noborder">
+				<h:outputText id="titleLabel" value="#{reportDesignerBean.title}"
+					styleClass="rep-title grey_txt"
+					style="word-wrap:break-word;width:100px" />
+				<h:graphicImage title="#{sid['label.edit']}"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="edit.png"
+					onclick="changeValue('title')" styleClass="link" />
+			</p:panel>
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:panel id="descriptionCon" styleClass="noborder display-none">
+				<p:inputText value="#{reportDesignerBean.description}"
+					id="description" name="description" styleClass="rep-desc grey_txt" />
+				<h:graphicImage title="#{sid['label.save']}"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="assign.png"
+					onclick="saveValue('description')" styleClass="link" />
+				<h:graphicImage title="#{sid['label.cancel']}" width="15"
+					height="15"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="cancel.gif"
+					onclick="cancel('description')" styleClass="link" />
+			</p:panel>
+			<p:panel id="descriptionLabelCon" styleClass="noborder">
+				<h:outputText id="descriptionLabel"
+					value="#{reportDesignerBean.description}"
+					styleClass="rep-desc grey_txt" />
+				<h:graphicImage title="#{sid['label.edit']}"
+					library="themes/#{themeBean.userTheme.title}/images/icons"
+					name="edit.png"
+					onclick="changeValue('description')" styleClass="link" />
+			</p:panel>
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:panelGrid styleClass="summary-grid">
+				<p:row>
+					<p:column colspan="2" styleClass="header">Report Summary <span
+							class="add-summary" onclick="addSummary()"
+							title="#{sid['label.addSummary']}">+</span>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:panel id="summaryListCon" styleClass="noborder">
+							<c:if test="${reportDesignerBean.getSummarySize() > 0}">
+								<p:panelGrid>
+									<p:row>
+										<p:column>Label</p:column>
+										<p:column>Value</p:column>
+										<p:column></p:column>
+									</p:row>
+									<c:forEach var="r"
+										items="#{reportDesignerBean.getReportSummary()}">
+										<p:row>
+											<p:column>
+												<p:inputText value="#{r.summaryLabel}"
+													id="#{'lbl_'.concat(r.summaryLabelId)}"
+													disabled="#{reportDesignerBean.summaryEditMode}" />
+											</p:column>
+											<p:column>
+												<p:inputText value="#{r.summaryValue}"
+													id="#{'val_'.concat(r.summaryLabelId)}"
+													disabled="#{reportDesignerBean.summaryEditMode}" />
+											</p:column>
+											<p:column>
+												<p:commandLink id="#{'editbtn_'.concat(r.summaryLabelId)}"
+													style="float:left" ajax="true"
+													action="#{reportDesignerBean.resetSummaryMode()}"
+													update="#{'lbl_'.concat(r.summaryLabelId)} , #{'val_'.concat(r.summaryLabelId)}"
+													onsuccess="showHideBtn('add', '#{r.summaryLabelId}')">
+													<f:param name="temp_id" value="#{r.summaryLabelId}" />
+													<f:param name="temp_label" value="#{r.summaryLabel}" />
+													<f:param name="temp_value" value="#{r.summaryValue}" />
+													<h:graphicImage title="#{sid['label.edit']}"
+														library="themes/#{themeBean.userTheme.title}/images/icons"
+														name="edit.png"
+														styleClass="link" />
+												</p:commandLink>
+												<p:commandLink style="display:none;float:left"
+													action="#{reportDesignerBean.editSummary()}" ajax="true"
+													title="#{sid['label.save']}"
+													id="#{'addbtn_'.concat(r.summaryLabelId)}"
+													update="#{'lbl_'.concat(r.summaryLabelId)} , #{'val_'.concat(r.summaryLabelId)}"
+													onsuccess="showHideBtn('edit', '#{r.summaryLabelId}')">
+													<f:param name="temp_id" value="#{r.summaryLabelId}" />
+													<f:param name="temp_label" value="#{r.summaryLabel}" />
+													<f:param name="temp_value" value="#{r.summaryValue}" />
+													<h:graphicImage title="#{sid['label.save']}"
+														library="themes/#{themeBean.userTheme.title}/images/icons"
+														name="assign.png" />
+												</p:commandLink>
+												<p:commandLink id="#{'cancelbtn_'.concat(r.summaryLabelId)}"
+													onclick="resetVals('#{r.summaryLabel}', '#{r.summaryValue}', '#{r.summaryLabelId}')"
+													style="display:none;float:left"
+													action="#{reportDesignerBean.cancelSummary()}" ajax="true"
+													update="#{'lbl_'.concat(r.summaryLabelId)} , #{'val_'.concat(r.summaryLabelId)}"
+													onsuccess="showHideBtn('edit', '#{r.summaryLabelId}')">
+													<h:graphicImage title="#{sid['label.cancel']}" width="15"
+														height="15"
+														library="themes/#{themeBean.userTheme.title}/images/icons"
+														name="cancel.gif" />
+													<f:param name="temp_id" value="#{r.summaryLabelId}" />
+													<f:param name="temp_label" value="#{r.summaryLabel}" />
+													<f:param name="temp_value" value="#{r.summaryValue}" />
+												</p:commandLink>
+												<p:commandLink id="#{'delbtn_'.concat(r.summaryLabelId)}"
+													style="display:none;float:left"
+													action="#{reportDesignerBean.deleteSummary()}" ajax="true"
+													update="summaryListCon"
+													onsuccess="showHideBtn('edit', '#{r.summaryLabelId}')">
+													<h:graphicImage title="#{sid['label.delete']}"
+														library="themes/#{themeBean.userTheme.title}/images/icons"
+														name="delete.png" />
+													<f:param name="temp_id" value="#{r.summaryLabelId}" />
+													<f:param name="temp_label" value="#{r.summaryLabel}" />
+													<f:param name="temp_value" value="#{r.summaryValue}" />
+												</p:commandLink>
+											</p:column>
+										</p:row>
+									</c:forEach>
+								</p:panelGrid>
+							</c:if>
+						</p:panel>
+						<p:panel id="addSummaryCon" styleClass="display-none noborder">
+							<p:panelGrid id="addSummaryGridCon">
+								<p:row>
+									<p:column>Label</p:column>
+									<p:column>Value</p:column>
+									<p:column></p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:inputText id="newSummaryLabel"
+											value="#{reportDesignerBean.newSummaryLabel}" />
+									</p:column>
+									<p:column>
+										<p:inputText id="newSummaryValue"
+											value="#{reportDesignerBean.newSummaryValue}" />
+									</p:column>
+									<p:column>
+										<p:commandLink id="addSumBtn" ajax="true" style="float:left"
+											action="#{reportDesignerBean.addSummary()}"
+											update="addSummaryCon, summaryListCon, newSummaryLabel, newSummaryValue"
+											onsuccess="hideAddSummary();">
+											<h:graphicImage
+												library="themes/#{themeBean.userTheme.title}/images/icons"
+												name="assign.png"
+												title="#{sid['label.save']}" />
+										</p:commandLink>
+										<p:commandLink onclick="cancelAddSummary()" style="float:left">
+											<h:graphicImage width="15" height="15"
+												title="#{sid['label.cancel']}"
+												library="themes/#{themeBean.userTheme.title}/images/icons"
+												name="cancel.gif" />
+										</p:commandLink>
+										<p:commandLink></p:commandLink>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</p:column>
+	</p:row>
+</ui:composition>
+

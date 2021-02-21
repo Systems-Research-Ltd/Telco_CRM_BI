@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+
+    <ui:define name="title"> User History</ui:define>
+	<ui:define name="contents">
+	<h:outputStylesheet library="css" name="table-style.css"  />
+	<h:form prependId="false">
+
+	<p:messages showDetail="true"/>
+	
+	<p:dataTable id="basic" value="#{userHistory.list}" var="h">
+	<p:column id="sr">
+	<f:facet name="header">
+		Sr.#
+	</f:facet>
+	#{h.user.userName}
+	<!--  <h:outputText value="#{h.userHistoryId}" />-->
+	</p:column>
+	<p:column id="loginTime">
+	<f:facet name="header">
+		Login Time
+	</f:facet>
+	<!-- <h:outputText value="#{h.loginTime}" />-->
+	#{h.loginTime}
+	</p:column>
+	<p:column id="logoutTime">
+	<f:facet name="header">
+		Logout Time
+	</f:facet>
+	<!--<h:outputText value="#{h.logout_time}" />-->
+	#{h.logout_time}
+	</p:column>
+	
+	
+	</p:dataTable>
+	
+	</h:form>
+	</ui:define>
+
+
+</ui:composition>

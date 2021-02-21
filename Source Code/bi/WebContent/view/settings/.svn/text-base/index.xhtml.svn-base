@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{initParam.template}">
+
+	<ui:define name="title"> Theme Settings</ui:define>
+	<ui:define name="contents">
+		<!-- <h:form id="tableform">
+							
+							<h:graphicImage library="themes/crm-gray/icons" name="gray.png" />
+							<h:graphicImage library="themes/crm-green/icons" name="green.png" />
+							<h:graphicImage library="themes/crm-orange/icons" name="orange.png" />
+							<h:graphicImage library="themes/crm-red/icons" name="red.png" />
+		</h:form> -->
+		
+		<ul class="gallery">
+				<h:form>
+					<c:forEach items="#{themeBean.themes}" var="theme">
+					<li>
+<!-- 						<a href="#" class="thumb"><span><h:graphicImage library="themes/crm-red/icons" name="red.png" width="275" height="200"/></span></a> -->
+						<a href="#" class="thumb"><span><h:graphicImage library="themes/#{theme.title}/icons" name="#{theme.image}" width="275" height="200" /></span></a> 
+						
+						<c:if test="${themeBean.activeTheme ne theme.id}">
+							<h:commandLink action="#{themeBean.changeUserTheme(theme)}" value="#{sid['label.active.theme']}" />
+						</c:if>
+						<c:if test="${themeBean.activeTheme eq theme.id}">
+							<h:outputText value="#{sid['label.active.theme']}" />
+						</c:if>
+						
+					</li>
+					
+					</c:forEach>
+				  </h:form>
+				</ul>
+
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+    	http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <description>LMKR RowSet View Taglib</description>
+    <display-name>VIEW</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>view</short-name>
+<!-- <tag>
+        <description>Lists RowSet as a Table</description>
+        <name>list</name>
+        <tag-class>com.lmkr.crm.web.taglib.ListViewTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+     </tag>-->
+    
+    
+</taglib>

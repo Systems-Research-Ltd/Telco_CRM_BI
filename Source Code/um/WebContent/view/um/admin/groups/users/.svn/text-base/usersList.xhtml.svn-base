@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition xmlns:sr="http://java.sun.com/jsf/composite/utils">
+		<h:form styleClass="ui-form" id="groupUsersListing">
+			<sr:datatableHammad
+				id="usersList"
+				value="#{groupUsers.usersInGroup}"
+				columns="#{groupUsers.columns}"
+				rowid="userId" heading="#{sid['title.users.list']}"
+				ajaxEnable = "true"
+				actiondelete="true"
+				actioncreate="false"
+				actionedit="false"
+				actionview="false"
+				actionListener="#{groupUsers.actionListener()}" />
+			<br />
+		</h:form>
+		<h:form id="usersListForm" styleClass="ui-form">
+			<h:inputHidden  id="currentAction"  value="#{groupUsers.currentAction}"
+				validator="#{groupUsers.actionValidator}" />
+
+			<p:panelGrid styleClass="content-table">
+				<p:row>
+					<p:column styleClass="buttons-row">
+						<p:commandButton ajax="true" value="#{sid['label.add.group.to.user']}"
+							update=":tabView" action="#{groupUsers.actionListener()}">
+							<f:param name="action" value="create" />
+						</p:commandButton>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

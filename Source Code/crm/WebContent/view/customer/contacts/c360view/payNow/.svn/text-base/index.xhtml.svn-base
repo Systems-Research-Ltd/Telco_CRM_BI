@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form">
+
+
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column>
+						<h:outputLabel for="invoice">
+					Select Invoice <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="invoice" value="#{payment.invoiceId}"
+							required="true" label="Select Invoice" style="width:232px;"
+							requiredMessage="Invoice is required.">
+							<f:selectItem itemLabel="Select Invoice" itemValue="" />
+							<f:selectItems value="#{customer360controller.unpaidInvoiceList}"
+								var="invoiceList" itemLabel="#{invoiceList.title}"
+								itemValue="#{invoiceList.id}" />
+							<p:ajax event="change" update="pAmount, totalAmount"
+								listener="#{customer360controller.populatePayment()}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="pAmount">
+					Paid Amout <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+
+					<p:column>
+						<p:inputText id="pAmount" value="#{payment.paidAmount}"
+							required="true" label="Last Name"
+							requiredMessage="Contact's Last Name is required." />
+						<h:outputText id="totalAmount" value=" / #{payment.invoiceAmount}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			<br />
+
+			<p:commandButton ajax="true" value="Save"
+				action="#{customer360controller.PaymentActionListener()}">
+				<f:param name="old_action" value="create" />
+				<f:param name="action" value="save" />
+			</p:commandButton>
+
+		</h:form>
+
+	</ui:composition>
+</h:body>
+
+</html>

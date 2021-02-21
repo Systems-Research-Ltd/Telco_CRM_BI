@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="#{initParam.template}">
+	<ui:define name="title"> ${sid['title.sales.orders.invoice.settings']}</ui:define>
+	<ui:define name="contents">
+		
+		<h:form styleClass="ui-form">
+			<p:messages id="msgs" autoUpdate="true" />
+
+
+			<p:panelGrid id="grid" styleClass="content-table">
+				<p:row>
+					<p:column colspan="4">
+						<h:panelGroup layout="block"
+							style="padding: 3px 0 3px 0; text-align: right;">
+							<h:graphicImage
+								library="themes/#{themeBean.userTheme.title}/images"
+								name="help_icon.png" id="help" width="20" height="20" />
+							<pe:tooltip for="help" value="#{help.invoiceSettings}"
+								myPosition="top center" atPosition="bottom center" />
+						</h:panelGroup>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+						${sid['label.customer']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<h:selectManyListbox value="#{invoiceSettings.customerId}"
+							styleClass="hundred-percent" required="true"
+							requiredMessage="Customer is required">
+							<f:selectItems value="#{invoiceSettings.listCustomers()}" var="c"
+								itemLabel="#{c.contactFname}" itemValue="#{c.contactId}" />
+						</h:selectManyListbox>
+					</p:column>
+
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel>
+					${sid['label.invoice.day']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+					<p:selectOneMenu id="day" styleClass="hundred-percent" 
+                        disabled="#{invoiceSettings.disabled}"
+                        value="#{invoiceSettings.invoiceDay}"
+ 					    label="Day" required="true"
+					    requiredMessage="Invoice Day required">
+						 <f:selectItem itemLabel="Day"/>
+					      <c:forEach var="i" begin="1" end="30">
+					       <f:selectItem itemLabel="${i}" itemValue="${i}" />
+                          </c:forEach>
+                     </p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="dueDays">
+				${sid['label.due.days']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="dueDays" value="#{invoiceSettings.dueDays}"
+							maxlength="3" required="true" requiredMessage="Due days required"
+							converterMessage="Invalid due days">
+						</p:inputText>
+					</p:column>
+
+					<p:column>
+						<h:outputLabel for="latePaymentFee">
+					${sid['label.late.payment.fee']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="latePaymentFee"
+							value="#{invoiceSettings.latePaymentFee}" maxlength="6"
+							required="true" requiredMessage="Late fee is required"
+							converterMessage="Invalid late payment fee">
+						</p:inputText>
+					</p:column>
+				</p:row>
+
+				<p:row>
+
+					<p:column colspan="4" styleClass="buttons-row">
+						<p:commandButton ajax="false" value="#{sid['label.save']}"
+							action="#{invoiceSettings.createInvoiceSettings()}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:sr="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+
+	<ui:define name="title"> Query type list</ui:define>
+	<ui:define name="contents">
+		
+	
+	<h:form id="tableform">
+	 <sr:datatableHammad value="#{queryTypeBean.listQueryTypes()}"
+	 				columns="#{queryTypeBean.columns}"
+	 				rowid="queryTypeId"
+	 				heading="Manage QueryTypes"
+	 			    actiondelete="true" 
+	                actioncreate="true" 
+	                actionedit="true" 
+	                actionview="true"
+	                actionListener="#{queryTypeBean.actionListener()}" 
+	 				/>
+		<br />	
+
+
+	</h:form>
+
+	</ui:define>
+	
+</ui:composition>

@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+  <ui:composition>
+ 
+  
+    <h:form id="noOrderSelectionForm" rendered="#{empty sessionDataBean.salesModule_selectedOrder}">
+	    <p:messages id="msgs" autoUpdate="true" />
+			<h:panelGrid id="grid" columns="2" styleClass="content-table">
+				<h:column>
+					<h:outputText value="No Order Selected" />
+				</h:column>
+				
+		    </h:panelGrid>
+	    
+	</h:form>
+
+	
+		<h:form id="orderForm" styleClass="ui-form" rendered="#{!empty sessionDataBean.salesModule_selectedOrder}" prependId="false">
+		<h:inputHidden value="#{orderBean.currentAction}" validator="#{orderBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+              
+        <p:panelGrid id="grid" styleClass="content-table">
+             <p:row>
+               <c:if test="${!facesContext.externalContext.isUserInRole('Customer')}">
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="customer">
+						${sid['tab.customer']}&nbsp;  <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+					<p:autoComplete id="customer"
+					                disabled="#{orderBean.disabled}"
+					                value="#{orderBean.customer}"
+					                completeMethod="#{orderBean.listAutoCustomers}"
+					                var="c"
+					                itemLabel="#{c.contactFname}"
+					                itemValue="#{c.contactId}"
+					                converter="#{autoCompleteCustomerConverter}">
+					                <p:ajax event="itemSelect" update="discount totalAmmount netAmount amountpaid productsTable" listener="#{orderBean.calculateDiscount()}"></p:ajax>
+					</p:autoComplete>
+						
+					</p:column>
+					</c:if>
+		    
+		       <p:column styleClass="twentyfive-percent">
+                      <h:outputLabel for="discount">
+					    ${sid['label.discount']}&nbsp; &nbsp;
+				      </h:outputLabel>
+                </p:column>
+                <p:column styleClass="twentyfive-percent">
+                     <p:inputText id="discount"
+                                  readonly="#{orderBean.disableFields}" 
+                                  value="#{orderBean.discount}"
+                                  disabled="#{orderBean.disabled}">
+                     </p:inputText>
+                </p:column>
+		    
+		       
+		      </p:row>
+		      
+		      <p:row>
+		       
+		       <p:column styleClass="twentyfive-percent">
+                  <h:outputLabel for="type">
+					 ${sid['label.status']}&nbsp;<span class="form-required">*</span>
+				  </h:outputLabel>
+                </p:column>
+                <p:column styleClass="twentyfive-percent">
+                   <p:selectOneMenu id="type" styleClass="hundred-percent"
+                       disabled="#{orderBean.disabled}"
+                       value="#{orderBean.status}"
+					   label="Status" required="true"
+					   requiredMessage="#{orderBean.getProperty('message.validate.order.status.required')}">
+					   <f:selectItem itemLabel="Status"/>
+					   <f:selectItem itemLabel="Open" itemValue="Open" />
+					   <f:selectItem itemLabel="Pending" itemValue="Pending" />
+					   <f:selectItem itemLabel="Closed" itemValue="Closed" />
+				    </p:selectOneMenu>
+                 </p:column>
+		      
+                 <p:column styleClass="twentyfive-percent"> 
+                     <h:outputLabel for="totalAmmount"> 
+					     ${sid['label.total.amount']}&nbsp;
+				     </h:outputLabel>
+				 </p:column>    
+				 <p:column styleClass="twentyfive-percent">    
+				     <p:inputText id="totalAmmount"
+				                  value="#{orderBean.orderTotalAmount}"
+				                  readonly="#{orderBean.disableFields}"
+				                  disabled="#{orderBean.disabled}">
+				     </p:inputText>
+                  </p:column>  
+                   		    
+		       
+		      </p:row>
+		       
+		      <p:row> 
+
+                              <p:column styleClass="twentyfive-percent">
+                      <h:outputLabel for="amountpaid">
+					      ${sid['label.amount.paid']}&nbsp;
+				      </h:outputLabel>
+                </p:column>
+                <p:column styleClass="twentyfive-percent">
+                     <p:inputText id="amountpaid" 
+                                  disabled="#{orderBean.disabled}" 
+                                  value="#{orderBean.paidAmount}"
+                                  converterMessage="paid amount must be a number">
+                     </p:inputText>
+                </p:column>                   
+              
+		      
+            <p:column styleClass="twentyfive-percent">
+                    <h:outputLabel for="netAmount">
+					     ${sid['label.net.amount']}&nbsp;
+				      </h:outputLabel>
+                </p:column>
+                <p:column styleClass="twentyfive-percent">
+                     <p:inputText id="netAmount" 
+                                  readonly="#{orderBean.disableFields}" 
+                                  value="#{orderBean.netAmount}"
+                                  disabled="#{orderBean.disabled}">
+                      </p:inputText>
+                </p:column> 
+		     
+                 </p:row>
+              </p:panelGrid>         
+ 
+
+ <p:fieldset legend="#{sid['label.order.detail']}" id="OrderDetails">
+ 
+ <h:commandLink id="createNewIcon"
+			    title="Add new Product"
+			    style="padding-left:98%;padding-top:0%;"
+			    immediate="true"			                
+                action="#{orderBean.actionListener()}"
+                disabled="#{orderBean.disabled}">
+                <h:graphicImage library="themes/default/images/icons"
+				   name="plus-icon.png" width="15" />
+				   <f:ajax render="productsTable :tabView:orderForm:totalAmmount :tabView:orderForm:netAmount"
+				          execute=":tabView:orderForm:discount">
+				  </f:ajax>
+                <f:param name="action" value="addProduct"></f:param>
+</h:commandLink>
+
+<p:dataTable id="productsTable"
+             value="#{sessionDataBean.orderDetailList}"
+             var="orderDetail"
+             binding="#{orderBean.datatable}">
+ 
+    <p:column headerText="#{sid['label.product']}">
+               <p:selectOneMenu id="product" styleClass="hundred-percent" 
+				     disabled="#{orderBean.disabled}"
+				     value="#{orderDetail.product.productId}"
+				     label="Product" required="true"
+					 requiredMessage="#{orderBean.getProperty('message.validate.order.product.required')}">
+					  
+					  <f:selectItem itemLabel="Select product"/>
+					  <f:selectItems value="#{orderBean.listProducts()}"
+						var="p" 
+						itemLabel="#{p.productTitle}" itemValue="#{p.productId}">
+					  </f:selectItems>
+					  <p:ajax update="productPrice quantity productTotalAmount :tabView:orderForm:totalAmmount :tabView:orderForm:netAmount" listener="#{orderBean.changeProduct(orderBean.datatable.rowIndex)}"> </p:ajax>
+        </p:selectOneMenu>  
+     </p:column>
+     <p:column headerText="#{sid['label.product.price']}">  
+               <p:inputText id="productPrice"
+		              style="width:130px"
+		              value="#{orderDetail.product.productCost}"
+		              disabled="#{orderBean.disableFields}">
+		 </p:inputText>  
+     </p:column>
+     <p:column headerText="#{sid['label.quantity']}">  
+        <p:selectOneMenu id="quantity" styleClass="hundred-percent" 
+                     disabled="#{orderBean.disabled}"
+                     value="#{orderDetail.quantity}"
+ 					 label="Quantity" required="true"
+					 requiredMessage="#{orderBean.getProperty('message.validate.order.quantity.required')}">
+					 <f:selectItem itemLabel="Quantity"/>
+					 <c:forEach var="i" begin="1" end="15">
+					   <f:selectItem itemLabel="${i}" itemValue="${i}" />
+                     </c:forEach>
+                     
+                     <f:ajax render=":tabView:orderForm:totalAmmount :tabView:orderForm:netAmount productTotalAmount" execute="product :tabView:orderForm:discount" listener="#{orderBean.totalOrderAmount()}">
+                     </f:ajax>
+         </p:selectOneMenu>   
+  
+     </p:column>
+     <p:column headerText="#{sid['label.product.amount']}">  
+         <p:inputText id="productTotalAmount"
+		                       style="width:130px"
+		                       value="#{orderDetail.productTotalAmount}"
+		                       disabled="#{orderBean.disableFields}">
+		 </p:inputText>
+     </p:column>
+     <p:column headerText="#{sid['label.actions']}">
+     
+          <p:commandLink title="View product provisioning"
+                          id="viewProvisioningIcon"
+                          immediate="true" 
+                          action="#{orderBean.actionListener()}"
+                          style="padding-left:5px;"
+                          oncomplete="provisioningForm:provisioningDialog.show();"
+                          rendered="#{orderBean.disabled}"
+                          update=":tabView:provisioningForm">
+                          <h:graphicImage library="themes/default/images/icons"
+							name="view.gif" width="15" />
+						  <f:param name="action" value="viewProvisioning"></f:param>
+                          <f:param name="productId" value="#{orderDetail.product.productId}"></f:param>
+                          <f:param name="customerId" value="#{orderBean.customerId}"></f:param>
+                          
+            </p:commandLink>  
+           <h:commandLink title="delete Product"
+                              id="deleteProductIcon"
+                              style="padding-left:10px;"
+                              action="#{orderBean.actionListener()}"
+                              disabled="#{orderBean.disabled}"
+                              immediate="true">
+                  <h:graphicImage library="themes/default/images/icons"
+							name="delete.png" width="15" />
+				  <f:ajax render="productsTable :tabView:orderForm:totalAmmount :tabView:orderForm:netAmount"
+				          execute=":tabView:orderForm:discount">
+				  </f:ajax>		     	
+				  <f:param name="action" value="removeProduct"></f:param>
+                  <f:param name="detailId" value="#{orderDetail.tempId}"></f:param>
+           </h:commandLink>
+           
+                 
+     </p:column>
+    
+
+</p:dataTable> 
+			          
+</p:fieldset>
+       
+ <p:panelGrid styleClass="content-table">           
+            <p:row>
+                    <p:column colspan="4" styleClass="buttons-row">
+					 
+					 <p:commandButton value="#{sid['label.save']}"
+					    action="#{orderBean.actionListener}"
+						ajax="false"
+						rendered="#{orderBean.saveAction}">
+						<f:param name="action" value="#{sid['action.save']}" />
+					</p:commandButton>
+					<p:commandButton id = "edit" value="#{sid['label.edit']}"
+							immediate="true" action="#{orderBean.actionListener}" ajax="false"
+							update = ":tabView, :orderListForm:ordersListBox"
+							rendered="#{orderBean.editAction}">
+							<f:param name="action" value="#{sid['action.edit']}" />
+					</p:commandButton>
+					<p:commandButton id="update" value="#{sid['label.update']}"
+							action="#{orderBean.actionListener}" ajax="false"
+							rendered="#{orderBean.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+							
+					</p:commandButton>
+					
+					<p:commandButton id="deleteButton" ajax="false"
+                            immediate="true"
+							value="#{sid['label.delete']}"
+							update=":tabView"
+							rendered="#{orderBean.deleteAction}"
+							action="#{orderBean.actionListener()}">
+							<f:param name="action" value="delete" />
+					</p:commandButton>
+						
+					<p:commandButton value="#{sid['label.deleteConfirmed']}"
+					    immediate="true"
+						action="#{orderBean.actionListener}"
+						ajax="false"
+						rendered="#{orderBean.deleteConfirmedAction}">
+						<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+					</p:commandButton>
+					
+					<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{orderBean.resetAction}" type="reset">
+					</p:commandButton>
+					<p:commandButton immediate="true"
+							value="#{sid['label.cancel']}"
+							action="#{orderBean.actionListener}" ajax="false"
+							rendered="#{orderBean.cancelAction}">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+					</p:commandButton>
+				    </p:column>
+				</p:row>    
+      
+</p:panelGrid>
+
+            
+
+</h:form>
+		
+		<h:form id="provisioningForm" styleClass="ui-form" rendered="#{orderBean.disabled}">
+		  <h:inputHidden value="#{orderBean.currentAction}" validator="#{orderBean.actionValidator}" />
+        
+             <p:dialog id="productProvisioning" 
+			          widgetVar="provisioningDialog" style="width:1000px; hiegth:1000px;">
+		
+		    <p:fieldset id="provisioningDetail"
+                      legend="Order Provisioning"
+                      toggleable="false"
+                      toggleSpeed="300">
+                      
+              <h:inputHidden value="#{orderBean.customerId}" />
+              <h:inputHidden value="#{orderBean.productId}" />
+              <h:inputHidden value="#{orderBean.orderId}" />
+              
+              <p:panelGrid styleClass="content-table">
+               <p:row>
+                 <p:column styleClass="twentyfive-percent">
+                  <h:outputLabel for="product">
+                     Product
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="product" 
+                                 value="#{orderBean.product.productTitle}" 
+                                 disabled="true">
+                    </p:inputText>
+                 </p:column>
+               </p:row>
+               <p:row>   
+                 <p:column styleClass="twentyfive-percent">
+                   <h:outputLabel for="macAddress">
+                     Mac Address <span class="form-required">*</span>
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="macAddress"
+                                 value="#{orderBean.MACAddress}">
+                    </p:inputText>
+                    
+                 </p:column>
+                 </p:row>
+                 
+                 <p:row>
+                 <p:column styleClass="twentyfive-percent">
+                   <h:outputLabel for="host">
+                     Host <span class="form-required">*</span>
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="host"
+                                 value="#{orderBean.host}">
+                    </p:inputText>
+                 </p:column>
+                </p:row> 
+                <p:row> 
+                 <p:column styleClass="twentyfive-percent">
+                   <h:outputLabel for="port">
+                     Port <span class="form-required">*</span>
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="port"
+                                 value="#{orderBean.port}">
+                    </p:inputText>
+                 </p:column>
+                 </p:row>
+                 <p:row>
+                 <p:column styleClass="twentyfive-percent">
+                   <h:outputLabel for="loginName">
+                     Login Name <span class="form-required">*</span>
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="loginName"
+                                 value="#{orderBean.loginName}">
+                    </p:inputText>
+                 </p:column>
+                </p:row>
+                <p:row> 
+                 <p:column styleClass="twentyfive-percent">
+                   <h:outputLabel for="password">
+                     Password
+                   </h:outputLabel>
+                 </p:column>
+                 <p:column styleClass="twentyfive-percent">
+                    <p:inputText id="password"
+                                 value="#{orderBean.password}">
+                    </p:inputText>
+                 </p:column>
+                </p:row> 
+                 
+                <p:row>
+                     
+                 <p:column colspan="4" styleClass="buttons-row">
+					 <p:commandButton value="#{sid['label.save']}"
+					    action="#{orderBean.actionListener}"
+						ajax="false"
+						rendered="#{facesContext.externalContext.isUserInRole('User')}">
+						<f:param name="action" value="saveProvisioning" />
+					</p:commandButton>
+				 </p:column>
+				 </p:row>	
+              </p:panelGrid>
+          </p:fieldset>
+			</p:dialog>
+		</h:form>
+				
+</ui:composition>
+
+</h:body>
+</html>

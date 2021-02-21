@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form" id="userProfileForm">
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.name']}"/>
+					</p:column>
+					<p:column>
+					<p:inputText value="#{userB.userFname}"
+							disabled="#{userController.viewAction}" style="display:none"></p:inputText>
+						<h:outputLabel value="#{ userB.userFname.concat(' ').concat(userB.userLname)}"></h:outputLabel>
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.user.name']}" />
+					</p:column>
+
+					<p:column>
+						<h:outputLabel value="#{userB.userName}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.email']}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel value="#{userB.userEmail}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.address']}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel value="#{userB.userAddress.concat(' ').concat(userB.city).concat(' ').concat(userB.state).concat(', ').concat(userB.country)}" />
+					</p:column>
+				</p:row>
+
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.zip.code']}"/>
+					</p:column>
+					<p:column>
+						<h:outputLabel value="#{userB.userZipcode}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.phone']}"/>
+					</p:column>
+					<p:column>
+						<h:outputLabel value="#{userB.userPhone}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.job.title']}"/>
+					</p:column>
+					<p:column>
+						<h:outputLabel value="#{userB.userJobtitle}" />
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form" id="alertsAndRemindersForm">
+		<h:inputHidden value="#{alertsAndRemindersBean.currentAction}"
+				validator="#{alertsAndRemindersBean.actionValidator}" />
+				<h:inputHidden value="#{alertsAndRemindersBean.id}"
+				validator="#{alertsAndRemindersBean.idValidator}" id="id" />
+			<p:messages id="msgs" autoUpdate="true" closable="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.title']}">
+							 <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="alertTitle" value="#{alertsAndRemindersBean.title}" maxlength="50"
+						disabled="#{alertsAndRemindersBean.disabled}" validator="#{alertsAndRemindersBean.titleValidator}"/>
+					</p:column>
+
+					<p:column>
+						<h:outputLabel  value="#{sid['label.date']}">
+							 <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+					<p:calendar id="date"
+							value="#{alertsAndRemindersBean.date}" navigator="true"
+							yearRange="c-5:c+20" required="true"
+							requiredMessage="Date is required"
+							label="Date" pattern="MMMM dd, yyyy"
+							disabled="#{alertsAndRemindersBean.disabled}">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.alrt.or.reminder']}">
+							 <span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu value="#{alertsAndRemindersBean.isAlert}"
+							style="width:232px;" disabled="#{alertsAndRemindersBean.disabled}">
+							<f:selectItem itemLabel="Alert" itemValue="true" />
+							<f:selectItem itemLabel="Reminder" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column>
+						<h:outputLabel value="#{sid['label.user.id']}">
+							<span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{alertsAndRemindersBean.userId}" disabled="#{alertsAndRemindersBean.disabled}"/>
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel value="#{sid['label.transmit.status']}">
+							 <span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{alertsAndRemindersBean.transmitStatus}" disabled="#{alertsAndRemindersBean.disabled}" />
+					</p:column>
+
+				</p:row>
+			</p:panelGrid>
+
+			<p:panel>
+				<p:row>
+					<p:column colspan="4">
+						<p:commandButton value="#{sid['label.save']}"
+							action="#{alertsAndRemindersBean.actionListener}" ajax="false"
+							rendered="#{alertsAndRemindersBean.saveAction}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							action="#{alertsAndRemindersBean.actionListener}" ajax="false"
+							immediate="true"
+							rendered="#{alertsAndRemindersBean.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+							<f:param name="row_id" value="#{alertsAndRemindersBean.alert_reminders_id}" />
+						</p:commandButton>
+						
+						
+						<p:commandButton value="#{sid['label.cancel']}"
+							action="#{alertsAndRemindersBean.actionListener}" ajax="false"
+							rendered="#{alertsAndRemindersBean.cancelAction}"
+							immediate="true">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:row>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

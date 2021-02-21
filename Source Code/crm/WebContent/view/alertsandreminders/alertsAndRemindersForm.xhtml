@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+ 	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form" id="alertsAndRemindersForm">
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+				
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Title <span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{alertsAndReminders.title}"
+							disabled="#{alertsAndRemindersAdmin.viewAction || alertsAndRemindersAdmin.deleteAction}"
+						/>
+					</p:column>
+
+					<p:column>
+						<h:outputLabel>
+							Date <span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{alertsAndReminders.date}"
+							disabled="#{alertsAndRemindersAdmin.viewAction || alertsAndRemindersAdmin.deleteAction}"
+						/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel>
+							Alert or Reminder <span class="form-required"></span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu value="#{alertsAndReminders.isAlert}" style="width:232px;"
+							disabled="#{alertsAndRemindersAdmin.viewAction || alertsAndRemindersAdmin.deleteAction}"
+						>
+							<f:selectItem itemLabel="Alert" itemValue="true"/>
+							<f:selectItem itemLabel="Reminder" itemValue="false"/>
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				
+
+				<p:row>
+					<p:column colspan="4">
+<!-- 
+						<c:if test="#{alertsAndRemindersController.createAction}">
+							<p:commandButton ajax="true" value="Save"
+								action="#{alertsAndRemindersController.actionListener()}">
+								<f:param name="old_action" value="create" />
+								<f:param name="action" value="save" />
+							</p:commandButton>
+						</c:if>
+
+						<c:if test="#{alertsAndRemindersController.editAction}">
+							<p:commandButton ajax="false" value="Update"
+								action="#{alertsAndRemindersController.actionListener()}">
+								<f:param name="old_action" value="edit" />
+								<f:param name="action" value="update" />
+								<f:param name="row_id" value="#{alertsAndReminders.id}" />
+							</p:commandButton>
+						</c:if>
+-->
+						<c:if test="#{alertsAndRemindersAdmin.deleteAction}">
+							<p:commandButton ajax="false" value="Confirm Delete"
+								action="#{alertsAndRemindersAdmin.actionListener()}">
+								<f:param name="old_action" value="delete" />
+								<f:param name="row_id" value="#{alertsAndReminders.id}" />
+								<f:param name="action" value="deleteConfirmed" />
+							</p:commandButton>
+						</c:if>
+
+						<p:commandButton ajax="false" value="#{(alertsAndRemindersAdmin.viewAction) ? 'Back':'Cancel'}" immediate="true"
+							action="#{alertsAndRemindersAdmin.actionListener()}">
+							<f:param name="action" value="cancel" />
+						</p:commandButton>
+<!-- 
+						<c:if
+							test="#{alertsAndRemindersController.createAction or alertsAndRemindersController.editAction}">
+							<p:commandButton ajax="false" value="Clear" immediate="true"
+								type="reset" />
+						</c:if>
+-->
+						<h:inputHidden id="view" value="#{alertsAndRemindersAdmin.viewAction}" />
+						<h:inputHidden id="edit" value="#{alertsAndRemindersAdmin.editAction}" />
+						<h:inputHidden id="delete" value="#{alertsAndRemindersAdmin.deleteAction}" />
+						
+<!-- 						
+						<h:inputHidden id="create" value="#{alertsAndRemindersController.createAction}" />
+						<h:inputHidden id="view" value="#{alertsAndRemindersController.viewAction}" />
+						<h:inputHidden id="edit" value="#{alertsAndRemindersController.editAction}" />
+						<h:inputHidden id="delete" value="#{alertsAndRemindersController.deleteAction}" />
+						<h:inputHidden value="#{alertsAndRemindersController.update}" />
+-->
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

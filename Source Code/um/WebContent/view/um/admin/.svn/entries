@@ -1,0 +1,49 @@
+10
+
+dir
+3118
+svn://68.169.55.222/crm/srpl/src/um/WebContent/view/um/admin
+svn://68.169.55.222/crm
+
+
+
+2013-09-16T06:56:36.064691Z
+3074
+maryum
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2a5558d-76e6-48d6-ac41-ad4a2b72ce04
+
+OperationsListing
+dir
+
+company
+dir
+
+franchise
+dir
+
+groups
+dir
+
+import
+dir
+
+manageServices
+dir
+
+user
+dir
+

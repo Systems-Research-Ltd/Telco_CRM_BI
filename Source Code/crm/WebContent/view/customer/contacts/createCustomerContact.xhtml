@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui" template="${initParam.template}">
+
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form">
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+
+					<p:column>
+						<h:outputLabel for="fname">
+					First Name <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+
+					<p:column>
+						<p:inputText id="fname" value="#{contacts.contact_fname}"
+							required="true" label="First Name"
+							requiredMessage="Contact's First Name is required." />
+					</p:column>
+
+					<p:column>
+						<h:outputLabel for="lname">
+					Last Name <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+
+					<p:column>
+						<p:inputText id="lname" value="#{contacts.contact_lname}"
+							required="true" label="Last Name"
+							requiredMessage="Contact's Last Name is required." />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="contactType">
+					Contact Type <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="contactType"
+							value="#{accounts.account_iscompany}" required="true"
+							label="Contact Type" style="width:232px;"
+							requiredMessage="Contact's Type is required.">
+							<f:selectItem itemLabel="Individual" itemValue="false" />
+							<f:selectItem itemLabel="Corporate" itemValue="true" />
+							<p:ajax event="change" update="account" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="account">
+					Account
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="account" value="#{accounts.account_id}"
+							disabled="#{!accounts.account_iscompany}" required="false"
+							label="account" style="width:232px;">
+							<f:selectItem itemLabel="Select if Corporate" />
+							<f:selectItems
+								value="#{customerListings.accountListByType(accounts.account_iscompany)}"
+								var="a" itemLabel="#{a.account_title}"
+								itemValue="#{a.account_id}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="father">
+					Father Name <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="father" value="#{contacts.contact_father_name}"
+							required="true" label="Father Name"
+							requiredMessage="Contact's Father Name is required." />
+					</p:column>
+					<p:column>
+						<h:outputLabel for="email">
+					Email <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="email" value="#{contacts.contact_email}"
+							required="true" label="Email"
+							requiredMessage="Contact's Email address is required.">
+						</p:inputText>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="phone">
+					Contact Number <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="phone" value="#{contacts.contact_phone}"
+							label="Contact Number" />
+					</p:column>
+					<p:column>
+						<h:outputLabel for="status">
+					Status <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" value="#{contacts.contact_status}"
+							required="true" label="Status" style="width:232px;"
+							requiredMessage="Contact's Status is required.">
+							<f:selectItem itemLabel="Active" itemValue="true" />
+							<f:selectItem itemLabel="In-Active" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="country">
+					Country <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="country" value="#{contacts.contact_country}"
+							label="Country" required="true" style="width:232px;"
+							requiredMessage="Contact's Country information is required.">
+							<f:selectItem itemLabel="Select Country" itemValue="0" />
+							<f:selectItems value="#{addressBean.countryList}" var="c"
+								itemLabel="#{c.countryName}" itemValue="#{c.id}" />
+							<p:ajax update="state" event="change" partialSubmit="true"
+								process="country"
+								listener="#{addressBean.stateAL(contacts.contact_country)}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="state">
+					State
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="state" value="#{contacts.contact_state}"
+							label="State" style="width:232px;">
+							<f:selectItem itemLabel="Select State" itemValue="0" />
+							<f:selectItems value="#{addressBean.stateList}" var="s"
+								itemLabel="#{s.stateName}" itemValue="#{s.stateId}" />
+							<p:ajax update="city" event="change" partialSubmit="true"
+								process="state"
+								listener="#{addressBean.cityAL(contacts.contact_state)}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="city">
+					City <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="city" value="#{contacts.contact_city}"
+							label="City" required="true" style="width:232px;"
+							requiredMessage="Contact's City information is required.">
+							<f:selectItem itemLabel="Select City" itemValue="0" />
+							<f:selectItems value="#{addressBean.cityList}" var="c"
+								itemLabel="#{c.cityName}" itemValue="#{c.cityId}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="zip">
+					Zip Code
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="zip" value="#{contacts.contact_zipcode}"
+							required="false" label="Zip Code" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="dob">
+					Date of Birth <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="dob" value="#{contacts.contact_dob}"
+							navigator="true" yearRange="c-50:c-20" required="false"
+							label="Date of Birth" pattern="MMMM dd, yyyy">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="cnic">
+					NIC Number <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="cnic" value="#{contacts.contact_cnic}"
+							required="true" label="NIC Number"
+							requiredMessage="Contact's NIC number is required." />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="address">
+    		 		Address
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="address" value="#{contacts.contact_address}"
+							required="false" label="Address" />
+					</p:column>
+
+					<p:column />
+					<p:column />
+				</p:row>
+
+				<p:row>
+					<hr />
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<h:outputLabel for="username">
+					Username <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:column>
+							<p:inputText id="username" value="#{contacts.contact_username}"
+								required="true" label="Username"
+								requiredMessage="Username is required." />
+						</p:column>
+					</p:column>
+					<p:column>
+						<h:outputLabel for="pass">
+					Password <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:password id="pass" value="#{contacts.contact_pass}"
+							required="true" label="Password"
+							requiredMessage="Password is required." />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4">
+						<p:commandButton ajax="false" value="Save"
+							action="#{customerListings.createContact()}" />
+						<p:commandButton ajax="false" value="Update"
+							action="#{customerListings.editContact()}">
+							<f:param name="cId" value="#{contacts.contact_id}" />
+						</p:commandButton>
+						<p:commandButton ajax="true" value="Cancel" immediate="true"
+							action="contactList">
+							<f:setPropertyActionListener
+								target="#{actionListener.selectedAction}" value="" />
+						</p:commandButton>
+						<p:commandButton ajax="false" value="Clear" immediate="true"
+							type="reset" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

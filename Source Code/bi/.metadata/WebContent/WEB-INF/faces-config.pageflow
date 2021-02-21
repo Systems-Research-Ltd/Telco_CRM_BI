@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf136860218240235" configfile="/bi/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="view/*" x="122" y="1426" id="pf13769108051380" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf13769108051381 pf13769108051382 pf13769108051385 pf13769108051386 pf13769108051387 pf13769108051388 pf137691342266351 pf137691342266352 pf137691342266353" path="/view/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/index.xhtml" x="338" y="1714" id="pf13769108051389" referenceLink="//@navigationRule.4/@navigationCase.3/@toViewId|" inlinks="pf137691080513810" path="/view/admin/company/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/dashboard/dash.xhtml" x="338" y="2098" id="pf137691080513811" referenceLink="//@navigationRule.2/@navigationCase.2/@toViewId|" inlinks="pf13769108051381 pf137691080513812 pf137691080513813 pf137691080513814" path="/view/dashboard/dash.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/reportsbuilder/reportsBuilder.xhtml" x="338" y="178" id="pf137691080513815" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf13769108051382" path="/view/reportsbuilder/reportsBuilder.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/users/index.xhtml" x="338" y="2866" id="pf137691080513816" referenceLink="//@navigationRule.6/@navigationCase.3/@toViewId|" inlinks="pf137691080513817" path="/view/admin/users/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/datasources/index.xhtml" x="338" y="562" id="pf137691080513818" referenceLink="//@navigationRule.1/@navigationCase.2/@toViewId|" inlinks="pf13769108051385" path="/view/datasources/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/datasources/dataSet/index.xhtml" x="338" y="946" id="pf137691080513819" referenceLink="//@navigationRule.1/@navigationCase.3/@toViewId|" inlinks="pf13769108051386" path="/view/datasources/dataSet/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/public/SignOutForm" x="338" y="1330" id="pf137691080513820" referenceLink="//@navigationRule.1/@navigationCase.4/@toViewId|" inlinks="pf13769108051387" path="/view/public/SignOutForm.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/dashboard/*" x="122" y="2098" id="pf137691080513821" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf137691080513812 pf137691080513813 pf137691080513814 pf137691080513822" path="/view/dashboard/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/dashboard/index.xhtml" x="338" y="2482" id="pf137691080513823" referenceLink="//@navigationRule.2/@navigationCase.3/@toViewId|" inlinks="pf137691080513822" path="/view/dashboard/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/reportsbuilder/*" x="122" y="3250" id="pf137691080513824" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf137691080513825 pf137691080513826 pf137691080513827 pf137691080513828" path="/view/reportsbuilder/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/reports/reportsForm.xhtml" x="338" y="3250" id="pf137691080513829" referenceLink="//@navigationRule.3/@navigationCase.2/@toViewId|" inlinks="pf137691080513825 pf137691080513826 pf137691080513827" path="/view/reports/reportsForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/reports/index.xhtml" x="338" y="3634" id="pf137691080513830" referenceLink="//@navigationRule.3/@navigationCase.3/@toViewId|" inlinks="pf137691080513828" path="/view/reports/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/*" x="122" y="4018" id="pf137691080513831" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf137691080513832 pf137691080513833 pf137691080513834 pf137691080513810 pf137691080513835" path="/view/admin/company/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/companyForm.xhtml" x="338" y="4018" id="pf137691080513836" referenceLink="//@navigationRule.4/@navigationCase.2/@toViewId|" inlinks="pf137691080513832 pf137691080513833 pf137691080513834" path="/view/admin/company/companyForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/parameters/index.xhtml" x="338" y="4402" id="pf137691080513837" referenceLink="//@navigationRule.5/@navigationCase.1/@toViewId|" inlinks="pf137691080513835 pf137691080513838" path="/view/admin/company/parameters/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/parameters/*" x="122" y="4594" id="pf137691080513839" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf137691080513840 pf137691080513838" path="/view/admin/company/parameters/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/company/parameters/parameterForm.xhtml" x="338" y="4786" id="pf137691080513841" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" inlinks="pf137691080513840" path="/view/admin/company/parameters/parameterForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/users/*" x="122" y="5170" id="pf137691080513842" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf137691080513843 pf137691080513844 pf137691080513845 pf137691080513817" path="/view/admin/users/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/admin/users/userForm.xhtml" x="338" y="5170" id="pf137691080513846" referenceLink="//@navigationRule.6/@navigationCase.2/@toViewId|" inlinks="pf137691080513843 pf137691080513844 pf137691080513845" path="/view/admin/users/userForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/reportsbuilder/datapallete/dialogs/datasourcedialog.xhtml" x="122" y="5554" id="pf137691080513847" referenceLink="//@navigationRule.7/@navigationCase.0/@toViewId|" outlinks="pf137691080513848" inlinks="pf137691080513848" path="/view/reportsbuilder/datapallete/dialogs/datasourcedialog.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="../um/view/um/admin/company/index.xhtml" id="pf137691080513849" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf13769108051388 pf137691342266351" path="../um/view/um/admin/company/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="../um/view/um/admin/user/index.xhtml" id="pf137691342266354" referenceLink="//@navigationRule.1/@navigationCase.1/@toViewId|" inlinks="pf137691342266352" path="../um/view/um/admin/user/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="../um/view/um/admin/groups/index.xhtml" id="pf137691342266355" referenceLink="//@navigationRule.1/@navigationCase.2/@toViewId|" inlinks="pf137691342266353" path="../um/view/um/admin/groups/index.xhtml"/>
+  <links id="pf13769108051381" target="pf137691080513811" source="pf13769108051380" outcome="dashboard" redirect="true"/>
+  <links id="pf13769108051382" target="pf137691080513815" source="pf13769108051380" outcome="reports" redirect="true"/>
+  <links id="pf13769108051385" target="pf137691080513818" source="pf13769108051380" outcome="connection" redirect="true"/>
+  <links id="pf13769108051386" target="pf137691080513819" source="pf13769108051380" outcome="dataSet" redirect="true"/>
+  <links id="pf13769108051387" target="pf137691080513820" source="pf13769108051380" outcome="signout" redirect="true" fromaction="#{userBackingBean.signOut}"/>
+  <links id="pf137691080513812" target="pf137691080513811" source="pf137691080513821" outcome="create"/>
+  <links id="pf137691080513813" target="pf137691080513811" source="pf137691080513821" outcome="view"/>
+  <links id="pf137691080513814" target="pf137691080513811" source="pf137691080513821" outcome="edit"/>
+  <links id="pf137691080513822" target="pf137691080513823" source="pf137691080513821" outcome="list"/>
+  <links id="pf137691080513825" target="pf137691080513829" source="pf137691080513824" outcome="create"/>
+  <links id="pf137691080513826" target="pf137691080513829" source="pf137691080513824" outcome="view"/>
+  <links id="pf137691080513827" target="pf137691080513829" source="pf137691080513824" outcome="edit"/>
+  <links id="pf137691080513828" target="pf137691080513830" source="pf137691080513824" outcome="list"/>
+  <links id="pf137691080513832" target="pf137691080513836" source="pf137691080513831" outcome="create"/>
+  <links id="pf137691080513833" target="pf137691080513836" source="pf137691080513831" outcome="view"/>
+  <links id="pf137691080513834" target="pf137691080513836" source="pf137691080513831" outcome="edit"/>
+  <links id="pf137691080513810" target="pf13769108051389" source="pf137691080513831" outcome="list"/>
+  <links id="pf137691080513835" target="pf137691080513837" source="pf137691080513831" outcome="parameter" redirect="true"/>
+  <links id="pf137691080513840" target="pf137691080513841" source="pf137691080513839" outcome="create"/>
+  <links id="pf137691080513838" target="pf137691080513837" source="pf137691080513839" outcome="list"/>
+  <links id="pf137691080513843" target="pf137691080513846" source="pf137691080513842" outcome="create"/>
+  <links id="pf137691080513844" target="pf137691080513846" source="pf137691080513842" outcome="edit"/>
+  <links id="pf137691080513845" target="pf137691080513846" source="pf137691080513842" outcome="view"/>
+  <links id="pf137691080513817" target="pf137691080513816" source="pf137691080513842" outcome="list"/>
+  <links id="pf137691080513848" target="pf137691080513847" source="pf137691080513847" outcome="cancel">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf13769108051388" target="pf137691080513849" source="pf13769108051380" outcome="admin" redirect="true"/>
+  <links id="pf137691342266351" target="pf137691080513849" source="pf13769108051380" outcome="companies" redirect="true"/>
+  <links id="pf137691342266352" target="pf137691342266354" source="pf13769108051380" outcome="users" redirect="true"/>
+  <links id="pf137691342266353" target="pf137691342266355" source="pf13769108051380" outcome="groups" redirect="true"/>
+</pageflow:Pageflow>

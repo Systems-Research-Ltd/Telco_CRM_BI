@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<ui:composition>
+		<h:form id="campaignProductsForm">
+			<p:messages autoUpdate="true" />
+			<h:inputHidden value="#{campaignProducts.currentAction}" validator="#{campaignProducts.actionValidator}" />
+			<b><h:outputText value="Select Products for Campaign : '#{campaignDetails.title}' " /></b><br/>
+			<h:selectOneMenu value="#{campaignProducts.campaignProductType}" style="float:right; width:200px;">
+				<f:selectItem itemLabel="Product Type" itemValue="" />
+				<f:selectItem itemLabel="Simple" itemValue="Simple" />
+				<f:selectItem itemLabel="Value Added" itemValue="Value Added" />
+				<p:ajax update="products"/>
+			</h:selectOneMenu><br/>
+			<h:panelGroup id="products" layout="block">
+				<ul class="gallery1" style="width:620px; padding-left:20px; margin-top:20px; margin-bottom:20px;">
+					<ui:repeat value="#{campaignProducts.productList(false)}" var="prod">
+						<li style="width:170px; height:150px; border:none; padding-bottom:10px; text-align:left;">							 
+							<h:panelGroup><h:graphicImage value="/resources/images/#{prod.productImage ne null ? prod.productImage : 'imgavailable.jpg'}" width="75" height="75" />
+							<p:selectBooleanCheckbox value="#{campaignProducts.isChecked[prod.productId]}"  style="vertical-align:top; padding-left:5px;"/>
+							<br/></h:panelGroup>
+							<h:panelGroup><b><h:outputText value="#{prod.productTitle}" /></b><br/>
+							<h:outputText value="#{prod.productDescription.length() gt 100 ? prod.productDescription.substring(0,100).concat('...') : prod.productDescription}" /></h:panelGroup>
+						</li>
+					</ui:repeat>
+				</ul>
+			</h:panelGroup><br/>
+			<p:commandButton actionListener="#{campaignProducts.saveCampaignProducts(true)}" value="Add Selected Products to Campaign" update="@form" />
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

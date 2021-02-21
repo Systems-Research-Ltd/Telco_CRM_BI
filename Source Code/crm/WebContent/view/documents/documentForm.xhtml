@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form" enctype="multipart/form-data">
+			<h:inputHidden id="currentAction" value="#{documents.currentAction}"
+				validator="#{documents.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="name">
+					${sid['label.title']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:inputText id="name" value="#{documents.documentTitle}"
+							disabled="#{documents.disabled}" required="true"
+							label="Document Title" maxlength="50"
+							requiredMessage="Document Title is required." />
+
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="details">
+    		 		${sid['label.description']}&nbsp; 
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="details" value="#{documents.documentDetails}"
+							disabled="#{documents.disabled}" maxlength="500" label="Address" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="upload"
+							rendered="#{documents.renderUploadedDocument}">
+    		 		${sid['label.uploaded.document']}&nbsp; 
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<h:outputLink id="upload"
+							target="_blank"
+							rendered="#{documents.renderUploadedDocument}"
+							value="#{request.contextPath}/resources/documents/#{documents.documentSource}">
+    		 	            ${sid['label.view']}&nbsp; 
+    		 	</h:outputLink>
+
+					</p:column>
+				</p:row>
+				<p:row rendered="#{!documents.updateAction}">
+					<p:column>
+						<h:outputLabel for="pdate">
+					${sid['label.publich.date']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="pdate" value="#{documents.documentPdate}"
+							disabled="#{documents.disabled}" navigator="true"
+							yearRange="c-50:c-20" required="true"
+							requiredMessage="Valid Publish date is required"
+							label="Publish Date" pattern="MMMM dd, yyyy"
+							converterMessage="Valid Publish date is required">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="edate">
+					${sid['label.expired.on']}&nbsp; 
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:calendar id="edate" value="#{documents.documentEdate}"
+							disabled="#{documents.disabled}" navigator="true"
+							yearRange="c-50:c-20" required="true"
+							requiredMessage="Valid Expire date is required"
+							label="Expired Date" pattern="MMMM dd, yyyy"
+							converterMessage="Valid Expire date is required">
+							<f:convertDateTime pattern="MMMM dd, yyyy" />
+						</p:calendar>
+
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="status">
+					${sid['label.status']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" value="#{documents.documentStatus}"
+							styleClass="hundred-percent"
+							disabled="#{documents.disabled}" label="Status">
+							<f:selectItem itemLabel="Published" itemValue="true" />
+							<f:selectItem itemLabel="Un-Published" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row rendered="#{documents.saveAction}">
+					<p:column>
+
+						<h:outputLabel for="source">
+    		 		${sid['label.document']}&nbsp;
+    		 	</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:fileUpload id="source" value="#{documents.file}" mode="simple" />
+						<h:inputHidden value="#{documents.documentSource}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" styleClass="buttons-row">
+
+						<p:commandButton ajax="false" value="#{sid['label.save']}"
+							update=":tabView, :lst" rendered="#{documents.saveAction}"
+							actionListener="#{documents.actionListener}">
+							<f:param name="action" value="#{sid['action.save']}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.edit']}"
+							update=":tabView" rendered="#{documents.editAction}"
+							partialSubmit="true" process="@this" async="true"
+							actionListener="#{documents.actionListener()}">
+							<f:param name="action" value="edit" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}"
+							actionListener="#{documents.actionListener}" ajax="true"
+							update=":tabView, :lst" rendered="#{documents.updateAction}">
+							<f:param name="action" value="#{sid['action.update']}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="true" value="#{sid['label.delete']}"
+							update=":tabView" rendered="#{documents.deleteAction}"
+							partialSubmit="true" process="@this, currentAction" async="true"
+							action="#{documents.actionListener()}">
+							<f:param name="action" value="delete" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}"
+							actionListener="#{documents.actionListener}"
+							update=":tabView, :lst" ajax="true" immediate="true"
+							rendered="#{documents.deleteConfirmedAction}">
+							<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{documents.resetAction}" type="reset">
+						</p:commandButton>
+
+						<p:commandButton immediate="true"
+							value="#{sid['label.cancel']}"
+							action="#{documents.actionListener}" ajax="true"
+							update=":tabView" rendered="#{documents.cancelAction}">
+							<f:param name="action" value="#{sid['action.cancel']}" />
+						</p:commandButton>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>

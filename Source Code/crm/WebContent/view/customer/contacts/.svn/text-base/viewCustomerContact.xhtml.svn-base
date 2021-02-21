@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="${initParam.template}">
+	<ui:define name="title"> ${sid['title.um.customer.createCustomer']}</ui:define>
+	<ui:define name="contents">
+		<h:form styleClass="ui-form">
+
+			<p:messages id="msgs" autoUpdate="true" />
+			<h:panelGrid id="grid" columns="4" styleClass="content-table">
+
+				<h:outputLabel for="fname">
+					${sid['label.first.name']}&nbsp;
+				</h:outputLabel>
+				<h:outputText id="fname" value="#{contacts.contact_fname}" />
+				<h:outputLabel for="lname">
+					${sid['label.last.name']}&nbsp;
+				</h:outputLabel>
+				<h:outputText id="lname" value="#{contacts.contact_lname}"  label="Last Name" />
+
+				<h:outputLabel for="contactType">
+					${sid['label.contact.type']}&nbsp;
+				</h:outputLabel>
+				<h:outputText id="contactType" value="#{accounts.account_iscompany ? 'Company':'Individual'}" />
+				<h:outputLabel for="account">
+					Compnay
+				</h:outputLabel>
+				<h:outputText id="account" value="#{accounts.account_id}" label="account" />
+
+				<h:outputLabel for="father">
+					Father Name 
+				</h:outputLabel>
+				<h:outputText id="father" value="#{contacts.contact_father_name}" label="Father Name" />
+				<h:outputLabel for="email">
+					Email 
+				</h:outputLabel>
+				<h:outputText id="email" value="#{contacts.contact_email}" label="Email" />
+
+				<h:outputLabel for="phone">
+					Contact Number
+				</h:outputLabel>
+				<h:outputText id="phone" value="#{contacts.contact_phone}" label="Contact Number" />
+				<h:outputLabel for="status">
+					Status 
+				</h:outputLabel>
+				<h:outputText id="status" value="#{contacts.contact_status ? 'Active':'In-Active'}" />
+
+
+				<h:outputLabel for="country">
+					Country 
+				</h:outputLabel>
+				<h:outputText id="country" value="#{contacts.contact_country}" />
+				<h:outputLabel for="state">
+					State
+				</h:outputLabel>
+				<h:outputText id="state" value="#{contacts.contact_state}" />
+
+				<h:outputLabel for="city">
+					City
+				</h:outputLabel>
+				<h:outputText id="city" value="#{contacts.contact_city}" />
+				<h:outputLabel for="zip">
+					Zip Code
+				</h:outputLabel>
+				<h:outputText id="zip" value="#{contacts.contact_zipcode}"
+					label="Zip Code" />
+
+				<h:outputLabel for="dob">
+					Date of Birth
+				</h:outputLabel>
+				<h:outputText id="dob" value="#{contacts.contact_dob}"
+					label="Date of Birth" pattern="MMMM dd, yyyy" />
+				<h:outputLabel for="createdon" >
+					Created On 
+				</h:outputLabel>
+				<h:outputText id="createdon" value="#{contacts.contact_createdon}"
+					label="Date of Birth" pattern="MMMM dd, yyyy" />
+
+
+				<h:outputLabel for="cnic">
+					NIC Number 
+				</h:outputLabel>
+				<h:outputText id="cnic" value="#{contacts.contact_cnic}" label="NIC Number" />
+				<h:outputLabel for="cnicFile">
+					NIC Copy
+				</h:outputLabel>
+				<h:outputText id="cnicFile" value="#{contacts.contact_cnic_copy}" label="NIC Copy" />
+					
+					
+				<h:outputLabel for="address">
+    		 		${sid['label.address']}&nbsp;
+    		 	</h:outputLabel>
+				<h:outputText id="address" value="#{contacts.contact_address}" label="Address" />
+				<p:column />
+				<p:column/>
+    			
+    			<p:column>
+    		 	<p:commandButton value="Back"  action="contactList"/>
+    		 	</p:column>
+			</h:panelGrid>
+				
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+

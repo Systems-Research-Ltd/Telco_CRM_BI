@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:utils="http://java.sun.com/jsf/composite/utils"
+xmlns:p="http://primefaces.org/ui"
+template="#{initParam.template}">
+	<ui:define name="title"> ${sid['title.um.admin.createcompany']}</ui:define>
+	<ui:define name="contents">
+		<h:form>
+
+		<p:messages id="messages" showDetail="true" />
+            
+         <p:fileUpload fileUploadListener="#{userUploadBean.handleFileUpload}"  
+            mode="advanced"   
+            update="messages,datatable"  
+            sizeLimit="100000"   
+            allowTypes="/(\.|\/)(csv)$/"/>   
+           <br />
+           <p:dataTable id="datatable" value="#{userUploadBean.usersList}" var="row">
+           		<p:column headerText="USERNAME" >  
+            		<h:outputText value="#{row.userId}" />  
+        		</p:column>
+        		<p:column headerText="FULLNAME" >  
+            		<h:outputText value="#{row.userFname}" />  
+        		</p:column>
+        		<p:column headerText="EMAIL" >  
+            		<h:outputText value="#{row.userEmail}" />  
+        		</p:column>   
+           
+           </p:dataTable>
+          <p:commandButton id="importbtn" value="Import Users" actionListener="#{userUploadBean.importUsers}" disabled="#{userUploadBean.importbtnflag}" update="datatable,importbtn,messages" >
+          	</p:commandButton>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

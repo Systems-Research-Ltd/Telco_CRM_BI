@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		
+		<p:messages errorClass="Error" styleClass="ErrorBox" closable="true" />
+		<h:form styleClass="ui-form" id="groupList">
+		<p:dataTable id="listOperations" var="row" value="#{userGroups.list}"
+			paginator="true" rows="10" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+
+			
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{sid['label.group.title']}" />
+				</f:facet>
+				<h:outputText value="#{row.group_title}" />
+			</p:column>
+
+             <p:column>
+				<f:facet name="header">
+					<h:outputText value="#{sid['title.details']}" />
+				</f:facet>
+				<h:outputText value="#{row.group_details}" />
+			</p:column>
+  			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{sid['label.actions']}" />
+				</f:facet>
+				<div class="actions">
+					<ul>
+					<li>
+					<p:commandLink
+									onclick="confirmation#{row.group_id}.show()">
+									<h:graphicImage library="themes/#{themeBean.userTheme.title}/images/icons"
+										name="delete.png" />
+								</p:commandLink>
+								<p:confirmDialog id="confirmDialog#{row.group_id}"
+								message="Are you sure you want to Delete?" header="Delete Row"
+								severity="alert" widgetVar="confirmation#{row.group_id}">
+								
+								<p:commandButton id="confirm#{row.group_id}" value="Yes Sure"
+									oncomplete="confirmation#{row.group_id}.hide()"
+									actionListener="#{userGroups.actionListener()}"
+									process="@this"
+									update=":tabView" ajax="true">
+									<f:param name="action" value="deleteConfirmed" />
+									<f:param name="row_id" value="#{row.group_id}" />
+								</p:commandButton>
+								<p:commandButton id="decline" value="Not Yet"
+									onclick="confirmation#{row.group_id}.hide()"
+									type="button" />
+								</p:confirmDialog>
+								</li>
+						   </ul>
+				       </div>
+			</p:column>
+			<f:facet name="footer">
+			</f:facet>
+		</p:dataTable>
+	 
+		<br />	
+			<p:commandButton ajax="true" value="#{sid['label.add.group.to.user']}"
+				update=":tabView" id="addUser" partialSubmit="true" process="@this" async="true"
+				action="#{userGroups.actionListener()}"
+			>
+				<f:param name="action" value="create" />
+			</p:commandButton>
+		</h:form>
+	</ui:composition>
+</h:body>
+
+</html>

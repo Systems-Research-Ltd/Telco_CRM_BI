@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sr="http://java.sun.com/jsf/composite/utils"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="#{initParam.templateLayout}">
+	<ui:define name="title">Business Intelligence Report Builder</ui:define>
+	<ui:define name="contents">
+		<div class="overlay" id="overlay"></div>
+		<script type="text/javascript"
+			src="${request.contextPath}/js/report.js"></script>
+		<p:messages id="reportMsgs" closable="true">
+		</p:messages>
+
+		<h:form id="tree">
+			<h:outputLabel value=""></h:outputLabel>
+			<p:remoteCommand name="treetotable"
+				actionListener="#{reportBuilderBean.treeToTable()}"
+				update=":sql :palette:tabletree :reportDesignerForm:reportDataGrid :reportDesignerForm:savedReports :reportDesignerForm:graphCon"
+				oncomplete="initDND();showHideGraph();editReport()" />
+			<p:remoteCommand name="tableToTree"
+				actionListener="#{reportBuilderBean.tableToTree()}"
+				update=":palette:tabletree :reportDesignerForm:reportDataGrid :reportDesignerForm:graphCon :sql :palette:savedFilter"
+				oncomplete="initDND();showHideGraph()" />
+			<p:remoteCommand name="tableToGraph"
+				actionListener="#{reportBuilderBean.tableToGraph()}"
+				update=":reportDesignerForm:graphCon"
+				oncomplete="initDND();showHideGraph()" />
+			<p:remoteCommand name="currentcolumn" update=":grpord"
+				actionListener="#{reportBuilderBean.applyCurrent()}"
+				oncomplete="grpordDlg.show()" />
+		</h:form>
+		<h:panelGrid id="layoutsGrid" columns="2" style="margin-top:10px;"
+			width="100%" cellpadding="0" cellspacing="0">
+			<pe:layout fullPage="false" style="height:800px;"
+				options="#{reportBuilderBean.lays1}"
+				state="#{reportBuilderBean.state1}">
+				<!-- DATAPALLTE SECTION -->
+				<pe:layoutPane position="west" styleContent="padding:0px;">
+					<f:facet name="header">
+						<h:outputText value="#{sid['label.data.palette']}"
+							style="font-weight:bold;" />
+					</f:facet>
+
+					<ui:include
+						src="/view/reportsbuilder/datapallete/datapalette.xhtml" />
+				</pe:layoutPane>
+				<pe:layoutPane position="center">
+					<!-- DESIGN PALETTE SECTION(Toolbar + sql) -->
+					<pe:layout fullPage="false" style="width:100%; height:800px;"
+						options="#{reportBuilderBean.lays2}"
+						state="#{reportBuilderBean.state2}">
+						<pe:layoutPane position="north"
+							styleContent="padding:0px;height:600px;" id="designPalettePane">
+							<f:facet name="header">
+								<h:outputText value="#{sid['label.design.palette']}"
+									style="font-weight:bold;" />
+							</f:facet>
+							<ui:include
+								src="/view/reportsbuilder/designpalette/designpalette.xhtml" />
+						</pe:layoutPane>
+						<!-- REPORT DESIGNER SECTION (GRAPH AND DATATABLE) -->
+						<pe:layoutPane position="center">
+							<ui:include
+								src="/view/reportsbuilder/reportdesigner/reportDesigner.xhtml" />
+							<!-- AJAX STATUS GIF -->
+							<p:ajaxStatus
+								style="width:64px;height:64px;position:fixed;right:50px;bottom:50px">
+								<f:facet name="start">
+									<p:graphicImage
+										library="themes/#{themeBean.userTheme.title}/images"
+										name="loading.gif" alt="Loading.." />
+								</f:facet>
+								<f:facet name="complete">
+									<h:outputText value="" />
+								</f:facet>
+							</p:ajaxStatus>
+						</pe:layoutPane>
+					</pe:layout>
+				</pe:layoutPane>
+			</pe:layout>
+		</h:panelGrid>
+
+		<h:form id="logoForm" prependId="false">
+			<c:if test="${reportDesignerBean.showLogo}">
+				<p:panel id="logoCon">
+					<p:panel id="logoImgCon">
+						<p:graphicImage id="logo"
+							value="/image/#{reportDesignerBean.logoName}?mod=report"
+							alt="logo" width="198" height="80"></p:graphicImage>
+
+					</p:panel>
+					<p:commandLink ajax="true" update=":editLogoForm"
+						partialSubmit="true" process="@this"
+						oncomplete="editLogoDlg.show()">
+						<h:graphicImage id="editLogo"
+							library="themes/#{themeBean.userTheme.title}/images/icons"
+							name="edit.png" styleClass="link logo-edit-btn"></h:graphicImage>
+					</p:commandLink>
+				</p:panel>
+			</c:if>
+		</h:form>
+
+		<!-- INCLUDING DIALOGS -->
+		<ui:include
+			src="/view/reportsbuilder/datapallete/dialogs/datafilterdialog.xhtml" />
+		<ui:include
+			src="/view/reportsbuilder/datapallete/dialogs/datasourcedialog.xhtml" />
+		<ui:include
+			src="/view/reportsbuilder/datapallete/dialogs/orderBydialog.xhtml" />
+		<ui:include
+			src="/view/reportsbuilder/reportdesigner/editlogodialog.xhtml" />
+
+
+
+		<p:dialog id="grpord"
+			header="#{reportBuilderBean.currentColumn.toUpperCase().split('\\.')[1]}"
+			widgetVar="grpordDlg" modal="true">
+			<h:form>
+				<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+					<h:outputLabel for="grouping" value="#{sid['label.group.by']}"
+						style="font-weight:bold;" />
+					<h:selectBooleanCheckbox id="grouping"
+						value="#{reportBuilderBean.groupByCol}" />
+					<h:outputLabel for="formula" value="#{sid['label.apply.formula']}"
+						style="font-weight:bold;" />
+					<h:selectOneMenu id="formula" style="width:130px;"
+						value="#{reportBuilderBean.selectedFormula}">
+						<f:selectItem itemLabel="Formulas" itemValue="" />
+						<f:selectItems value="#{reportBuilderBean.formulas}" />
+					</h:selectOneMenu>
+					<f:facet name="footer">
+						<p:commandButton id="ordButton" value="#{sid['label.ok']}"
+							update=":palette :sql :reportDesignerForm:reportDataGrid :reportDesignerForm:graphCon"
+							actionListener="#{reportBuilderBean.updateGroupings}"
+							oncomplete="initDND();grpordDlg.hide()" style="float:right;" />
+					</f:facet>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<h:form id="saveRepForm" prependId="false">
+			<p:dialog id="saveReportDlg" widgetVar="saveReportDialog"
+				header="Save Report" modal="true" closable="false">
+		    		#{sid['message.report.save.confirmation']} <br />
+				<br />
+				<p:commandButton action="#{reportDesignerBean.actionListener()}"
+					title="#{sid['label.save']}"
+					update=":reportDesignerForm  :reportMsgs :logoForm :sql :palette :tabs:tabsForm :logout :dsform"
+					partialSubmit="true" value="#{sid['label.save']}"
+					process=":reportDesignerForm, :dsform:savedSources @this"
+					oncomplete="positionLogo();saveReportDialog.hide()">
+					<f:param name="action" value="update"></f:param>
+				</p:commandButton>
+				<p:commandButton value=" No " partialSubmit="true" process="@this"
+					action="#{reportDesignerBean.actionListener()}"
+					update=":reportDesignerForm, :reportMsgs,  :logoForm :palette :sql :tabs:tabsForm :logout :dsform"
+					oncomplete="positionLogo();saveReportDialog.hide()">
+					<f:param name="action" value="#{sid['action.deleteConfirmed']}" />
+				</p:commandButton>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form styleClass="ui-form">
+			<h:inputHidden id="currentAction" value="#{opportunityBean.currentAction}"
+				validator="#{opportunityBean.actionValidator}" />
+			<p:messages id="msgs" autoUpdate="true" />
+			<p:panelGrid id="grid" styleClass="content-table">
+             <p:row>
+					<p:column colspan="2">
+						<h:panelGroup layout="block" style="padding: 3px 0 3px 0; margin-right:3px; float:right;">  
+					        <h:graphicImage library="themes/#{themeBean.userTheme.title}/images" name="help_icon.png" id="help" />
+					    </h:panelGroup>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="fifty-percent">
+						<h:outputLabel for="product">
+					${sid['label.product']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="fifty-percent">
+						<p:selectOneMenu id="product" styleClass="hundred-percent"
+							value="#{opportunityBean.productId}"
+							disabled="#{opportunityBean.disabled}" label="Product">
+							<f:selectItems value="#{opportunityBean.listProducts()}" var="p"
+								itemLabel="#{p.productTitle}" itemValue="#{p.productId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="twentyfive-percent">
+						<h:outputLabel for="revenue">
+							${sid['label.revenue.expected']}&nbsp;
+						</h:outputLabel>
+					</p:column>
+					<p:column styleClass="twentyfive-percent">
+						<p:inputText id="revenue" maxlength="6"
+							disabled="#{opportunityBean.disabled}"
+							value="#{opportunityBean.opportunityExpectedRevenue}"
+							label="Revenue"
+							converterMessage="Revenue should be in whole number" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="customer">
+					${sid['label.customer']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="customer" styleClass="hundred-percent"
+							value="#{opportunityBean.customerId}"
+							disabled="#{opportunityBean.disabled}" label="Customer">
+							<f:selectItems value="#{opportunityBean.listContacts()}" var="c"
+								itemLabel="#{c.contactFname}" itemValue="#{c.contactId}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="success">
+					${sid['label.percent.of.success']}&nbsp;
+				</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputText id="success"
+							value="#{opportunityBean.percentOfSuccess}" maxlength="3"
+							disabled="#{opportunityBean.disabled}" label="Success"
+							converterMessage="Give percentage in whole value">
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="assignedTo">
+					${sid['label.assigned.to']}&nbsp; <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="assignedTo" styleClass="hundred-percent"
+							value="#{opportunityBean.assignedTo}"
+							disabled="#{opportunityBean.disabled}" label="Assigned To">
+							<f:selectItems value="#{opportunityBean.listUsers()}" var="a"
+								itemLabel="#{a.userName}" itemValue="#{a.userId}" />
+						</p:selectOneMenu>
+
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+
+						<h:outputLabel for="status">
+					Status <span class="form-required">*</span>
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="status" styleClass="hundred-percent"
+							value="#{opportunityBean.status}"
+							disabled="#{opportunityBean.disabled}" label="Status">
+							<f:selectItem itemLabel="Negotiation" itemValue="Negotiation" />
+							<f:selectItem itemLabel="Won" itemValue="Won" />
+							<f:selectItem itemLabel="Lost" itemValue="Lost" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="comments">
+							Comments
+						</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:inputTextarea id="comments" value="#{opportunityBean.comments}"
+							maxlength="500" disabled="#{opportunityBean.disabled}"
+							required="false" label="Comments" />
+
+					</p:column>
+				</p:row>
+				<p:row>
+
+					<p:column colspan="2" styleClass="buttons-row">
+						<h:inputHidden value="#{opportunityBean.opportunityId}" />
+
+						<p:commandButton value="#{sid['label.save']}"
+							rendered="#{opportunityBean.saveAction}" ajax="false"
+							actionListener="#{opportunityBean.actionListener}">
+							<f:param name="action" value="save" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.edit']}"
+							rendered="#{opportunityBean.editAction}" actionListener="#{opportunityBean.actionListener()}">
+							<f:param name="action" value="edit" />
+							<f:param name="opportunity_id" value="#{opportunityBean.opportunityId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.update']}"
+							action="#{opportunityBean.actionListener}" ajax="false"
+							rendered="#{opportunityBean.updateAction}">
+							<f:param name="action" value="update" />
+							<f:param name="opportunity_id" value="#{opportunityBean.opportunityId}" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.delete']}"
+							rendered="#{opportunityBean.deleteAction}"
+							action="#{opportunityBean.actionListener()}">
+							<f:param name="action" value="delete" />
+							<f:param name="opportunity_id" value="#{opportunityBean.opportunityId}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{sid['label.deleteConfirmed']}" ajax="false"
+							actionListener="#{opportunityBean.actionListener}"
+							rendered="#{opportunityBean.deleteConfirmedAction}">
+							<f:param name="action" value="deleteConfirmed" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="#{sid['label.reset']}"
+							rendered="#{opportunityBean.resetAction}" type="reset">
+						</p:commandButton>
+
+						<p:commandButton immediate="true"
+							value="#{sid['label.cancel']}"
+							actionListener="#{opportunityBean.actionListener}" ajax="false"
+							rendered="#{opportunityBean.cancelAction}">
+
+							<f:param name="action" value="cancel" />
+							<f:param name="opportunity_id" value="#{opportunityBean.opportunityId}" />
+
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>
